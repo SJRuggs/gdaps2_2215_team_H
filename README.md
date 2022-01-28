@@ -6,7 +6,7 @@ _This README contains basic information about the project and its artifacts. If 
 ## Team Members
 - Alex Petty
 - MEMBER2
-- MEMBER3
+- Owen Gebhardt
 - MEMBER4
 - MEMBER5
 

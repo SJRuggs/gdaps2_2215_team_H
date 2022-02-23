@@ -37,6 +37,7 @@ namespace LiveWire
 
         // interaction variables
         private bool isHoldingWire;
+        private Wire holdingWire;
 
         // user input keys
         private Keys left;
@@ -65,10 +66,10 @@ namespace LiveWire
             set { velocity = value; }
         }
 
-        public bool IsHoldingWire
+        public Wire HoldingWire
         {
-            get { return isHoldingWire; }
-            set { isHoldingWire = value; }
+            get { return holdingWire; }
+            set { holdingWire = value; }
         }
 
 

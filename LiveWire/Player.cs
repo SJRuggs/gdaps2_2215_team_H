@@ -27,7 +27,7 @@ namespace LiveWire
         private AnimState currentState;
         private Rectangle position;
         private Vector2 velocity;
-        private bool isHoldingWire;
+        private Wire holdingWire;
 
 
 
@@ -50,10 +50,10 @@ namespace LiveWire
             set { velocity = value; }
         }
 
-        public bool IsHoldingWire
+        public Wire HoldingWire
         {
-            get { return isHoldingWire; }
-            set { isHoldingWire = value; }
+            get { return holdingWire; }
+            set { holdingWire = value; }
         }
 
 

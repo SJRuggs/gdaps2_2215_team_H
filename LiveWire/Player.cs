@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace LiveWire
 {
@@ -24,15 +26,28 @@ namespace LiveWire
     class Player
     {
         // --- VARIABLE DELCARATIONS ---
+        // animation variables
         private AnimState currentState;
-        private Rectangle position;
+
+        // physics variables
+        private Vector2 position;
         private Vector2 velocity;
+        private float speed;
+        private float gravity;
+
+        // interaction variables
         private bool isHoldingWire;
+
+        // user input keys
+        private Keys left;
+        private Keys right;
+        private Keys jump;
+        private Keys interact;
 
 
 
         // --- PROPERTIES ---
-        public Rectangle Position
+        public Vector2 Position
         {
             get { return position; }
             set { position = value; }
@@ -69,6 +84,42 @@ namespace LiveWire
             {
                 // TODO: Add cases
             }
+        }
+
+        /// <summary>
+        /// player <-> enviroment
+        /// Takes in input from user (left,right,jump) and moves the player accordingly to physics (gravity, colliding with ground, ground friction) 
+        /// </summary>
+        public void PlayerMovement() {
+            //horizontal velocity
+        //reset horizontal velocity
+        //change horizontal velocity with left and right inputs
+        //change horizontal velocity with speed
+
+            //vertical velocity
+        //update vertical velocity with jump force
+        //update vertical velocity with gravity
+
+            //position/collision
+        //update position with velocity
+        //if position colliding with block, adjust position to not be in block and adjust velocity to not move you in to block
+        //is collision reactive or proactive?
+        }
+        
+
+        /// <summary>
+        /// player <-> wire
+        /// Takes in input from user (interact) Grabs the end of a wire if close enough, releases the wire, or connectes it to a power node if close enough
+        /// moves the end of the wire with player if holding wire
+        /// </summary>
+        public void InteractWire() {
+            //holding wire
+        //move wire with player
+        //if user presses interact and near a power node then place the wire on power node
+        //else drop the wire
+
+            //not holding wire
+        //if near the end of wire pick it up
         }
     }
 }

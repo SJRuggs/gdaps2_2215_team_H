@@ -32,18 +32,18 @@ namespace LiveWire
         // physics variables
         private Vector2 position;
         private Vector2 velocity;
-        private float speed;
-        private float gravity;
+        private const float speed = 5;
+        private const float gravity = 10;
 
         // interaction variables
         private bool isHoldingWire;
         private Wire holdingWire;
 
         // user input keys
-        private Keys left;
-        private Keys right;
-        private Keys jump;
-        private Keys interact;
+        private const Keys left = Keys.Left;
+        private const Keys right = Keys.Right;
+        private const Keys jump = Keys.Up;
+        private const Keys interact = Keys.Z;
 
 
 
@@ -107,6 +107,7 @@ namespace LiveWire
         //is collision reactive or proactive?
         }
         
+        public void CollideBump(Tile tile) { }
 
         /// <summary>
         /// player <-> wire

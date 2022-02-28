@@ -27,9 +27,12 @@ namespace LiveWire
         PlayLevel,
     }
 
+    // --- FINITE STATE MACHINE: LEVEL ---
+    // one state for each level, used only to progress through the levels
     enum Level
     {
         TestLevel,
+        TestLevel2,
         EndLevel
     }
 
@@ -37,7 +40,7 @@ namespace LiveWire
     {
 
         // --- VARIABLE DECLARATIONS ---
-
+        
         // graphics handlers
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
@@ -90,7 +93,7 @@ namespace LiveWire
             screenHeight = 1080;
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
-            _graphics.IsFullScreen = true;
+            //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             // objects and states
@@ -142,8 +145,8 @@ namespace LiveWire
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
-                        currentState = GameState.MainMenu;
-                        currentLevel = Level.TestLevel;
+                        if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.TestLevel; }
+                        else { NewLevel(currentLevel++); }
                     }
                     break;
             }
@@ -266,7 +269,7 @@ namespace LiveWire
                     for (int c = 0; c < cols; c++)
                     {
                         // TODO: must be changed when interactable objects are implemented
-                        temporaryBool = newLine[c] != '0';
+                        temporaryBool = newLine[c] != '-';
                         board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
                     }
                 }
@@ -351,9 +354,6 @@ namespace LiveWire
             }
             catch (Exception e) { Console.WriteLine(e); }
             if (reader != null) { reader.Close(); }
-
-            // edit level FSM
-            currentLevel = level;
         }
 
         private void DrawLevel(Level level)

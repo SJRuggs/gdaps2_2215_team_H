@@ -54,7 +54,7 @@ namespace LiveWire
         }
 
         // detects a collision on the segment with tiles that block the wire
-        public void DetectCollision(Tile[,] board)
+        public void DetectCollision(Tile[,] board, Wire wire)
         {
             float stepHeight = Math.Abs(node1.Y - node2.Y);
 
@@ -102,8 +102,49 @@ namespace LiveWire
                         }
                 }
             }
-                
-                    
+        }
+
+        // handles the creation of a new segment within the wire
+        public void newSegment(Tile tile, Wire wire, float x, float y)
+        {
+            // right side of tile
+            if (tile.Position.X + tile.Position.Width < x)
+            {
+                // top of tile
+                if (tile.Position.Y + tile.Position.Height > y)
+                {
+                    // create a new node at the top right of the tile
+                    node2.X = tile.Position.X + tile.Position.Width;
+                    node2.Y = tile.Position.Y;
+                }
+                // bottom of tile
+                else
+                {
+                    // create a new node at the bottom right of the tile
+                    node2.X = tile.Position.X + tile.Position.Width;
+                    node2.Y = tile.Position.Y + tile.Position.Height;
+                }
+            }
+            // left side of tile
+            else
+            {
+                // top of tile
+                if (tile.Position.Y + tile.Position.Height > y)
+                {
+                    // create a new node at the top left of the tile
+                    node2.X = tile.Position.X;
+                    node2.Y = tile.Position.Y;
+                }
+                // bottom of tile
+                else
+                {
+                    // create a new node at the bottom left of the tile
+                    node2.X = tile.Position.X;
+                    node2.Y = tile.Position.Y + tile.Position.Height;
+                }
+            }
+            // create a new segment at the end of the wire's segment list
+            wire.Wires.Add(new Segment((int)node2.X, (int)node2.Y, (int)wire.Player.Position.X, (int)wire.Player.Position.Y));
         }
     }
 }

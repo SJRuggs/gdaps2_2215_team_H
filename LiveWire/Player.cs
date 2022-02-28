@@ -130,6 +130,7 @@ namespace LiveWire
             prevPosition = position;
         }
         
+        public void CollideBump(Tile tile) { }
 
         /// <summary>
         /// player <-> wire

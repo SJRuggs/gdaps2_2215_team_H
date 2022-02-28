@@ -7,7 +7,7 @@ namespace LiveWire
 {
 
     /// <summary>
-    /// TODO: Add Summary
+    /// The segment class defeines the individual parts of a wire, which interacts with the physical enviroment
     /// </summary>
 
     class Segment
@@ -42,15 +42,68 @@ namespace LiveWire
 
 
         // --- METHODS ---
-        public double getAngle()
+        public double Angle()
         {
             // returns angle in radians
             return Math.Acos(Math.Abs(node1.Y - node2.Y) / Math.Abs(node1.X - node2.X));
         }
 
-        public double getDistance()
+        public double Distance()
         {
             return Vector2.Distance(node1, node2);
+        }
+
+        // detects a collision on the segment with tiles that block the wire
+        public void DetectCollision(Tile[,] board)
+        {
+            float stepHeight = Math.Abs(node1.Y - node2.Y);
+
+            // moving right
+            if (node1.X < node2.X)
+            {
+                // moving down
+                if (node1.Y < node2.Y)
+                {
+                    for (float x = node1.X; x < (int)node2.X; x++)
+                        if (board[(int)((node1.X + x) / 40), (int)(node1.Y + x * stepHeight)].BlocksWire)
+                        {
+                            // TODO: calculate position of the new node
+                        }
+                }
+                // moving up
+                else
+                {
+                    for (float x = node1.X; x < (int)node2.X; x++)
+                        if (board[(int)((node1.X + x) / 40), (int)(node1.Y - x * stepHeight)].BlocksWire)
+                        {
+                            // TODO: calculate position of the new node
+                        }
+                }
+            }
+            // moving left
+            else
+            {
+                // moving down
+                if (node1.Y < node2.Y)
+                {
+                    for (float x = node1.X; x < (int)node2.X; x++)
+                        if (board[(int)((node1.X - x) / 40), (int)(node1.Y + x * stepHeight)].BlocksWire)
+                        {
+                            // TODO: calculate position of the new node
+                        }
+                }
+                // moving up
+                else
+                {
+                    for (float x = node1.X; x < (int)node2.X; x++)
+                        if (board[(int)((node1.X - x) / 40), (int)(node1.Y - x * stepHeight)].BlocksWire)
+                        {
+                            // TODO: calculate position of the new node
+                        }
+                }
+            }
+                
+                    
         }
     }
 }

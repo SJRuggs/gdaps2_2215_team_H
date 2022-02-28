@@ -55,6 +55,12 @@ namespace LiveWire
             set { blocksWire = value; }
         }
 
+        public bool BlocksWire
+        {
+            get { return blocksWire; }
+            set { blocksWire = value; }
+        }
+
 
 
         // --- CONSTRUCTOR ---

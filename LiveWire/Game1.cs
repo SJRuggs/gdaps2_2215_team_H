@@ -266,7 +266,7 @@ namespace LiveWire
                     for (int c = 0; c < cols; c++)
                     {
                         // TODO: must be changed when interactable objects are implemented
-                        temporaryBool = newLine[c] != '0';
+                        temporaryBool = newLine[c] != '-';
                         board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
                     }
                 }

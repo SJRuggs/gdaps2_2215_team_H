@@ -12,7 +12,7 @@ namespace LiveWire
     class Wire
     {
         // --- VARIABLE DELCARATIONS ---
-        private const double maxLength = 50;
+        private double maxLength = 50;
         private List<Segment> wires;
 
 
@@ -21,6 +21,7 @@ namespace LiveWire
         public double MaxLength
         {
             get { return maxLength; }
+            set { maxLength = value; }
         }
 
         public List<Segment> Wires
@@ -44,7 +45,7 @@ namespace LiveWire
         public double GetTotalLength()
         {
             double totalLength = 0;
-            foreach (Segment s in wires) { totalLength += s.getDistance(); }
+            foreach (Segment s in wires) { totalLength += s.Distance(); }
             return totalLength;
         }
 

@@ -90,7 +90,7 @@ namespace LiveWire
             screenHeight = 1080;
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
-            //_graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             // objects and states

@@ -7,15 +7,60 @@ namespace LiveWire
     /// <summary>
     /// An abstract class for interactable props in the world
     /// </summary>
-    public abstract class Machine
+    /// 
+
+    enum MachineType
+    {
+        Defualt
+    }
+
+    public class Machine : TileParent
     {
         #region FIELDS --------------------------------------------------------------------------------
 
         // Where on the screen the Machine should be drawn
         private Rectangle position;
+        private bool[] animState;
+        private bool blocksPlayer;
+        private bool blocksWire;
+        private bool interactsWire;
         // The sprite(s) to be used for the Machine
         // (each Machine handles sprites differently, so some may have )
         private Texture2D spriteSheet;
+
+        #endregion
+
+        #region Properties -------------------------------------------------------------------------
+
+        public override Rectangle Position
+        {
+            get { return position; }
+            set { position = value; }
+        }
+
+        public override bool[] AnimState
+        {
+            get { return animState; }
+            set { animState = value; }
+        }
+
+        public override bool BlocksPLayer
+        {
+            get { return blocksPlayer; }
+            set { blocksPlayer = value; }
+        }
+
+        public override bool BlocksWire
+        {
+            get { return blocksWire; }
+            set { blocksWire = value; }
+        }
+
+        public override bool InteractsWire
+        {
+            get { return interactsWire; }
+            set { interactsWire = value; }
+        }
 
         #endregion
 
@@ -29,20 +74,16 @@ namespace LiveWire
 
         #endregion
 
-        #region ABSTRACT METHODS --------------------------------------------------------------------------------
+        #region METHODS --------------------------------------------------------------------------------
 
-        /// <summary>
-        /// Draws the Machine to the screen
-        /// </summary>
-        /// <param name="spriteBatch">The current Sprite Batch</param>
-        public abstract void Draw(SpriteBatch spriteBatch);
-
-        /// <summary>
-        /// Functionality for when the Player interacts with the Machine
-        /// </summary>
-        /// <param name="playerPos">The Player's position Rectangle</param>
-        /// <param name="playerHasWire">Whether or not the Player is currently holding a Wire</param>
-        public abstract void PlayerInteract(Rectangle playerPos, bool playerHasWire);
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            // TODO: add animations for each machine (switch statement using enum)
+        }
+        public override void PlayerInteract(Player player)
+        {
+            // TODO: add interactions for each machine (switch statement using enum)
+        }
 
         #endregion
     }

@@ -9,12 +9,13 @@ namespace LiveWire
     /// <summary>
     /// TODO: Add summary
     /// </summary>  
-    class Tile
+    public class Tile : TileParent
     {
         // --- VARIABLE DELCARATIONS ---
         private Rectangle position;
         private bool blocksPlayer;
         private bool blocksWire;
+        private bool interactsWire;
         private bool[] animState;
             // 0: base anim
             // 1: N border
@@ -37,28 +38,34 @@ namespace LiveWire
 
 
         // --- PROPERTIES ---
-        public Rectangle Position
+        public override Rectangle Position
         {
             get { return position; }
             set { position = value; }
         }
 
-        public bool[] AnimState
+        public override bool[] AnimState
         {
             get { return animState; }
             set { animState = value; }
         }
 
-        public bool BlocksPLayer
+        public override bool BlocksPLayer
         {
             get { return blocksPlayer; }
             set { blocksWire = value; }
         }
 
-        public bool BlocksWire
+        public override bool BlocksWire
         {
             get { return blocksWire; }
             set { blocksWire = value; }
+        }
+
+        public override bool InteractsWire
+        {
+            get { return interactsWire; }
+            set { interactsWire = value; }
         }
 
 
@@ -76,7 +83,7 @@ namespace LiveWire
 
 
         // --- METHODS ---
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < animState.Length; i++)
             {
@@ -95,6 +102,11 @@ namespace LiveWire
                 Color.White);
                 }
             }
+        }
+
+        public override void PlayerInteract(Player player)
+        {
+            // do nothing
         }
     }
 }

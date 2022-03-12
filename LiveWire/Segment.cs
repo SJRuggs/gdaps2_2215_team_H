@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace LiveWire
 {
@@ -10,11 +11,12 @@ namespace LiveWire
     /// The segment class defeines the individual parts of a wire, which interacts with the physical enviroment
     /// </summary>
 
-    class Segment
+    public class Segment
     {
         // --- VARIABLE DELCARATIONS ---
         private Vector2 node1;
         private Vector2 node2;
+        private Texture2D segment;
 
 
 
@@ -33,73 +35,98 @@ namespace LiveWire
 
 
         // --- CONSTRUCTOR ---
-        public Segment(int x1, int y1, int x2, int y2)
+        public Segment(Vector2 node1, Vector2 node2)
         {
-            node1 = new Vector2(x1, y1);
-            node2 = new Vector2(x2, y2);
+            this.node1 = node1;
+            this.node2 = node2;
         }
 
 
 
         // --- METHODS ---
-        public double Angle()
+        public float Radians()
         {
             // returns angle in radians
-            return Math.Acos(Math.Abs(node1.Y - node2.Y) / Math.Abs(node1.X - node2.X));
+            double result = Math.Atan2(node2.Y - node1.Y, node2.X - node1.X);
+            if(node2.X < node1.X)
+            {
+                result += Math.PI;
+                if (node2.Y < node1.Y) { result += Math.PI / 2; }
+            }
+            else
+            {
+                if (node2.Y > node1.Y) { result += Math.PI / 2; }
+            }
+            return (float)result;
         }
 
+        // distance between nodes
         public double Distance()
         {
             return Vector2.Distance(node1, node2);
         }
 
-        // detects a collision on the segment with tiles that block the wire
-        public void DetectCollision(Tile[,] board, Wire wire)
+        // calls all relevant methods
+        public void Update(TileParent[,] board, Wire wire)
         {
-            float stepHeight = Math.Abs(node1.Y - node2.Y);
+            LimitSegment(wire);
+            DetectCollision(board, wire);
+        }
 
-            // moving right
-            if (node1.X < node2.X)
+        // limits wire based on total length and max length
+        public void LimitSegment(Wire wire)
+        {
+            if(wire.GetTotalLength() > wire.MaxLength)
             {
-                // moving down
-                if (node1.Y < node2.Y)
-                {
-                    for (float x = node1.X; x < (int)node2.X; x++)
-                        if (board[(int)((node1.X + x) / 40), (int)(node1.Y + x * stepHeight)].BlocksWire)
-                        {
-                            // TODO: calculate position of the new node
-                        }
-                }
-                // moving up
-                else
-                {
-                    for (float x = node1.X; x < (int)node2.X; x++)
-                        if (board[(int)((node1.X + x) / 40), (int)(node1.Y - x * stepHeight)].BlocksWire)
-                        {
-                            // TODO: calculate position of the new node
-                        }
-                }
+                Vector2 extraVector = new Vector2();
+                double extra = wire.GetTotalLength() - wire.MaxLength;
+                extraVector.Y = (float)(Math.Sin(Math.Atan2(node2.Y - node1.Y, node2.X - node1.X)) * extra);
+                extraVector.X = (float)Math.Sqrt(Math.Pow(extraVector.Y, 2) - Math.Pow(extra, 2));
+                if (node2.X > node1.X) { node2.X -= extraVector.X; }
+                else { node2.X += extraVector.X; }
+                if (node2.Y > node1.Y) { node2.Y -= extraVector.Y; }
+                else { node2.Y += extraVector.Y; }
             }
-            // moving left
-            else
+        }
+
+        // detects a collision on the segment with tiles that block the wire
+        public void DetectCollision(TileParent[,] board, Wire wire)
+        {
+            int stepCount;
+            Vector2 direction;
+            Vector2 stepHeight;
+            Vector2 checkPosition;
+
+            stepCount = (int)Math.Max(Math.Abs(Node2.X - Node1.X), Math.Abs(Node2.Y - Node1.Y));
+            direction = new Vector2((node2.X - node1.X) / Math.Abs(Node2.X - Node1.X), (node2.Y - node1.Y) / Math.Abs(Node2.Y - Node1.Y));
+            stepHeight = new Vector2(Math.Abs(Node2.X - Node1.X) / stepCount, Math.Abs(Node2.Y - Node1.Y) / stepCount);
+            checkPosition = node1;
+
+            for (int i = 0; i < stepCount; i++)
             {
-                // moving down
-                if (node1.Y < node2.Y)
+                // updates the position of the checker
+                checkPosition.X += direction.X * stepHeight.X;
+                checkPosition.Y += direction.Y * stepHeight.Y;
+
+                // if inside a tile that blocks the wire...
+                if (board[(int)(checkPosition.X / 40), (int)(checkPosition.Y / 40)].BlocksWire)
                 {
-                    for (float x = node1.X; x < (int)node2.X; x++)
-                        if (board[(int)((node1.X - x) / 40), (int)(node1.Y + x * stepHeight)].BlocksWire)
-                        {
-                            // TODO: calculate position of the new node
-                        }
+                    // set node2 point
+                    this.node2.X = checkPosition.X - (checkPosition.X % 40);
+                    this.node2.Y = checkPosition.Y - (checkPosition.Y % 40);
+                    if (checkPosition.X % 40 > 21) { this.node2.X += 40; }
+                    if (checkPosition.Y % 40 > 21) { this.node2.Y += 40; }
+
+                    // create new segment on wire
+                    wire.AddSegment(new Segment(node2, wire.Player.Position));
+                    i = stepCount;
                 }
-                // moving up
-                else
+
+                // if inside a tile that interacts with the wire...
+                if (board[(int)(checkPosition.X / 40), (int)(checkPosition.Y / 40)].InteractsWire)
                 {
-                    for (float x = node1.X; x < (int)node2.X; x++)
-                        if (board[(int)((node1.X - x) / 40), (int)(node1.Y - x * stepHeight)].BlocksWire)
-                        {
-                            // TODO: calculate position of the new node
-                        }
+                    board[(int)(checkPosition.X / 40), (int)(checkPosition.Y / 40)].PlayerInteract(wire.Player);
+                    i = stepCount;
                 }
             }
         }
@@ -144,7 +171,24 @@ namespace LiveWire
                 }
             }
             // create a new segment at the end of the wire's segment list
-            wire.Wires.Add(new Segment((int)node2.X, (int)node2.Y, (int)wire.Player.Position.X, (int)wire.Player.Position.Y));
+            wire.Wires.Add(new Segment(node2, wire.Player.Position));
+        }
+
+        // draws the segment between the two nodes
+        public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphics, Wire wire)
+        {
+            segment = new Texture2D(graphics, 1, 1);
+            segment.SetData(new[] { new Color(255 - (wire.GetTotalLength() / wire.MaxLength * 255), wire.GetTotalLength() / wire.MaxLength * 255, 0) });
+            spriteBatch.Draw(
+                segment,
+                new Rectangle((int)node1.X, (int)node1.Y, 1, (int)this.Distance()),
+                null,
+                Color.White,
+                this.Radians(),
+                Vector2.Zero,
+                SpriteEffects.None,
+                0
+                );
         }
     }
 }

@@ -14,8 +14,8 @@ namespace LiveWire
     /// (grid of ints separated by commas)
     /// 
     /// Level File Legend:
-    /// 0 - empty space
-    /// 1 - physical tile
+    /// '-' - empty space
+    /// '0' - basic tile
     /// TODO: and more to come!
     /// </summary>
 
@@ -32,7 +32,6 @@ namespace LiveWire
     enum Level
     {
         TestLevel,
-        TestLevel2,
         EndLevel
     }
 
@@ -69,14 +68,16 @@ namespace LiveWire
         private Level currentLevel;
 
         // board handlers
-        private Tile[,] board;
+        private TileParent[,] board;
         private int rows;
         private int cols;
         private int tileWidth;
         private int tileHeight;
-        // List of all interactable Machines in the current Level
         private List<Machine> machines;
 
+
+        // TEST WIRE
+        private Wire wire;
 
 
         public Game1()
@@ -93,12 +94,16 @@ namespace LiveWire
             screenHeight = 1080;
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
-            _graphics.IsFullScreen = true;
+            //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             // objects and states
             currentState = GameState.MainMenu;
             currentLevel = Level.TestLevel;
+
+            // TEST WIRE
+            wire = new Wire();
+            wire.AddSegment(new Segment(new Vector2(750, 1000), new Vector2(700, 800)));
 
             base.Initialize();
         }
@@ -213,6 +218,10 @@ namespace LiveWire
                     // display level
                     DrawLevel(currentLevel);
 
+                    // TEST WIRE
+                    wire.Draw(_spriteBatch, GraphicsDevice);
+
+
                     // TEMPORARY display
                     _spriteBatch.DrawString(
                         basicFont,
@@ -262,15 +271,22 @@ namespace LiveWire
                 bool temporaryBool;
 
                 // create board
-                board = new Tile[rows, cols];
+                board = new TileParent[rows, cols];
                 for (int r = 0; r < rows; r++)
                 {
                     newLine = reader.ReadLine();
                     for (int c = 0; c < cols; c++)
                     {
-                        // TODO: must be changed when interactable objects are implemented
-                        temporaryBool = newLine[c] != '-';
-                        board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
+                        if (newLine[c] == '-' || newLine[c] == '0')
+                        {
+                            temporaryBool = newLine[c] != '-';
+                            board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
+                        }
+                        else
+                        {
+                            // TODO: implement each machine here
+                            board[r, c] = new Machine(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet);
+                        }
                     }
                 }
 
@@ -343,7 +359,7 @@ namespace LiveWire
                 }
 
                 // all tile bridges
-                foreach (Tile tile in board)
+                foreach (TileParent tile in board)
                 {
                     tile.AnimState[9]  = tile.AnimState[5] && tile.AnimState[8];
                     tile.AnimState[10] = tile.AnimState[6] && tile.AnimState[7];

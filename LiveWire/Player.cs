@@ -13,7 +13,7 @@ namespace LiveWire
     /// </summary>
 
     // --- FINATE STATE MACHINE : ANIMSTATE
-    enum AnimState
+    public enum AnimState
     {
         StandingRight,
         StandingLeft,
@@ -23,7 +23,7 @@ namespace LiveWire
         FallingLeft
     }
 
-    class Player
+    public class Player
     {
         // --- VARIABLE DELCARATIONS ---
         // animation variables
@@ -33,9 +33,9 @@ namespace LiveWire
         private Vector2 position;
         private Vector2 prevPosition;
         private Vector2 velocity;
-        private const float speed = 5; // how fast you move in the x axis
-        private const float jumpForce = 5; // how strong your jump is
-        private const float gravity = 1; // how strong gravity is
+        private float speed; // how fast you move in the x axis
+        private float jumpForce; // how strong your jump is
+        private float gravity; // how strong gravity is
         private Rectangle box;
         private Vector2 dimensions;
 
@@ -60,6 +60,23 @@ namespace LiveWire
             set { position = value; }
         }
 
+        public float Speed
+        {
+            get { return speed; }
+            set { speed = value; }
+        }
+
+        public float JumpForce
+        {
+            get { return jumpForce; }
+            set { jumpForce = value; }
+        }
+
+        public float Gravity
+        {
+            get { return gravity; }
+            set { gravity = value; }
+        }
         public AnimState CurrentState
         {
             get { return currentState; }
@@ -87,6 +104,13 @@ namespace LiveWire
             this.dimensions = new Vector2(playerSprite.Width,playerSprite.Height);
             box = new Rectangle(position.ToPoint(), dimensions.ToPoint());
             prevPosition = position;
+            left = Keys.Left;
+            right = Keys.Right;
+            jump = Keys.Up;
+            interact = Keys.Space;
+            speed = 5;
+            jumpForce = 5;
+            gravity = 1;
         }
         // --- METHODS ---
 
@@ -103,13 +127,14 @@ namespace LiveWire
         /// player <-> enviroment
         /// Takes in input from user (left,right,jump) and moves the player accordingly to physics (gravity, colliding with ground, ground friction) 
         /// </summary>
-        public void PlayerMovement() {
+        public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState)
+        {
             //horizontal velocity
-            //reset horizontal velocity
-            velocity.X = 0;
             //change horizontal velocity with left and right inputs
-            if (kbState.IsKeyDown(left)){ velocity.X -= 1; }
-            if (kbState.IsKeyDown(right)){ velocity.X += 1; }
+            if (kbState.IsKeyDown(left)){ velocity.X = -1; }
+            else if (kbState.IsKeyDown(right)){ velocity.X = 1; }
+            //reset horizontal velocity
+            else { velocity.X = 0; }
             //change horizontal velocity with speed
             velocity.X *= speed;
 
@@ -137,7 +162,8 @@ namespace LiveWire
         /// Takes in input from user (interact) Grabs the end of a wire if close enough, releases the wire, or connectes it to a power node if close enough
         /// moves the end of the wire with player if holding wire
         /// </summary>
-        public void InteractWire() {
+        public void InteractWire()
+        {
             //holding wire
         //move wire with player
         //if user presses interact and near a power node then place the wire on power node

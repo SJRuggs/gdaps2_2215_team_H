@@ -13,6 +13,8 @@ namespace LiveWire
     {
         // --- VARIABLE DELCARATIONS ---
         private Rectangle position;
+        private bool blocksPlayer;
+        private bool blocksWire;
         private bool[] animState;
             // 0: base anim
             // 1: N border
@@ -45,6 +47,18 @@ namespace LiveWire
         {
             get { return animState; }
             set { animState = value; }
+        }
+
+        public bool BlocksPLayer
+        {
+            get { return blocksPlayer; }
+            set { blocksWire = value; }
+        }
+
+        public bool BlocksWire
+        {
+            get { return blocksWire; }
+            set { blocksWire = value; }
         }
 
 

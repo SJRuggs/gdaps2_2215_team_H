@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 namespace LiveWire
 {
@@ -73,6 +74,8 @@ namespace LiveWire
         private int cols;
         private int tileWidth;
         private int tileHeight;
+        // List of all interactable Machines in the current Level
+        private List<Machine> machines;
 
 
 
@@ -266,7 +269,7 @@ namespace LiveWire
                     for (int c = 0; c < cols; c++)
                     {
                         // TODO: must be changed when interactable objects are implemented
-                        temporaryBool = newLine[c] != '0';
+                        temporaryBool = newLine[c] != '-';
                         board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
                     }
                 }

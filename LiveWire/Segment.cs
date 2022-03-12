@@ -7,7 +7,7 @@ namespace LiveWire
 {
 
     /// <summary>
-    /// TODO: Add Summary
+    /// The segment class defeines the individual parts of a wire, which interacts with the physical enviroment
     /// </summary>
 
     class Segment
@@ -42,15 +42,109 @@ namespace LiveWire
 
 
         // --- METHODS ---
-        public double getAngle()
+        public double Angle()
         {
             // returns angle in radians
             return Math.Acos(Math.Abs(node1.Y - node2.Y) / Math.Abs(node1.X - node2.X));
         }
 
-        public double getDistance()
+        public double Distance()
         {
             return Vector2.Distance(node1, node2);
+        }
+
+        // detects a collision on the segment with tiles that block the wire
+        public void DetectCollision(Tile[,] board, Wire wire)
+        {
+            float stepHeight = Math.Abs(node1.Y - node2.Y);
+
+            // moving right
+            if (node1.X < node2.X)
+            {
+                // moving down
+                if (node1.Y < node2.Y)
+                {
+                    for (float x = node1.X; x < (int)node2.X; x++)
+                        if (board[(int)((node1.X + x) / 40), (int)(node1.Y + x * stepHeight)].BlocksWire)
+                        {
+                            // TODO: calculate position of the new node
+                        }
+                }
+                // moving up
+                else
+                {
+                    for (float x = node1.X; x < (int)node2.X; x++)
+                        if (board[(int)((node1.X + x) / 40), (int)(node1.Y - x * stepHeight)].BlocksWire)
+                        {
+                            // TODO: calculate position of the new node
+                        }
+                }
+            }
+            // moving left
+            else
+            {
+                // moving down
+                if (node1.Y < node2.Y)
+                {
+                    for (float x = node1.X; x < (int)node2.X; x++)
+                        if (board[(int)((node1.X - x) / 40), (int)(node1.Y + x * stepHeight)].BlocksWire)
+                        {
+                            // TODO: calculate position of the new node
+                        }
+                }
+                // moving up
+                else
+                {
+                    for (float x = node1.X; x < (int)node2.X; x++)
+                        if (board[(int)((node1.X - x) / 40), (int)(node1.Y - x * stepHeight)].BlocksWire)
+                        {
+                            // TODO: calculate position of the new node
+                        }
+                }
+            }
+        }
+
+        // handles the creation of a new segment within the wire
+        public void newSegment(Tile tile, Wire wire, float x, float y)
+        {
+            // right side of tile
+            if (tile.Position.X + tile.Position.Width < x)
+            {
+                // top of tile
+                if (tile.Position.Y + tile.Position.Height > y)
+                {
+                    // create a new node at the top right of the tile
+                    node2.X = tile.Position.X + tile.Position.Width;
+                    node2.Y = tile.Position.Y;
+                }
+                // bottom of tile
+                else
+                {
+                    // create a new node at the bottom right of the tile
+                    node2.X = tile.Position.X + tile.Position.Width;
+                    node2.Y = tile.Position.Y + tile.Position.Height;
+                }
+            }
+            // left side of tile
+            else
+            {
+                // top of tile
+                if (tile.Position.Y + tile.Position.Height > y)
+                {
+                    // create a new node at the top left of the tile
+                    node2.X = tile.Position.X;
+                    node2.Y = tile.Position.Y;
+                }
+                // bottom of tile
+                else
+                {
+                    // create a new node at the bottom left of the tile
+                    node2.X = tile.Position.X;
+                    node2.Y = tile.Position.Y + tile.Position.Height;
+                }
+            }
+            // create a new segment at the end of the wire's segment list
+            wire.Wires.Add(new Segment((int)node2.X, (int)node2.Y, (int)wire.Player.Position.X, (int)wire.Player.Position.Y));
         }
     }
 }

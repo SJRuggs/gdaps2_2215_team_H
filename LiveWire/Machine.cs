@@ -11,56 +11,20 @@ namespace LiveWire
 
     enum MachineType
     {
-        Defualt
+        Default
     }
 
     public class Machine : TileParent
     {
         #region FIELDS --------------------------------------------------------------------------------
 
-        // Where on the screen the Machine should be drawn
-        private Rectangle position;
-        private bool[] animState;
-        private bool blocksPlayer;
-        private bool blocksWire;
-        private bool interactsWire;
-        // The sprite(s) to be used for the Machine
-        // (each Machine handles sprites differently, so some may have )
-        private Texture2D spriteSheet;
+            // All necessary fields are inherited from TileParent to reduce redundancy
 
         #endregion
 
-        #region Properties -------------------------------------------------------------------------
+        #region PROPERTIES -------------------------------------------------------------------------
 
-        public override Rectangle Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
-
-        public override bool[] AnimState
-        {
-            get { return animState; }
-            set { animState = value; }
-        }
-
-        public override bool BlocksPLayer
-        {
-            get { return blocksPlayer; }
-            set { blocksPlayer = value; }
-        }
-
-        public override bool BlocksWire
-        {
-            get { return blocksWire; }
-            set { blocksWire = value; }
-        }
-
-        public override bool InteractsWire
-        {
-            get { return interactsWire; }
-            set { interactsWire = value; }
-        }
+            // All necessary properties are inherited from TileParent to reduce redundancy
 
         #endregion
 

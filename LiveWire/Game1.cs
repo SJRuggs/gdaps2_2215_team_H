@@ -133,8 +133,6 @@ namespace LiveWire
                     }
                     break;
 
-
-
                 case GameState.LevelSelect:
                     // TEMPORARY transition
                     if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released)
@@ -143,8 +141,6 @@ namespace LiveWire
                         NewLevel(currentLevel);
                     }
                     break;
-
-
 
                 case GameState.PlayLevel:
                     // TEMPORARY transition
@@ -189,8 +185,6 @@ namespace LiveWire
                         Color.Black);
                     break;
 
-
-
                 case GameState.LevelSelect:
                     // TEMPORARY display
                     _spriteBatch.DrawString(
@@ -213,14 +207,12 @@ namespace LiveWire
                     break;
 
 
-
                 case GameState.PlayLevel:
                     // display level
                     DrawLevel(currentLevel);
 
                     // TEST WIRE
                     wire.Draw(_spriteBatch, GraphicsDevice);
-
 
                     // TEMPORARY display
                     _spriteBatch.DrawString(

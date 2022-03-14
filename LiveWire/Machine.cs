@@ -7,24 +7,33 @@ namespace LiveWire
     /// <summary>
     /// An abstract class for interactable props in the world
     /// </summary>
-    /// 
 
-    enum MachineType
+    public enum MachineType
     {
-        Default
+        Battery,
+        DoorController,
+        DoorSegment
     }
 
-    public class Machine : TileParent
+    public abstract class Machine : TileParent
     {
         #region FIELDS --------------------------------------------------------------------------------
 
-            // All necessary fields are inherited from TileParent to reduce redundancy
+            // Common fields are inherited from TileParent to reduce redundancy
+
+        // What type of Machine the object is
+        protected MachineType machineType;
 
         #endregion
 
         #region PROPERTIES -------------------------------------------------------------------------
 
             // All necessary properties are inherited from TileParent to reduce redundancy
+
+        protected MachineType Type
+        {
+            get { return machineType; }
+        }
 
         #endregion
 

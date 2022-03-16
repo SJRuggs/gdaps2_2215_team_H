@@ -31,7 +31,12 @@ namespace LiveWire
     // one state for each level, used only to progress through the levels
     enum Level
     {
-        TestLevel,
+        Level1,
+        Level2,
+        Level3,
+        Level4,
+        Level5,
+        Level6,
         EndLevel
     }
 
@@ -99,7 +104,7 @@ namespace LiveWire
 
             // objects and states
             currentState = GameState.MainMenu;
-            currentLevel = Level.TestLevel;
+            currentLevel = Level.Level1;
 
             // TEST WIRE
             wire = new Wire();
@@ -146,7 +151,7 @@ namespace LiveWire
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
-                        if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.TestLevel; }
+                        if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.Level1; }
                         else { NewLevel(currentLevel++); }
                     }
                     break;
@@ -277,7 +282,7 @@ namespace LiveWire
                         else
                         {
                             // TODO: implement each machine here
-                            board[r, c] = new Machine(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet);
+                            //board[r, c] = new Machine(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet);
                         }
                     }
                 }

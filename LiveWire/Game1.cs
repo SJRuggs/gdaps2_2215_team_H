@@ -274,7 +274,7 @@ namespace LiveWire
                     newLine = reader.ReadLine();
                     for (int c = 0; c < cols; c++)
                     {
-                        if (newLine[c] == '-' || newLine[c] == '0')
+                        if (newLine[c] == '-' || newLine[c] == '1')
                         {
                             temporaryBool = newLine[c] != '-';
                             board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);

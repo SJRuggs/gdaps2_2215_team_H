@@ -43,31 +43,31 @@ namespace LiveWire
         protected bool interactsWire;
 
         // --- PROPERTIES ---
-        protected Rectangle Position
+        public Rectangle Position
         {
             get { return position; }
             set { position = value; }
         }
 
-        protected bool[] AnimState
+        public bool[] AnimState
         {
             get { return animState; }
             set { animState = value; }
         }
 
-        protected bool BlocksPLayer
+        public bool BlocksPLayer
         {
             get { return blocksPlayer; }
             set { blocksWire = value; }
         }
 
-        protected bool BlocksWire
+        public bool BlocksWire
         {
             get { return blocksWire; }
             set { blocksWire = value; }
         }
 
-        protected bool InteractsWire
+        public bool InteractsWire
         {
             get { return interactsWire; }
             set { interactsWire = value; }

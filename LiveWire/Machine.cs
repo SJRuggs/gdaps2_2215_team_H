@@ -5,13 +5,14 @@ using Microsoft.Xna.Framework.Graphics;
 namespace LiveWire
 {
     /// <summary>
-    /// An abstract class for interactable props in the world
+    /// An abstract class for a single tile of the level drawn to the screen
+    /// that can be interacted with by the Player
     /// </summary>
 
     public enum MachineType
     {
-        Battery,
-        DoorController,
+        WireSource,
+        PlugDoorController,
         DoorSegment
     }
 

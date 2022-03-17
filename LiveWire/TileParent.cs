@@ -39,7 +39,7 @@ namespace LiveWire
         protected bool blocksPlayer;
         // Whether the object causes Wires to wrap around it
         protected bool blocksWire;
-        // Whether the object does anything when the Wire wraps around it
+        // Whether the object does anything when the Wire creates a node around it
         protected bool interactsWire;
 
         // --- PROPERTIES ---

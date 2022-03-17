@@ -78,6 +78,7 @@ namespace LiveWire
         private int cols;
         private int tileWidth;
         private int tileHeight;
+        // Machines are stored in a list separate from tiles
         private List<Machine> machines;
 
 
@@ -95,11 +96,16 @@ namespace LiveWire
         protected override void Initialize()
         {
             // screen settings
+
+            // NOTE FROM OWEN: making the screen this large means I
+            // can't fit the entire window on my monitor for some reason,
+            // and I can't resize the window.
             screenWidth = 1920;
             screenHeight = 1080;
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
-            //_graphics.IsFullScreen = true;
+            // TODO: Owen, remember to comment line below out before committing
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             // objects and states
@@ -266,6 +272,9 @@ namespace LiveWire
                 tileWidth = int.Parse(line[2]);
                 tileHeight = int.Parse(line[3]);
                 bool temporaryBool;
+                // Variables for loading Machines
+                string machinesNextLine;
+                int machineCount;
 
                 // create board
                 board = new TileParent[rows, cols];
@@ -274,18 +283,47 @@ namespace LiveWire
                     newLine = reader.ReadLine();
                     for (int c = 0; c < cols; c++)
                     {
-                        if (newLine[c] == '-' || newLine[c] == '1')
+                        // Note from Owen: I deleted the if block here that checked for whether a tile
+                        // is a machine, since I'll be storing machines outside the level grid in
+                        // the files.
+                        temporaryBool = newLine[c] != '-';
+                        board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
+                    }
+                }
+
+                // TODO: Read Machines from Machine list at the end of the level file
+
+                /*
+                // If there are more lines after the level, try to load them as machines
+                if ((machinesNextLine = reader.ReadLine().Trim()) != null)
+                {
+                    // Treat the first line as the number of machines in the level
+                    if (int.TryParse(machinesNextLine, out machineCount))
+                    {
+                        // Loop through each expected line 
+                        for (int i = 0; i < machineCount; i++)
                         {
-                            temporaryBool = newLine[c] != '-';
-                            board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
-                        }
-                        else
-                        {
-                            // TODO: implement each machine here
-                            //board[r, c] = new Machine(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet);
+                            // Splits the Machine info into an array
+                            line = reader.ReadLine().Trim().Split(',');
+
+                            // Parses the first value of each line as the type of Machine it is,
+                            // and constructs the Machine accordingly
+                            // The second and third values on each split line will always be
+                            // the Machine's position, and values after that represent special
+                            // data unique for each Machine Type.
+                            switch (Enum.Parse<MachineType>(line[0]))
+                            {
+                                case MachineType.WireSource:
+                                    break;
+                                case MachineType.PlugDoorController:
+                                    break;
+                                case MachineType.DoorSegment:
+                                    break;
+                            }
                         }
                     }
                 }
+                */
 
                 // --- ANIM STATES ---
 
@@ -365,7 +403,7 @@ namespace LiveWire
                     tile.AnimState[13] = tile.AnimState[9] && tile.AnimState[10] && tile.AnimState[11] && tile.AnimState[12];
                 }
             }
-            catch (Exception e) { Console.WriteLine(e); }
+            catch (Exception e) { Console.WriteLine(e.Message); }
             if (reader != null) { reader.Close(); }
         }
 

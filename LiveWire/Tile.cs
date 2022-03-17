@@ -7,7 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace LiveWire
 {
     /// <summary>
-    /// TODO: Add summary
+    /// An object representing a single tile of the level drawn to the screen;
+    /// Tiles are meant to be non-interactible
     /// </summary>  
     public class Tile : TileParent
     {

@@ -151,11 +151,45 @@ namespace LiveWire
             //is collision reactive or proactive?
             //reactive
 
+
             //saving last frame position of player
-            prevPosition = position;
+            //prevPosition = position;
         }
         
-        public void CollideBump(Tile tile) { }
+        public void CollideBump(Tile tile) {
+            // get angle between tile and player centers
+            float centerAngle = MathF.Atan2((position.Y + dimensions.Y/2) - (tile.Position.Y + 20), // hardcoded the width and height of tiles
+                                      (position.X + dimensions.X/2) - (tile.Position.X + 20));
+
+            float angleBoundary = MathF.Atan2((dimensions.Y + 40), (dimensions.X + 40)); // hardcoded the width and height
+    
+            // top
+            if(centerAngle > angleBoundary && centerAngle < MathHelper.Pi - angleBoundary)
+            {
+                position.Y = tile.Position.Y - dimensions.Y;
+                velocity.Y = 0;
+            }
+
+            // left
+            if (centerAngle > MathHelper.Pi - angleBoundary && centerAngle < angleBoundary - MathHelper.Pi)
+            {
+                position.X = tile.Position.X - dimensions.X;
+                velocity.X = 0;
+            }
+
+            // bottom
+            if (centerAngle > angleBoundary - MathHelper.Pi && centerAngle < 0 - angleBoundary)
+            {
+                position.Y = tile.Position.Y + 40; // hardcoded height
+                velocity.Y = 0;
+            }
+            // right
+            if (centerAngle > 0 - angleBoundary && centerAngle < angleBoundary)
+            {
+                position.X = tile.Position.X + 40; // hardcoded width
+                velocity.X = 0;
+            }
+        }
 
         /// <summary>
         /// player <-> wire

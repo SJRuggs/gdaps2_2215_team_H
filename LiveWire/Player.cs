@@ -166,8 +166,8 @@ namespace LiveWire
                 Tile tile = null;
                 if (tileP is Tile)
                     tile = (Tile)tileP;
-                if(new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && (tile != null)){ // Phillip: I need to change this rectangle 
-                    //CollideBump(tile);
+                if(new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && tile.IsActive &&(tile != null)){ // Phillip: I need to change this rectangle 
+                    CollideBump(tile);
                     }
                 }
                 
@@ -182,28 +182,29 @@ namespace LiveWire
                                       (position.X + dimensions.X/2) - (tile.Position.X + tile.Position.Width/2));
 
             float angleBoundary = MathF.Atan2((dimensions.Y + tile.Position.Height), (dimensions.X + tile.Position.Width));
-    
-            // top
-            if(centerAngle > angleBoundary && centerAngle < MathHelper.Pi - angleBoundary)
+            
+            // Phillip: dont set velocity to 0 if moving in certain direction
+            // run into top of block
+            if(centerAngle > angleBoundary - MathHelper.Pi && centerAngle < 0 - angleBoundary)
             {
                 position.Y = tile.Position.Y - dimensions.Y;
                 velocity.Y = 0;
             }
 
-            // left
-            if (centerAngle > MathHelper.Pi - angleBoundary && centerAngle < angleBoundary - MathHelper.Pi)
+            // run into left of block
+            if ((centerAngle > MathHelper.Pi - angleBoundary && centerAngle <= MathHelper.Pi) || (centerAngle > - MathHelper.Pi) && (centerAngle < angleBoundary-MathHelper.Pi))
             {
                 position.X = tile.Position.X - dimensions.X;
                 velocity.X = 0;
             }
 
-            // bottom
-            if (centerAngle > angleBoundary - MathHelper.Pi && centerAngle < 0 - angleBoundary)
+            // run into bottom of block
+            if (centerAngle > angleBoundary && centerAngle < MathHelper.Pi + angleBoundary)
             {
                 position.Y = tile.Position.Y + tile.Position.Height;
                 velocity.Y = 0;
             }
-            // right
+            // run into right of block
             if (centerAngle > 0 - angleBoundary && centerAngle < angleBoundary)
             {
                 position.X = tile.Position.X + tile.Position.Width;

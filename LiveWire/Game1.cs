@@ -159,6 +159,7 @@ namespace LiveWire
 
                 case GameState.PlayLevel:
                     player.PlayerMovement(kbState, prevKbState, board);
+                    // wire.Wires[wire.Wires.Count - 1].Node2 = player.Position; // wires are funny
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
@@ -229,7 +230,7 @@ namespace LiveWire
                     DrawLevel(currentLevel);
 
                     // TEST WIRE
-                    wire.Draw(_spriteBatch, GraphicsDevice);
+                    //wire.Draw(_spriteBatch, GraphicsDevice);
 
                     // display player
                     player.Draw(_spriteBatch);

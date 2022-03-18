@@ -127,7 +127,7 @@ namespace LiveWire
         /// player <-> enviroment
         /// Takes in input from user (left,right,jump) and moves the player accordingly to physics (gravity, colliding with ground, ground friction) 
         /// </summary>
-        public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState)
+        public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState, TileParent[,] board)
         {
             //horizontal velocity
             //change horizontal velocity with left and right inputs
@@ -150,7 +150,17 @@ namespace LiveWire
             //if position colliding with block, adjust position to not be in block and adjust velocity to not move you in to block
             //is collision reactive or proactive?
             //reactive
-
+                //loop through all the tiles on screen
+                
+                foreach(TileParent tileP in board){
+                Tile tile = null;
+                if (tileP is Tile)
+                    tile = (Tile)tileP;
+                if(box.Intersects(tile.Position) && (tile != null)){
+                    CollideBump(tile);
+                    }
+                }
+                
 
             //saving last frame position of player
             //prevPosition = position;
@@ -158,10 +168,10 @@ namespace LiveWire
         
         public void CollideBump(Tile tile) {
             // get angle between tile and player centers
-            float centerAngle = MathF.Atan2((position.Y + dimensions.Y/2) - (tile.Position.Y + 20), // hardcoded the width and height of tiles
-                                      (position.X + dimensions.X/2) - (tile.Position.X + 20));
+            float centerAngle = MathF.Atan2((position.Y + dimensions.Y/2) - (tile.Position.Y + tile.Position.Height/2),
+                                      (position.X + dimensions.X/2) - (tile.Position.X + tile.Position.Width/2));
 
-            float angleBoundary = MathF.Atan2((dimensions.Y + 40), (dimensions.X + 40)); // hardcoded the width and height
+            float angleBoundary = MathF.Atan2((dimensions.Y + tile.Position.Height), (dimensions.X + tile.Position.Width));
     
             // top
             if(centerAngle > angleBoundary && centerAngle < MathHelper.Pi - angleBoundary)
@@ -180,13 +190,13 @@ namespace LiveWire
             // bottom
             if (centerAngle > angleBoundary - MathHelper.Pi && centerAngle < 0 - angleBoundary)
             {
-                position.Y = tile.Position.Y + 40; // hardcoded height
+                position.Y = tile.Position.Y + tile.Position.Height;
                 velocity.Y = 0;
             }
             // right
             if (centerAngle > 0 - angleBoundary && centerAngle < angleBoundary)
             {
-                position.X = tile.Position.X + 40; // hardcoded width
+                position.X = tile.Position.X + tile.Position.Width;
                 velocity.X = 0;
             }
         }
@@ -198,13 +208,34 @@ namespace LiveWire
         /// </summary>
         public void InteractWire()
         {
-            //holding wire
-        //move wire with player
-        //if user presses interact and near a power node then place the wire on power node
-        //else drop the wire
+            // find the closest machine
+            float distToMachine = float.MaxValue;
+            Machine closestMachine = null;
+            /*
+            foreach(Machine machine in machines){
+                if(Vector2.dist(Center(),  machine.Center) < distToMachine){
+                    distToMachine = Vector2.dist(Center(),  machine.Center);
+                    closestMachine = machine;
+                }
+            }
+            */
+            if (isHoldingWire)
+            {
+                //holding wire
+                //move wire with player
+                //if user presses interact and near a power node then place the wire on power node
+                //else drop the wire
+            }
+            else
+            {
+                //not holding wire
+                //if near the end of wire pick it up
+            }
+        }
 
-            //not holding wire
-        //if near the end of wire pick it up
+        public Vector2 Center()
+        {
+            return new Vector2(position.X + dimensions.X / 2, position.Y + dimensions.Y);
         }
     }
 }

@@ -136,7 +136,8 @@ namespace LiveWire
         /// </summary>
         public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState, TileParent[,] board)
         {
-            //horizontal velocity
+            //horizontal velocity (horizontal movement can feel better if, velocity doesnt get reset but instead use a friction variable to slow down the character when on the ground,
+            //use acceleration have some max velocity variable to 
             
             //reset horizontal velocity
             velocity.X = 0;
@@ -182,12 +183,12 @@ namespace LiveWire
                                       (position.X + dimensions.X/2) - (tile.Position.X + tile.Position.Width/2));
 
             float angleBoundary = MathF.Atan2((dimensions.Y + tile.Position.Height), (dimensions.X + tile.Position.Width));
-            
-            // Phillip: dont set velocity to 0 if moving in certain direction
+                       
             // run into top of block
             if(centerAngle > angleBoundary - MathHelper.Pi && centerAngle < 0 - angleBoundary)
             {
                 position.Y = tile.Position.Y - dimensions.Y;
+                //if(velocity.Y > 0) { velocity.Y = 0; }
                 velocity.Y = 0;
             }
 
@@ -202,6 +203,7 @@ namespace LiveWire
             if (centerAngle > angleBoundary && centerAngle < MathHelper.Pi + angleBoundary)
             {
                 position.Y = tile.Position.Y + tile.Position.Height;
+                //if(velocity.Y < 0) { velocity.Y = 0; }
                 velocity.Y = 0;
             }
             // run into right of block

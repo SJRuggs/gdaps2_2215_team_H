@@ -28,6 +28,7 @@ namespace LiveWire
         // --- VARIABLE DELCARATIONS ---
         // animation variables
         private AnimState currentState;
+        private Texture2D sprite;
 
         // physics variables
         private Vector2 position;
@@ -101,6 +102,7 @@ namespace LiveWire
         public Player(Vector2 position, Texture2D playerSprite)
         {
             this.position = position;
+            this.sprite = playerSprite;
             this.dimensions = new Vector2(playerSprite.Width,playerSprite.Height);
             box = new Rectangle(position.ToPoint(), dimensions.ToPoint());
             prevPosition = position;
@@ -108,9 +110,9 @@ namespace LiveWire
             right = Keys.Right;
             jump = Keys.Up;
             interact = Keys.Space;
-            speed = 5;
-            jumpForce = 5;
-            gravity = 1;
+            speed = 5f;
+            jumpForce = 5f;
+            gravity = 0.1f;
         }
         // --- METHODS ---
 
@@ -123,24 +125,32 @@ namespace LiveWire
             }
         }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(sprite, new Rectangle(position.ToPoint(), dimensions.ToPoint()), Color.White);
+        }
+
         /// <summary>
         /// player <-> enviroment
         /// Takes in input from user (left,right,jump) and moves the player accordingly to physics (gravity, colliding with ground, ground friction) 
         /// </summary>
-        public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState)
+        public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState, TileParent[,] board)
         {
             //horizontal velocity
+            
+            //reset horizontal velocity
+            velocity.X = 0;
+
             //change horizontal velocity with left and right inputs
             if (kbState.IsKeyDown(left)){ velocity.X = -1; }
-            else if (kbState.IsKeyDown(right)){ velocity.X = 1; }
-            //reset horizontal velocity
-            else { velocity.X = 0; }
+            if (kbState.IsKeyDown(right)){ velocity.X = 1; }            
+            
             //change horizontal velocity with speed
             velocity.X *= speed;
 
             //vertical velocity
             //update vertical velocity with jump force
-            if (kbState.IsKeyDown(jump) && prevKbState.IsKeyUp(jump)){ velocity.Y -= jumpForce; }
+            if (kbState.IsKeyDown(jump) && prevKbState.IsKeyUp(jump)){ velocity.Y = -jumpForce; }
             //update vertical velocity with gravity
             velocity.Y += gravity;
 
@@ -150,12 +160,57 @@ namespace LiveWire
             //if position colliding with block, adjust position to not be in block and adjust velocity to not move you in to block
             //is collision reactive or proactive?
             //reactive
+                //loop through all the tiles on screen
+                
+                foreach(TileParent tileP in board){
+                Tile tile = null;
+                if (tileP is Tile)
+                    tile = (Tile)tileP;
+                if(new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && tile.IsActive &&(tile != null)){ // Phillip: I need to change this rectangle 
+                    CollideBump(tile);
+                    }
+                }
+                
 
             //saving last frame position of player
-            prevPosition = position;
+            //prevPosition = position;
         }
         
-        public void CollideBump(Tile tile) { }
+        public void CollideBump(Tile tile) {
+            // get angle between tile and player centers
+            float centerAngle = MathF.Atan2((position.Y + dimensions.Y/2) - (tile.Position.Y + tile.Position.Height/2),
+                                      (position.X + dimensions.X/2) - (tile.Position.X + tile.Position.Width/2));
+
+            float angleBoundary = MathF.Atan2((dimensions.Y + tile.Position.Height), (dimensions.X + tile.Position.Width));
+            
+            // Phillip: dont set velocity to 0 if moving in certain direction
+            // run into top of block
+            if(centerAngle > angleBoundary - MathHelper.Pi && centerAngle < 0 - angleBoundary)
+            {
+                position.Y = tile.Position.Y - dimensions.Y;
+                velocity.Y = 0;
+            }
+
+            // run into left of block
+            if ((centerAngle > MathHelper.Pi - angleBoundary && centerAngle <= MathHelper.Pi) || (centerAngle > - MathHelper.Pi) && (centerAngle < angleBoundary-MathHelper.Pi))
+            {
+                position.X = tile.Position.X - dimensions.X;
+                velocity.X = 0;
+            }
+
+            // run into bottom of block
+            if (centerAngle > angleBoundary && centerAngle < MathHelper.Pi + angleBoundary)
+            {
+                position.Y = tile.Position.Y + tile.Position.Height;
+                velocity.Y = 0;
+            }
+            // run into right of block
+            if (centerAngle > 0 - angleBoundary && centerAngle < angleBoundary)
+            {
+                position.X = tile.Position.X + tile.Position.Width;
+                velocity.X = 0;
+            }
+        }
 
         /// <summary>
         /// player <-> wire
@@ -164,13 +219,34 @@ namespace LiveWire
         /// </summary>
         public void InteractWire()
         {
-            //holding wire
-        //move wire with player
-        //if user presses interact and near a power node then place the wire on power node
-        //else drop the wire
+            // find the closest machine
+            float distToMachine = float.MaxValue;
+            Machine closestMachine = null;
+            /*
+            foreach(Machine machine in machines){
+                if(Vector2.dist(Center(),  machine.Center) < distToMachine){
+                    distToMachine = Vector2.dist(Center(),  machine.Center);
+                    closestMachine = machine;
+                }
+            }
+            */
+            if (isHoldingWire)
+            {
+                //holding wire
+                //move wire with player
+                //if user presses interact and near a power node then place the wire on power node
+                //else drop the wire
+            }
+            else
+            {
+                //not holding wire
+                //if near the end of wire pick it up
+            }
+        }
 
-            //not holding wire
-        //if near the end of wire pick it up
+        public Vector2 Center()
+        {
+            return new Vector2(position.X + dimensions.X / 2, position.Y + dimensions.Y);
         }
     }
 }

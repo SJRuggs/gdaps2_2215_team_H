@@ -52,6 +52,7 @@ namespace LiveWire
         private int screenHeight;
         private SpriteFont basicFont;
         private Texture2D tileSpriteSheet;
+        private Texture2D playerSprite;
 
         // stream handlers
         private StreamReader reader;
@@ -105,7 +106,7 @@ namespace LiveWire
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
             // Make sure the line below is commented out before committing
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             // objects and states
@@ -124,6 +125,9 @@ namespace LiveWire
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             basicFont = Content.Load<SpriteFont>("BaseText");
             tileSpriteSheet = Content.Load<Texture2D>("LiveWireTiles");
+            playerSprite = Content.Load<Texture2D>("Robot");
+
+            player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
         }
 
         protected override void Update(GameTime gameTime)
@@ -154,9 +158,11 @@ namespace LiveWire
                     break;
 
                 case GameState.PlayLevel:
+                    player.PlayerMovement(kbState, prevKbState, board);
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
+<<<<<<< HEAD
                         if (currentLevel == Level.EndLevel)
                         {
                             currentState = GameState.MainMenu;
@@ -166,6 +172,11 @@ namespace LiveWire
                         {
                             NewLevel(currentLevel++);
                         }
+=======
+                        
+                        if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.Level1; }
+                        else { NewLevel(currentLevel++); }
+>>>>>>> a8ea1484c4ea440c350473622168a8a00879adc0
                     }
 
                     break;
@@ -240,6 +251,9 @@ namespace LiveWire
 
                     // TEST WIRE
                     wire.Draw(_spriteBatch, GraphicsDevice);
+
+                    // display player
+                    player.Draw(_spriteBatch);
 
                     // TEMPORARY display
                     _spriteBatch.DrawString(

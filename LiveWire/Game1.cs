@@ -105,7 +105,7 @@ namespace LiveWire
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
             // Make sure the line below is commented out before committing
-            // _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
 
             // objects and states
@@ -143,7 +143,7 @@ namespace LiveWire
                         currentState = GameState.LevelSelect;
                     }
                     break;
-
+                    
                 case GameState.LevelSelect:
                     // TEMPORARY transition
                     if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released)
@@ -157,9 +157,17 @@ namespace LiveWire
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
-                        if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.Level1; }
-                        else { NewLevel(currentLevel++); }
+                        if (currentLevel == Level.EndLevel)
+                        {
+                            currentState = GameState.MainMenu;
+                            currentLevel = Level.Level1;
+                        }
+                        else
+                        {
+                            NewLevel(currentLevel++);
+                        }
                     }
+
                     break;
             }
 
@@ -221,6 +229,14 @@ namespace LiveWire
                 case GameState.PlayLevel:
                     // display level
                     DrawLevel(currentLevel);
+
+                    // TODO: Implement code for drawing list of Machines
+                    /*
+                    foreach (Machine machine in machines)
+                    {
+                        machine.Draw(_spriteBatch);
+                    }
+                    */
 
                     // TEST WIRE
                     wire.Draw(_spriteBatch, GraphicsDevice);

@@ -13,7 +13,7 @@ namespace LiveWire
     {
         WireSource,
         PlugDoorController,
-        DoorSegment
+        Door
     }
 
     public abstract class Machine : TileParent
@@ -49,15 +49,6 @@ namespace LiveWire
         #endregion
 
         #region METHODS --------------------------------------------------------------------------------
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            // TODO: add animations for each machine (switch statement using enum)
-        }
-        public override void PlayerInteract(Player player)
-        {
-            // TODO: add interactions for each machine (switch statement using enum)
-        }
 
         #endregion
     }

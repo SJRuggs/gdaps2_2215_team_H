@@ -74,7 +74,29 @@ namespace LiveWire
         }
 
         // --- METHODS ---
-        public abstract void Draw(SpriteBatch spriteBatch);
+
+        // Default Draw method, which may be overridden in child classes
+        // if they need to support animated textures
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < animState.Length; i++)
+            {
+                if (animState[i])
+                {
+                    spriteBatch.Draw(
+                        spriteSheet,
+                        new Vector2(
+                            position.X,
+                            position.Y),
+                        new Rectangle(
+                            i * position.Width,
+                            0,
+                            40,
+                            40),
+                        Color.White);
+                }
+            }
+        }
 
         public abstract void PlayerInteract(Player player);
     }

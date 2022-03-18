@@ -183,32 +183,41 @@ namespace LiveWire
                                       (position.X + dimensions.X/2) - (tile.Position.X + tile.Position.Width/2));
 
             float angleBoundary = MathF.Atan2((dimensions.Y + tile.Position.Height), (dimensions.X + tile.Position.Width));
-                       
-            // run into top of block
-            if(centerAngle > angleBoundary - MathHelper.Pi && centerAngle < 0 - angleBoundary)
-            {
-                position.Y = tile.Position.Y - dimensions.Y;
-                //if(velocity.Y > 0) { velocity.Y = 0; }
-                velocity.Y = 0;
-            }
+            //System.Diagnostics.Debug.WriteLine(angleBoundary * 180f / MathHelper.Pi);
 
-            // run into left of block
-            if ((centerAngle > MathHelper.Pi - angleBoundary && centerAngle <= MathHelper.Pi) || (centerAngle > - MathHelper.Pi) && (centerAngle < angleBoundary-MathHelper.Pi))
+            // run into top of block
+            if (centerAngle > angleBoundary - MathHelper.Pi && centerAngle < 0 - angleBoundary)
             {
-                position.X = tile.Position.X - dimensions.X;
-                velocity.X = 0;
+                //System.Diagnostics.Debug.WriteLine("ran into top of block");
+                position.Y = tile.Position.Y - dimensions.Y;
+                if(velocity.Y > 0) { velocity.Y = 0; }
+                //velocity.Y = 0;
             }
 
             // run into bottom of block
-            if (centerAngle > angleBoundary && centerAngle < MathHelper.Pi + angleBoundary)
+            if (centerAngle > angleBoundary && centerAngle < MathHelper.Pi - angleBoundary)
             {
+                //System.Diagnostics.Debug.WriteLine("ran into bottom of block");
+                //System.Diagnostics.Debug.WriteLine(centerAngle * 180f / MathHelper.Pi);
+                System.Diagnostics.Debug.WriteLine(velocity.Y);
                 position.Y = tile.Position.Y + tile.Position.Height;
-                //if(velocity.Y < 0) { velocity.Y = 0; }
-                velocity.Y = 0;
+                if (velocity.Y < 0) { velocity.Y = 0; }
+                //velocity.Y = 0;
             }
-            // run into right of block
-            if (centerAngle > 0 - angleBoundary && centerAngle < angleBoundary)
+
+            // run into left of block
+            if ((centerAngle > MathHelper.Pi - angleBoundary && centerAngle <= MathHelper.Pi) || (centerAngle >= - MathHelper.Pi) && (centerAngle < angleBoundary-MathHelper.Pi))
             {
+                //System.Diagnostics.Debug.WriteLine("ran into left of block");
+                position.X = tile.Position.X - dimensions.X;
+                velocity.X = 0;
+            }
+            
+            // run into right of block
+            if (centerAngle >= 0 - angleBoundary && centerAngle <= angleBoundary)
+            {
+                //System.Diagnostics.Debug.WriteLine("ran into right of block");
+                //System.Diagnostics.Debug.WriteLine(centerAngle*180f/MathHelper.Pi);
                 position.X = tile.Position.X + tile.Position.Width;
                 velocity.X = 0;
             }

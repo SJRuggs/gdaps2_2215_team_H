@@ -106,7 +106,7 @@ namespace LiveWire
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
             // Make sure the line below is commented out before committing
-            _graphics.IsFullScreen = true;
+            //_graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             // objects and states
@@ -163,7 +163,7 @@ namespace LiveWire
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
-<<<<<<< HEAD
+//<<<<<<< HEAD
                         if (currentLevel == Level.EndLevel)
                         {
                             currentState = GameState.MainMenu;
@@ -173,11 +173,11 @@ namespace LiveWire
                         {
                             NewLevel(currentLevel++);
                         }
-=======
+//=======
                         
                         if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.Level1; }
                         else { NewLevel(currentLevel++); }
->>>>>>> a8ea1484c4ea440c350473622168a8a00879adc0
+//>>>>>>> a8ea1484c4ea440c350473622168a8a00879adc0
                     }
 
                     break;

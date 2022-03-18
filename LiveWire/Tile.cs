@@ -36,26 +36,6 @@ namespace LiveWire
 
 
         // --- METHODS ---
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            for (int i = 0; i < animState.Length; i++)
-            {
-                if (animState[i])
-                {
-                    spriteBatch.Draw(
-                spriteSheet,
-                new Vector2(
-                    position.X,
-                    position.Y),
-                new Rectangle(
-                    i * position.Width,
-                    0,
-                    40,
-                    40),
-                Color.White);
-                }
-            }
-        }
 
         public override void PlayerInteract(Player player)
         {

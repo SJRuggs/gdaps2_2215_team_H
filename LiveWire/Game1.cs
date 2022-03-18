@@ -52,6 +52,7 @@ namespace LiveWire
         private int screenHeight;
         private SpriteFont basicFont;
         private Texture2D tileSpriteSheet;
+        private Texture2D playerSprite;
 
         // stream handlers
         private StreamReader reader;
@@ -124,6 +125,9 @@ namespace LiveWire
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             basicFont = Content.Load<SpriteFont>("BaseText");
             tileSpriteSheet = Content.Load<Texture2D>("LiveWireTiles");
+            playerSprite = Content.Load<Texture2D>("Robot");
+
+            player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
         }
 
         protected override void Update(GameTime gameTime)
@@ -154,9 +158,11 @@ namespace LiveWire
                     break;
 
                 case GameState.PlayLevel:
+                    player.PlayerMovement(kbState, prevKbState, board);
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
+                        
                         if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.Level1; }
                         else { NewLevel(currentLevel++); }
                     }
@@ -224,6 +230,9 @@ namespace LiveWire
 
                     // TEST WIRE
                     wire.Draw(_spriteBatch, GraphicsDevice);
+
+                    // display player
+                    player.Draw(_spriteBatch);
 
                     // TEMPORARY display
                     _spriteBatch.DrawString(

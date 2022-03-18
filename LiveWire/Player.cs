@@ -28,6 +28,7 @@ namespace LiveWire
         // --- VARIABLE DELCARATIONS ---
         // animation variables
         private AnimState currentState;
+        private Texture2D sprite;
 
         // physics variables
         private Vector2 position;
@@ -101,6 +102,7 @@ namespace LiveWire
         public Player(Vector2 position, Texture2D playerSprite)
         {
             this.position = position;
+            this.sprite = playerSprite;
             this.dimensions = new Vector2(playerSprite.Width,playerSprite.Height);
             box = new Rectangle(position.ToPoint(), dimensions.ToPoint());
             prevPosition = position;
@@ -108,9 +110,9 @@ namespace LiveWire
             right = Keys.Right;
             jump = Keys.Up;
             interact = Keys.Space;
-            speed = 5;
-            jumpForce = 5;
-            gravity = 1;
+            speed = 5f;
+            jumpForce = 5f;
+            gravity = 0.1f;
         }
         // --- METHODS ---
 
@@ -123,6 +125,11 @@ namespace LiveWire
             }
         }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(sprite, new Rectangle(position.ToPoint(), dimensions.ToPoint()), Color.White);
+        }
+
         /// <summary>
         /// player <-> enviroment
         /// Takes in input from user (left,right,jump) and moves the player accordingly to physics (gravity, colliding with ground, ground friction) 
@@ -130,17 +137,20 @@ namespace LiveWire
         public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState, TileParent[,] board)
         {
             //horizontal velocity
+            
+            //reset horizontal velocity
+            velocity.X = 0;
+
             //change horizontal velocity with left and right inputs
             if (kbState.IsKeyDown(left)){ velocity.X = -1; }
-            else if (kbState.IsKeyDown(right)){ velocity.X = 1; }
-            //reset horizontal velocity
-            else { velocity.X = 0; }
+            if (kbState.IsKeyDown(right)){ velocity.X = 1; }            
+            
             //change horizontal velocity with speed
             velocity.X *= speed;
 
             //vertical velocity
             //update vertical velocity with jump force
-            if (kbState.IsKeyDown(jump) && prevKbState.IsKeyUp(jump)){ velocity.Y -= jumpForce; }
+            if (kbState.IsKeyDown(jump) && prevKbState.IsKeyUp(jump)){ velocity.Y = -jumpForce; }
             //update vertical velocity with gravity
             velocity.Y += gravity;
 
@@ -156,8 +166,8 @@ namespace LiveWire
                 Tile tile = null;
                 if (tileP is Tile)
                     tile = (Tile)tileP;
-                if(box.Intersects(tile.Position) && (tile != null)){
-                    CollideBump(tile);
+                if(new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && (tile != null)){ // Phillip: I need to change this rectangle 
+                    //CollideBump(tile);
                     }
                 }
                 

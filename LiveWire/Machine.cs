@@ -5,14 +5,15 @@ using Microsoft.Xna.Framework.Graphics;
 namespace LiveWire
 {
     /// <summary>
-    /// An abstract class for interactable props in the world
+    /// An abstract class for a single tile of the level drawn to the screen
+    /// that can be interacted with by the Player
     /// </summary>
 
     public enum MachineType
     {
-        Battery,
-        DoorController,
-        DoorSegment
+        WireSource,
+        PlugDoorController,
+        Door
     }
 
     public abstract class Machine : TileParent
@@ -48,15 +49,6 @@ namespace LiveWire
         #endregion
 
         #region METHODS --------------------------------------------------------------------------------
-
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            // TODO: add animations for each machine (switch statement using enum)
-        }
-        public override void PlayerInteract(Player player)
-        {
-            // TODO: add interactions for each machine (switch statement using enum)
-        }
 
         #endregion
     }

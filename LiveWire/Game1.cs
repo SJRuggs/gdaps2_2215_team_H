@@ -163,7 +163,6 @@ namespace LiveWire
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
-//<<<<<<< HEAD
                         if (currentLevel == Level.EndLevel)
                         {
                             currentState = GameState.MainMenu;
@@ -173,11 +172,9 @@ namespace LiveWire
                         {
                             NewLevel(currentLevel++);
                         }
-//=======
                         
                         if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.Level1; }
                         else { NewLevel(currentLevel++); }
-//>>>>>>> a8ea1484c4ea440c350473622168a8a00879adc0
                     }
 
                     break;
@@ -399,8 +396,8 @@ namespace LiveWire
                     board[0, c].AnimState[7] = board[1, c + 1].AnimState[0] && board[1, c].AnimState[0] || board[0, c].AnimState[7];
                     board[0, c].AnimState[8] = board[1, c - 1].AnimState[0] && board[1, c].AnimState[0] || board[0, c].AnimState[8];
                     board[rows - 1, c].AnimState[1] = !board[rows - 2, c].AnimState[0];
-                    board[rows - 1, c].AnimState[5] = board[rows - 2, c + 1].AnimState[0] && board[rows - 2, c].AnimState[0] || board[rows - 1, c].AnimState[5];
-                    board[rows - 1, c].AnimState[6] = board[rows - 2, c - 1].AnimState[0] && board[rows - 2, c].AnimState[0] || board[rows - 1, c].AnimState[6];
+                    board[rows - 1, c].AnimState[5] = board[rows - 2, c - 1].AnimState[0] && board[rows - 2, c].AnimState[0] || board[rows - 1, c].AnimState[5];
+                    board[rows - 1, c].AnimState[6] = board[rows - 2, c + 1].AnimState[0] && board[rows - 2, c].AnimState[0] || board[rows - 1, c].AnimState[6];
                     board[rows - 1, c].AnimState[7] = true;
                     board[rows - 1, c].AnimState[8] = true;
                 }

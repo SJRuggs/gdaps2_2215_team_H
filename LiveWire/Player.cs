@@ -39,7 +39,10 @@ namespace LiveWire
         private float gravity; // how strong gravity is
         private Rectangle box;
         private Vector2 dimensions;
-        private bool onGround;
+        //private bool onGround;
+
+        private int coyoteFrame; 
+        private int maxCoyoteFrames; // the amount of frames you have after leaving the ground to input a jump
 
         // interaction variables
         private bool isHoldingWire;
@@ -116,6 +119,8 @@ namespace LiveWire
             speed = 5f;
             jumpForce = 5f;
             gravity = 0.1f;
+            maxCoyoteFrames = 6;
+            coyoteFrame = 0;
         }
         // --- METHODS ---
 
@@ -154,9 +159,9 @@ namespace LiveWire
 
             //vertical velocity
             //update vertical velocity with jump force
-            if (kbState.IsKeyDown(jump) && prevKbState.IsKeyUp(jump) && onGround){ 
+            if (kbState.IsKeyDown(jump) && prevKbState.IsKeyUp(jump) && (coyoteFrame < maxCoyoteFrames)){ 
                 velocity.Y = -jumpForce;
-                onGround = false;
+                coyoteFrame = maxCoyoteFrames + 1;
             }
             //update vertical velocity with gravity
             velocity.Y += gravity;
@@ -170,7 +175,7 @@ namespace LiveWire
             //loop through all the tiles on screen
 
             //onGround = false;
-
+            coyoteFrame++;
             foreach (TileParent tileP in board)
             {
                 Tile tile = null;
@@ -202,7 +207,8 @@ namespace LiveWire
                 //System.Diagnostics.Debug.WriteLine("ran into top of block");
                 position.Y = tile.Position.Y - dimensions.Y;
                 if(velocity.Y > 0) { velocity.Y = 0; }
-                onGround = true;
+                coyoteFrame = 0;
+                //onGround = true;
                 //velocity.Y = 0;
             }
 

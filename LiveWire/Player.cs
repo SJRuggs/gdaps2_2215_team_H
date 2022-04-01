@@ -168,7 +168,9 @@ namespace LiveWire
             //is collision reactive or proactive?
             //reactive
             //loop through all the tiles on screen
-            onGround = false;
+
+            //onGround = false;
+
             foreach (TileParent tileP in board)
             {
                 Tile tile = null;
@@ -200,7 +202,7 @@ namespace LiveWire
                 //System.Diagnostics.Debug.WriteLine("ran into top of block");
                 position.Y = tile.Position.Y - dimensions.Y;
                 if(velocity.Y > 0) { velocity.Y = 0; }
-                
+                onGround = true;
                 //velocity.Y = 0;
             }
 

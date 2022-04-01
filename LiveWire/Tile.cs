@@ -33,10 +33,7 @@ namespace LiveWire
             IsActive = isActive;
         }
 
-
-
         // --- METHODS ---
-
         public override void PlayerInteract(Player player)
         {
             // do nothing

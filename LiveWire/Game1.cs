@@ -31,6 +31,7 @@ namespace LiveWire
     // one state for each level, used only to progress through the levels
     enum Level
     {
+        MainMenu,
         Level1,
         Level2,
         Level3,
@@ -111,11 +112,12 @@ namespace LiveWire
 
             // objects and states
             currentState = GameState.MainMenu;
-            currentLevel = Level.Level1;
+            currentLevel = Level.MainMenu;
 
             // TEST WIRE
             wire = new Wire();
             wire.AddSegment(new Segment(new Vector2(750, 1000), new Vector2(700, 800)));
+
 
             base.Initialize();
         }
@@ -126,6 +128,7 @@ namespace LiveWire
             basicFont = Content.Load<SpriteFont>("BaseText");
             tileSpriteSheet = Content.Load<Texture2D>("LiveWireTiles");
             playerSprite = Content.Load<Texture2D>("Robot");
+            NewLevel(Level.MainMenu);
 
             player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
         }
@@ -211,6 +214,7 @@ namespace LiveWire
                                 screenWidth / 2 - (int)basicFont.MeasureString("Press Enter To Advance").X / 2,
                                 screenHeight / 2),
                         Color.Black);
+                    DrawLevel(currentLevel);
                     break;
 
                 case GameState.LevelSelect:

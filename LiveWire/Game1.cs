@@ -87,6 +87,8 @@ namespace LiveWire
         // TEST WIRE
         private Wire wire;
 
+        // MAIN MENU
+        private List<Button> menuButtons = new List<Button>();
 
         public Game1()
         {
@@ -130,6 +132,22 @@ namespace LiveWire
             playerSprite = Content.Load<Texture2D>("Robot");
             NewLevel(Level.MainMenu);
 
+            menuButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(screenWidth/2 - 80, screenHeight/2 -40, 160, 80),
+                "Start Game",
+                basicFont,
+                Color.Red));
+            menuButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(screenWidth / 2 - 80, screenHeight / 2 + 80, 160, 80),
+                "Level Select",
+                basicFont,
+                Color.Blue));
+
+
+            menuButtons[0].OnButtonClick += this.StartGame;
+            menuButtons[1].OnButtonClick += this.SelectLevel;
             player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
         }
 
@@ -148,6 +166,10 @@ namespace LiveWire
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
                         currentState = GameState.LevelSelect;
+                    }
+                    foreach(Button b in menuButtons)
+                    {
+                        b.Update();
                     }
                     break;
                     
@@ -199,7 +221,7 @@ namespace LiveWire
             {
                 case GameState.MainMenu:
                     // TEMPORARY display
-                    _spriteBatch.DrawString(
+                    /*_spriteBatch.DrawString(
                         basicFont,
                         "Main Menu Template",
                         new Vector2(
@@ -213,8 +235,13 @@ namespace LiveWire
                         new Vector2(
                                 screenWidth / 2 - (int)basicFont.MeasureString("Press Enter To Advance").X / 2,
                                 screenHeight / 2),
-                        Color.Black);
+                        Color.Black);*/
                     DrawLevel(currentLevel);
+
+                    foreach(Button b in menuButtons)
+                    {
+                        b.Draw(_spriteBatch);
+                    }
                     break;
 
                 case GameState.LevelSelect:
@@ -448,6 +475,17 @@ namespace LiveWire
                     board[r, c].Draw(_spriteBatch);
                 }
             }
+        }
+
+        public void StartGame()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level1;
+        }
+
+        public void SelectLevel()
+        {
+            currentState = GameState.LevelSelect;
         }
     }
 }

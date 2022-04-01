@@ -39,6 +39,7 @@ namespace LiveWire
         private float gravity; // how strong gravity is
         private Rectangle box;
         private Vector2 dimensions;
+        private bool onGround;
 
         // interaction variables
         private bool isHoldingWire;
@@ -110,6 +111,8 @@ namespace LiveWire
             right = Keys.Right;
             jump = Keys.Up;
             interact = Keys.Space;
+
+            // can jump 12 blocks in distance and 3 blocks high
             speed = 5f;
             jumpForce = 5f;
             gravity = 0.1f;
@@ -151,7 +154,10 @@ namespace LiveWire
 
             //vertical velocity
             //update vertical velocity with jump force
-            if (kbState.IsKeyDown(jump) && prevKbState.IsKeyUp(jump)){ velocity.Y = -jumpForce; }
+            if (kbState.IsKeyDown(jump) && prevKbState.IsKeyUp(jump) && onGround){ 
+                velocity.Y = -jumpForce;
+                onGround = false;
+            }
             //update vertical velocity with gravity
             velocity.Y += gravity;
 
@@ -161,17 +167,20 @@ namespace LiveWire
             //if position colliding with block, adjust position to not be in block and adjust velocity to not move you in to block
             //is collision reactive or proactive?
             //reactive
-                //loop through all the tiles on screen
-                
-                foreach(TileParent tileP in board){
+            //loop through all the tiles on screen
+            onGround = false;
+            foreach (TileParent tileP in board)
+            {
                 Tile tile = null;
                 if (tileP is Tile)
+                {
                     tile = (Tile)tileP;
-                if(new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && tile.IsActive &&(tile != null)){ // Phillip: I need to change this rectangle 
-                    CollideBump(tile);
-                    }
                 }
-                
+                if (new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && tile.IsActive && (tile != null))
+                { // Phillip: I need to change this rectangle 
+                    CollideBump(tile);
+                }
+            } 
 
             //saving last frame position of player
             //prevPosition = position;
@@ -191,6 +200,7 @@ namespace LiveWire
                 //System.Diagnostics.Debug.WriteLine("ran into top of block");
                 position.Y = tile.Position.Y - dimensions.Y;
                 if(velocity.Y > 0) { velocity.Y = 0; }
+                
                 //velocity.Y = 0;
             }
 

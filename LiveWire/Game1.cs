@@ -239,14 +239,6 @@ namespace LiveWire
                     // display level
                     DrawLevel(currentLevel);
 
-                    // TODO: Implement code for drawing list of Machines
-                    /*
-                    foreach (Machine machine in machines)
-                    {
-                        machine.Draw(_spriteBatch);
-                    }
-                    */
-
                     // TEST WIRE
                     //wire.Draw(_spriteBatch, GraphicsDevice);
 
@@ -261,6 +253,14 @@ namespace LiveWire
                                 screenWidth / 2 - (int)basicFont.MeasureString("Play Level Template").X / 2,
                                 screenHeight / 2 - (int)basicFont.MeasureString("Play Level Template").Y),
                         Color.White);
+
+                    // TODO: Implement code for drawing list of Machines
+                    /*
+                    foreach (Machine machine in machines)
+                    {
+                        machine.Draw(_spriteBatch);
+                    }
+                    */
 
                     _spriteBatch.DrawString(
                         basicFont,

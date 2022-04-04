@@ -7,61 +7,20 @@ using Microsoft.Xna.Framework.Graphics;
 namespace LiveWire
 {
     /// <summary>
-    /// TODO: Add summary
+    /// An object representing a single tile of the level drawn to the screen;
+    /// Tiles are meant to be non-interactible
     /// </summary>  
-    class Tile
+    public class Tile : TileParent
     {
         // --- VARIABLE DELCARATIONS ---
-        private Rectangle position;
-        private bool blocksPlayer;
-        private bool blocksWire;
-        private bool[] animState;
-            // 0: base anim
-            // 1: N border
-            // 2: E border
-            // 3: S border
-            // 4: W border
-            // 5: NW inside
-            // 6: NE inside
-            // 7: SE inside
-            // 8: SW inside
-            // 9: west inside bridge
-            // 10: east inside bridge
-            // 11: north inside bridge
-            // 12: south inside bridge
-            // 13: all bridges
-            // 14: empty tile
-
-        private Texture2D spriteSheet;
-
-
+        
+            // All necessary fields are inherited from TileParent to reduce redundancy
 
         // --- PROPERTIES ---
-        public Rectangle Position
-        {
-            get { return position; }
-            set { position = value; }
-        }
 
-        public bool[] AnimState
-        {
-            get { return animState; }
-            set { animState = value; }
-        }
-
-        public bool BlocksPLayer
-        {
-            get { return blocksPlayer; }
-            set { blocksWire = value; }
-        }
-
-        public bool BlocksWire
-        {
-            get { return blocksWire; }
-            set { blocksWire = value; }
-        }
-
-
+            // All necessary properties are inherited from TileParent to reduce redundancy
+            
+        public bool IsActive { get; set; }
 
         // --- CONSTRUCTOR ---
         public Tile(int x, int y, int w, int h, Texture2D spriteSheet, bool isActive)
@@ -71,30 +30,13 @@ namespace LiveWire
             animState = new bool[15];
             animState[0] = isActive;
             animState[14] = !isActive;
+            IsActive = isActive;
         }
 
-
-
         // --- METHODS ---
-        public void Draw(SpriteBatch spriteBatch)
+        public override void PlayerInteract(Player player)
         {
-            for (int i = 0; i < animState.Length; i++)
-            {
-                if (animState[i])
-                {
-                    spriteBatch.Draw(
-                spriteSheet,
-                new Vector2(
-                    position.X,
-                    position.Y),
-                new Rectangle(
-                    i * position.Width,
-                    0,
-                    40,
-                    40),
-                Color.White);
-                }
-            }
+            // do nothing
         }
     }
 }

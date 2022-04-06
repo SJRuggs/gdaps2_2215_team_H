@@ -83,13 +83,12 @@ namespace LiveWire
         // Machines are stored in a list separate from tiles
         private List<Machine> machines;
 
-
         // TEST WIRE
         private Wire wire;
 
         // MAIN MENU
-        private List<Button> menuButtons = new List<Button>();
-        private List<Button> levelButtons = new List<Button>();
+        private List<Button> menuButtons;
+        private List<Button> levelButtons;
 
         public Game1()
         {
@@ -117,6 +116,8 @@ namespace LiveWire
             currentState = GameState.MainMenu;
             currentLevel = Level.MainMenu;
 
+            menuButtons = new List<Button>();
+            levelButtons = new List<Button>();
 
             base.Initialize();
         }
@@ -131,65 +132,65 @@ namespace LiveWire
 
             menuButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 2 - 80, screenHeight / 2 - 40, 160, 80),
+                new Rectangle(screenWidth/2 - 80, screenHeight/2 -40, 160, 80),
                 "Start Game",
                 basicFont,
-                Color.Red));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
             menuButtons.Add(new Button(
                 _graphics.GraphicsDevice,
                 new Rectangle(screenWidth / 2 - 80, screenHeight / 2 + 80, 160, 80),
                 "Level Select",
                 basicFont,
-                Color.Blue));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
                 new Rectangle(screenWidth / 3 -80, screenHeight / 3 -40, 160, 80),
                 "Level 1",
                 basicFont,
-                Color.Green));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 2 + 90, screenHeight / 3 -40, 160, 80),
+                new Rectangle(levelButtons[0].X + 170, screenHeight / 3 -40, 160, 80),
                 "Level 2",
                 basicFont,
-                Color.Green));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 2 + 90, screenHeight / 3 -40, 160, 80),
+                new Rectangle(levelButtons[1].X + 170, screenHeight / 3 -40, 160, 80),
                 "Level 3",
                 basicFont,
-                Color.Green));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 -80, screenHeight / 2 + 50, 160, 80),
+                new Rectangle(screenWidth / 3 -80, levelButtons[0].Y + 90, 160, 80),
                 "Level 4",
                 basicFont,
-                Color.Green));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 2 + 90, screenHeight / 2 + 170, 160, 80),
+                new Rectangle(levelButtons[0].X + 170, levelButtons[0].Y + 90, 160, 80),
                 "Level 5",
                 basicFont,
-                Color.Green));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 2 + 90, screenHeight / 2 + 50, 160, 80),
+                new Rectangle(levelButtons[1].X + 170, levelButtons[0].Y + 90, 160, 80),
                 "Level 6",
                 basicFont,
-                Color.Green));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 2 + 90, screenHeight / 3 + 50, 160, 80),
+                new Rectangle(levelButtons[0].X + 170, levelButtons[4].Y + 90, 160, 80),
                 "Final Level",
                 basicFont,
-                Color.Green));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
 
             menuButtons[0].OnButtonClick += this.StartGame;

@@ -67,7 +67,7 @@ namespace LiveWire
         }
 
         // calls all relevant methods
-        public void Update(TileParent[,] board, Wire wire)
+        public void Update(TileParent[][] board, Wire wire)
         {
             LimitSegment(wire);
             DetectCollision(board, wire);
@@ -90,45 +90,26 @@ namespace LiveWire
         }
 
         // detects a collision on the segment with tiles that block the wire
-        public void DetectCollision(TileParent[,] board, Wire wire)
+        public void DetectCollision(TileParent[][] board, Wire wire)
         {
-            int stepCount;
-            Vector2 direction;
-            Vector2 stepHeight;
-            Vector2 checkPosition;
-
-            stepCount = (int)Math.Max(Math.Abs(Node2.X - Node1.X), Math.Abs(Node2.Y - Node1.Y));
-            direction = new Vector2((node2.X - node1.X) / Math.Abs(Node2.X - Node1.X), (node2.Y - node1.Y) / Math.Abs(Node2.Y - Node1.Y));
-            stepHeight = new Vector2(Math.Abs(Node2.X - Node1.X) / stepCount, Math.Abs(Node2.Y - Node1.Y) / stepCount);
-            checkPosition = node1;
-
-            for (int i = 0; i < stepCount; i++)
+            Vector2 loc = new Vector2(Math.Min(node1.X, node2.X), Math.Min(node1.Y, node2.Y));
+            
+            for (int y = (int)loc.Y; y < Math.Abs(node1.Y - node2.Y); y++)
             {
-                // updates the position of the checker
-                checkPosition.X += direction.X * stepHeight.X;
-                checkPosition.Y += direction.Y * stepHeight.Y;
-
-                // if inside a tile that blocks the wire...
-                if (board[(int)(checkPosition.X / 40), (int)(checkPosition.Y / 40)].BlocksWire)
+                for (int x = (int)loc.X; x < Math.Abs(node1.X - node2.X); x++)
                 {
-                    // set node2 point
-                    this.node2.X = checkPosition.X - (checkPosition.X % 40);
-                    this.node2.Y = checkPosition.Y - (checkPosition.Y % 40);
-                    if (checkPosition.X % 40 > 21) { this.node2.X += 40; }
-                    if (checkPosition.Y % 40 > 21) { this.node2.Y += 40; }
-
-                    // create new segment on wire
-                    wire.AddSegment(new Segment(node2, wire.Player.Position));
-                    i = stepCount;
-                }
-
-                // if inside a tile that interacts with the wire...
-                if (board[(int)(checkPosition.X / 40), (int)(checkPosition.Y / 40)].InteractsWire)
-                {
-                    board[(int)(checkPosition.X / 40), (int)(checkPosition.Y / 40)].PlayerInteract(wire.Player);
-                    i = stepCount;
+                    if (board[x / board.Length][y / board[0].Length].BlocksWire &&
+                        board[x / board.Length][y / board[0].Length].Position.Contains(loc))
+                    {
+                        wire.AddSegment(new Segment(loc, node2));
+                        this.node2 = loc;
+                        return;
+                    }
                 }
             }
+
+
+            
         }
 
         // handles the creation of a new segment within the wire

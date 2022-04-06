@@ -154,6 +154,15 @@ namespace LiveWire
             }
         }
 
+        // detects collision for each segment
+        public void DetectCollision(TileParent[][] board)
+        {
+            foreach (Segment seg in wires)
+            {
+                seg.DetectCollision(board, this);
+            }
+        }
+
         // trims the last segment and updates the new end to find the player
         public void TrimLastSegment()
         {

@@ -145,49 +145,49 @@ namespace LiveWire
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 -80, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 3 - 80, screenHeight / 3 -40, 160, 80),
                 "Level 1",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[0].X + 170, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 3, screenHeight / 3 - 40, 160, 80),
                 "Level 2",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[1].X + 170, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 3 + 80, screenHeight / 3 -40, 160, 80),
                 "Level 3",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 -80, levelButtons[0].Y + 90, 160, 80),
+                new Rectangle(screenWidth / 3 -80, screenHeight / 3 + 90, 160, 80),
                 "Level 4",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[0].X + 170, levelButtons[0].Y + 90, 160, 80),
+                new Rectangle(screenWidth / 3, screenHeight / 3 + 90, 160, 80),
                 "Level 5",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[1].X + 170, levelButtons[0].Y + 90, 160, 80),
+                new Rectangle(screenWidth / 3 + 80, screenHeight / 3 + 90, 160, 80),
                 "Level 6",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[0].X + 170, levelButtons[4].Y + 90, 160, 80),
+                new Rectangle(screenWidth / 3 + 80, screenHeight / 3 + 180, 160, 80),
                 "Final Level",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));

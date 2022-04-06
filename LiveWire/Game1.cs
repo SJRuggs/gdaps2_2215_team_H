@@ -147,7 +147,7 @@ namespace LiveWire
                 new Rectangle(screenWidth / 3 -80, screenHeight / 3 -40, 160, 80),
                 "Level 1",
                 basicFont,
-                FromNonPremultiplied(86, 91, 143, 255)));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,

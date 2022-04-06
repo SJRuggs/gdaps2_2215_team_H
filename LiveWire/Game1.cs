@@ -140,7 +140,7 @@ namespace LiveWire
                 new Rectangle(screenWidth / 2 - 80, screenHeight / 2 + 80, 160, 80),
                 "Level Select",
                 basicFont,
-                ConsoleColor.Blue));
+                ConoleColor.Blue));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,

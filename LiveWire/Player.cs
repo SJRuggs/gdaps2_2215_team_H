@@ -142,7 +142,7 @@ namespace LiveWire
         /// player <-> enviroment
         /// Takes in input from user (left,right,jump) and moves the player accordingly to physics (gravity, colliding with ground, ground friction) 
         /// </summary>
-        public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState, TileParent[][] board)
+        public void PlayerMovement(KeyboardState kbState, KeyboardState prevKbState, TileParent[,] board)
         {
             //horizontal velocity (horizontal movement can feel better if, velocity doesnt get reset but instead use a friction variable to slow down the character when on the ground,
             //use acceleration have some max velocity variable to 
@@ -176,16 +176,16 @@ namespace LiveWire
 
             //onGround = false;
             coyoteFrame++;
-            for (int i = 0; i < board.Length; i++)
+            for (int i = 0; i < board.GetLength(0); i++)
             {
-                for (int j = 0; j < board[0].Length; j++)
+                for (int j = 0; j < board.GetLength(1); j++)
                 {
                     Tile tile = null;
-                    if (board[i][j] is Tile)
+                    if (board[i,j] is Tile)
                     {
-                        tile = (Tile)board[i][j];
+                        tile = (Tile)board[i,j];
                     }
-                    if (new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && tile.IsActive && (tile != null))
+                    if (new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && tile.BlocksPLayer && (tile != null))
                     { // Phillip: I need to change this rectangle 
                         CollideBump(tile);
                     }

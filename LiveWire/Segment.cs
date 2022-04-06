@@ -47,17 +47,7 @@ namespace LiveWire
         public float Radians()
         {
             // returns angle in radians
-            double result = Math.Atan2(node2.Y - node1.Y, node2.X - node1.X);
-            if(node2.X < node1.X)
-            {
-                result += Math.PI;
-                if (node2.Y < node1.Y) { result += Math.PI / 2; }
-            }
-            else
-            {
-                if (node2.Y > node1.Y) { result += Math.PI / 2; }
-            }
-            return (float)result;
+            return (float)(Math.Atan2(node2.Y - node1.Y, node2.X - node1.X) - Math.PI / 2);
         }
 
         // distance between nodes
@@ -94,12 +84,12 @@ namespace LiveWire
         {
             Vector2 loc = new Vector2(Math.Min(node1.X, node2.X), Math.Min(node1.Y, node2.Y));
             
-            for (int y = (int)loc.Y; y < Math.Abs(node1.Y - node2.Y); y++)
+            for (int y = (int)loc.Y; y < Math.Max(node2.Y, node1.Y); y++)
             {
-                for (int x = (int)loc.X; x < Math.Abs(node1.X - node2.X); x++)
+                for (int x = (int)loc.X; x < Math.Max(node2.X, node1.X); x++)
                 {
-                    if (board[x / board.Length][y / board[0].Length].BlocksWire &&
-                        board[x / board.Length][y / board[0].Length].Position.Contains(loc))
+                    if (board[y / board.Length][x / board[y / board.Length].Length].BlocksWire &&
+                        board[y / board.Length][x / board[y / board.Length].Length].Position.Contains(loc))
                     {
                         wire.AddSegment(new Segment(loc, node2));
                         this.node2 = loc;
@@ -107,9 +97,6 @@ namespace LiveWire
                     }
                 }
             }
-
-
-            
         }
 
         // handles the creation of a new segment within the wire

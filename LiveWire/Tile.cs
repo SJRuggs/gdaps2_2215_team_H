@@ -31,6 +31,8 @@ namespace LiveWire
             animState[0] = isActive;
             animState[14] = !isActive;
             IsActive = isActive;
+            blocksPlayer = isActive;
+            blocksWire = isActive;
         }
 
         // --- METHODS ---

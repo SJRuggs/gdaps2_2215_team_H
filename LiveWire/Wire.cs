@@ -155,7 +155,7 @@ namespace LiveWire
         }
 
         // detects collision for each segment
-        public void DetectCollision(TileParent[][] board)
+        public void DetectCollision(TileParent[,] board)
         {
             foreach (Segment seg in wires)
             {

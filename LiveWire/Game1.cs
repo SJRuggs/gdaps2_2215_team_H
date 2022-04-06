@@ -193,13 +193,22 @@ namespace LiveWire
                             currentState = GameState.MainMenu;
                             currentLevel = Level.Level1;
                         }
+
                         else
                         {
                             NewLevel(currentLevel++);
                         }
                         
-                        if (currentLevel == Level.EndLevel) { currentState = GameState.MainMenu;  currentLevel = Level.Level1; }
-                        else { NewLevel(currentLevel++); }
+                        if (currentLevel == Level.EndLevel) 
+                        { 
+                            currentState = GameState.MainMenu;  
+                            currentLevel = Level.Level1; 
+                        }
+
+                        else 
+                        { 
+                            NewLevel(currentLevel++); 
+                        }
                     }
 
                     break;

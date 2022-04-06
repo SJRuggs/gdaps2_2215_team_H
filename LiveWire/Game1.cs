@@ -131,65 +131,65 @@ namespace LiveWire
 
             menuButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth/2 - 80, screenHeight/2 -40, 160, 80),
+                new Rectangle(screenWidth / 2 - 80, screenHeight / 2 - 40, 160, 80),
                 "Start Game",
                 basicFont,
-                ConsoleColor.Red));
+                Color.Red));
             menuButtons.Add(new Button(
                 _graphics.GraphicsDevice,
                 new Rectangle(screenWidth / 2 - 80, screenHeight / 2 + 80, 160, 80),
                 "Level Select",
                 basicFont,
-                ConoleColor.Blue));
+                Color.Blue));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
                 new Rectangle(screenWidth / 3 -80, screenHeight / 3 -40, 160, 80),
                 "Level 1",
                 basicFont,
-                ConsoleColor.Green));
+                Color.Green));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[0].X + 170, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 2 + 90, screenHeight / 3 -40, 160, 80),
                 "Level 2",
                 basicFont,
-                ConsoleColor.Green));
+                Color.Green));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[1].X + 170, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 2 + 90, screenHeight / 3 -40, 160, 80),
                 "Level 3",
                 basicFont,
-                ConsoleColor.Green));
+                Color.Green));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 -80, levelButtons[0].Y + 90, 160, 80),
+                new Rectangle(screenWidth / 3 -80, screenHeight / 2 + 50, 160, 80),
                 "Level 4",
                 basicFont,
-                ConsoleColor.Green));
+                Color.Green));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[0].X + 170, levelButtons[0].Y + 90, 160, 80),
+                new Rectangle(screenWidth / 2 + 90, screenHeight / 2 + 170, 160, 80),
                 "Level 5",
                 basicFont,
-                ConsoleColor.Green));
+                Color.Green));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[1].X + 170, levelButtons[0].Y + 90, 160, 80),
+                new Rectangle(screenWidth / 2 + 90, screenHeight / 2 + 50, 160, 80),
                 "Level 6",
                 basicFont,
-                ConsoleColor.Green));
+                Color.Green));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(levelButtons[0].X + 170, levelButtons[4].Y + 90, 160, 80),
+                new Rectangle(screenWidth / 2 + 90, screenHeight / 3 + 50, 160, 80),
                 "Final Level",
                 basicFont,
-                ConsoleColor.Green));
+                Color.Green));
 
 
             menuButtons[0].OnButtonClick += this.StartGame;

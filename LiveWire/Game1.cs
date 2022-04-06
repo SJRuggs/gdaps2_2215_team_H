@@ -116,10 +116,6 @@ namespace LiveWire
             currentState = GameState.MainMenu;
             currentLevel = Level.MainMenu;
 
-            // TEST WIRE
-            wire = new Wire();
-            wire.AddSegment(new Segment(new Vector2(750, 1000), new Vector2(700, 800)));
-
 
             base.Initialize();
         }
@@ -149,6 +145,10 @@ namespace LiveWire
             menuButtons[0].OnButtonClick += this.StartGame;
             menuButtons[1].OnButtonClick += this.SelectLevel;
             player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
+
+            // TEST WIRE
+            wire = new Wire(player);
+            wire.AddSegment(new Segment(new Vector2(750, 1000), new Vector2(700, 800)));
         }
 
         protected override void Update(GameTime gameTime)
@@ -184,7 +184,8 @@ namespace LiveWire
 
                 case GameState.PlayLevel:
                     player.PlayerMovement(kbState, prevKbState, board);
-                    // wire.Wires[wire.Wires.Count - 1].Node2 = player.Position; // wires are funny
+                    wire.Wires[wire.Wires.Count - 1].Node2 = player.Position;
+                    wire.Update(board);
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
@@ -271,7 +272,7 @@ namespace LiveWire
                     DrawLevel(currentLevel);
 
                     // TEST WIRE
-                    //wire.Draw(_spriteBatch, GraphicsDevice);
+                    wire.Draw(_spriteBatch, GraphicsDevice);
 
                     // display player
                     player.Draw(_spriteBatch);

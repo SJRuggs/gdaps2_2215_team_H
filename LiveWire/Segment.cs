@@ -57,46 +57,91 @@ namespace LiveWire
         }
 
         // calls all relevant methods
-        public void Update(TileParent[,] board, Wire wire)
+        public void Update(TileParent[,] board, Wire wire, Player player)
         {
-            LimitSegment(wire);
+            LimitSegment(wire, player);
             DetectCollision(board, wire);
         }
 
         // limits wire based on total length and max length
-        public void LimitSegment(Wire wire)
+        public void LimitSegment(Wire wire, Player player)
         {
             if(wire.GetTotalLength() > wire.MaxLength)
             {
-                Vector2 extraVector = new Vector2();
-                double extra = wire.GetTotalLength() - wire.MaxLength;
-                extraVector.Y = (float)(Math.Sin(Math.Atan2(node2.Y - node1.Y, node2.X - node1.X)) * extra);
-                extraVector.X = (float)Math.Sqrt(Math.Pow(extraVector.Y, 2) - Math.Pow(extra, 2));
-                if (node2.X > node1.X) { node2.X -= extraVector.X; }
-                else { node2.X += extraVector.X; }
-                if (node2.Y > node1.Y) { node2.Y -= extraVector.Y; }
-                else { node2.Y += extraVector.Y; }
+                player.Position = player.PrevPosition;
             }
         }
 
         // detects a collision on the segment with tiles that block the wire
-        public void DetectCollision(TileParent[,] board, Wire wire)
+        public bool DetectCollision(TileParent[,] board, Wire wire)
         {
-            Vector2 loc = new Vector2(Math.Min(node1.X, node2.X), Math.Min(node1.Y, node2.Y));
-            
-            for (int y = (int)loc.Y; y < Math.Max(node2.Y, node1.Y); y++)
+            if (node1.Y < node2.Y)
             {
-                for (int x = (int)loc.X; x < Math.Max(node2.X, node1.X); x++)
+                if (node1.X < node2.X)
                 {
-                    if (board[y / board.GetLength(0), x / board.GetLength(1)].BlocksWire &&
-                        board[y / board.GetLength(0), x / board.GetLength(1)].Position.Contains(loc))
+                    // top left start
+                    for (int r = (int)node1.Y + 1; r < node2.Y; r++)
                     {
-                        wire.AddSegment(new Segment(loc, node2));
-                        this.node2 = loc;
-                        return;
+                        for (int c = (int)node1.X + 1; c < node2.X; c++)
+                        {
+                            if (board[r / 40, c / 40].BlocksWire)
+                            {
+                                newSegment((Tile)board[r / 40, c / 40], wire, c, r);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // top right start
+                    for (int r = (int)node1.Y + 1; r < node2.Y; r++)
+                    {
+                        for (int c = (int)node1.X - 1; c > node2.X; c--)
+                        {
+                            if (board[r / 40, c / 40].BlocksWire)
+                            {
+                                newSegment((Tile)board[r / 40, c / 40], wire, c, r);
+                                return true;
+                            }
+                        }
                     }
                 }
             }
+            else
+            {
+                if (node1.X < node2.X)
+                {
+                    // bottom left start
+                    for (int r = (int)node1.Y - 1; r > node2.Y; r--)
+                    {
+                        for (int c = (int)node1.X + 1; c < node2.X; c++)
+                        {
+                            if (board[r / 40, c / 40].BlocksWire)
+                            {
+                                newSegment((Tile)board[r / 40, c / 40], wire, c, r);
+                                return true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // bottom right start
+                    for (int r = (int)node1.Y - 1; r > node2.Y; r--)
+                    {
+                        for (int c = (int)node1.X - 1; c > node2.X; c--)
+                        {
+                            if (board[r / 40, c / 40].BlocksWire)
+                            {
+                                newSegment((Tile)board[r / 40, c / 40], wire, c, r);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
         }
 
         // handles the creation of a new segment within the wire

@@ -57,7 +57,7 @@ namespace LiveWire
         }
 
         // calls all relevant methods
-        public void Update(TileParent[][] board, Wire wire)
+        public void Update(TileParent[,] board, Wire wire)
         {
             LimitSegment(wire);
             DetectCollision(board, wire);
@@ -80,7 +80,7 @@ namespace LiveWire
         }
 
         // detects a collision on the segment with tiles that block the wire
-        public void DetectCollision(TileParent[][] board, Wire wire)
+        public void DetectCollision(TileParent[,] board, Wire wire)
         {
             Vector2 loc = new Vector2(Math.Min(node1.X, node2.X), Math.Min(node1.Y, node2.Y));
             
@@ -88,8 +88,8 @@ namespace LiveWire
             {
                 for (int x = (int)loc.X; x < Math.Max(node2.X, node1.X); x++)
                 {
-                    if (board[y / board.Length][x / board[y / board.Length].Length].BlocksWire &&
-                        board[y / board.Length][x / board[y / board.Length].Length].Position.Contains(loc))
+                    if (board[y / board.GetLength(0), x / board.GetLength(1)].BlocksWire &&
+                        board[y / board.GetLength(0), x / board.GetLength(1)].Position.Contains(loc))
                     {
                         wire.AddSegment(new Segment(loc, node2));
                         this.node2 = loc;

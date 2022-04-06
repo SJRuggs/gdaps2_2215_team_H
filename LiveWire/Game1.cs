@@ -137,13 +137,13 @@ namespace LiveWire
                 new Rectangle(screenWidth/2 - 80, screenHeight/2 -40, 160, 80),
                 "Start Game",
                 basicFont,
-                Color.Red));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
             menuButtons.Add(new Button(
                 _graphics.GraphicsDevice,
                 new Rectangle(screenWidth / 2 - 80, screenHeight / 2 + 80, 160, 80),
                 "Level Select",
                 basicFont,
-                Color.Blue));
+                Color.FromNonPremultiplied(86, 91, 143, 255)));
 
 
             menuButtons[0].OnButtonClick += this.StartGame;

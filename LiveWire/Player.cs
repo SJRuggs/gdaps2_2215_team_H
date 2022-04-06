@@ -65,6 +65,12 @@ namespace LiveWire
             set { position = value; }
         }
 
+        public Vector2 PrevPosition
+        {
+            get { return prevPosition; }
+            set { prevPosition = value; }
+        }
+
         public float Speed
         {
             get { return speed; }
@@ -192,7 +198,7 @@ namespace LiveWire
                 }
             }
             //saving last frame position of player
-            //prevPosition = position;
+            prevPosition = position;
         }
         
         public void CollideBump(Tile tile) {

@@ -89,6 +89,7 @@ namespace LiveWire
 
         // MAIN MENU
         private List<Button> menuButtons = new List<Button>();
+        private List<Button> levelButtons = new List<Button>();
 
         public Game1()
         {
@@ -116,10 +117,6 @@ namespace LiveWire
             currentState = GameState.MainMenu;
             currentLevel = Level.MainMenu;
 
-            // TEST WIRE
-            wire = new Wire();
-            wire.AddSegment(new Segment(new Vector2(750, 1000), new Vector2(700, 800)));
-
 
             base.Initialize();
         }
@@ -137,18 +134,79 @@ namespace LiveWire
                 new Rectangle(screenWidth/2 - 80, screenHeight/2 -40, 160, 80),
                 "Start Game",
                 basicFont,
-                Color.FromNonPremultiplied(86, 91, 143, 255)));
+                Color.Red));
             menuButtons.Add(new Button(
                 _graphics.GraphicsDevice,
                 new Rectangle(screenWidth / 2 - 80, screenHeight / 2 + 80, 160, 80),
                 "Level Select",
                 basicFont,
-                Color.FromNonPremultiplied(86, 91, 143, 255)));
+                Color.Blue));
+
+            levelButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(screenWidth / 3 -80, screenHeight / 3 -40, 160, 80),
+                "Level 1",
+                basicFont,
+                ConsoleColor.Green));
+
+            levelButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(levelButtons[0].X + 170, screenHeight / 3 -40, 160, 80),
+                "Level 2",
+                basicFont,
+                ConsoleColor.Green));
+
+            levelButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(levelButtons[1].X + 170, screenHeight / 3 -40, 160, 80),
+                "Level 3",
+                basicFont,
+                ConsoleColor.Green));
+
+            levelButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(screenWidth / 3 -80, levelButtons[0].Y + 90, 160, 80),
+                "Level 4",
+                basicFont,
+                ConsoleColor.Green));
+
+            levelButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(levelButtons[0].X + 170, levelButtons[0].Y + 90, 160, 80),
+                "Level 5",
+                basicFont,
+                ConsoleColor.Green));
+
+            levelButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(levelButtons[1].X + 170, levelButtons[0].Y + 90, 160, 80),
+                "Level 6",
+                basicFont,
+                ConsoleColor.Green));
+
+            levelButtons.Add(new Button(
+                _graphics.GraphicsDevice,
+                new Rectangle(levelButtons[0].X + 170, levelButtons[4].Y + 90, 160, 80),
+                "Final Level",
+                basicFont,
+                ConsoleColor.Green));
 
 
             menuButtons[0].OnButtonClick += this.StartGame;
             menuButtons[1].OnButtonClick += this.SelectLevel;
+
+            levelButtons[0].OnButtonClick += this.Level1;
+            levelButtons[1].OnButtonClick += this.Level2;
+            levelButtons[2].OnButtonClick += this.Level3;
+            levelButtons[3].OnButtonClick += this.Level4;
+            levelButtons[4].OnButtonClick += this.Level5;
+            levelButtons[5].OnButtonClick += this.Level6;
+            levelButtons[6].OnButtonClick += this.LastLevel;
             player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
+
+            // TEST WIRE
+            wire = new Wire(player);
+            wire.AddSegment(new Segment(new Vector2(750, 1000), new Vector2(700, 800)));
         }
 
         protected override void Update(GameTime gameTime)
@@ -163,10 +221,6 @@ namespace LiveWire
             {
                 case GameState.MainMenu:
                     // transition
-                    if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
-                    {
-                        currentState = GameState.LevelSelect;
-                    }
                     foreach(Button b in menuButtons)
                     {
                         b.Update();
@@ -175,16 +229,16 @@ namespace LiveWire
                     
                 case GameState.LevelSelect:
                     // TEMPORARY transition
-                    if (mState.LeftButton == ButtonState.Pressed && prevMState.LeftButton == ButtonState.Released)
+                    foreach(Button b in levelButtons)
                     {
-                        currentState = GameState.PlayLevel;
-                        NewLevel(currentLevel);
+                        b.Update();
                     }
                     break;
 
                 case GameState.PlayLevel:
                     player.PlayerMovement(kbState, prevKbState, board);
-                    // wire.Wires[wire.Wires.Count - 1].Node2 = player.Position; // wires are funny
+                    wire.Wires[wire.Wires.Count - 1].Node2 = player.Position;
+                    wire.Update(board);
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
@@ -271,6 +325,11 @@ namespace LiveWire
                                 screenHeight / 2),
                         Color.Black);
 
+                    foreach(Button b in levelButtons)
+                    {
+                        b.Draw(_spriteBatch);
+                    }
+
                     DrawLevel(currentLevel);
                     break;
 
@@ -280,7 +339,7 @@ namespace LiveWire
                     DrawLevel(currentLevel);
 
                     // TEST WIRE
-                    //wire.Draw(_spriteBatch, GraphicsDevice);
+                    wire.Draw(_spriteBatch, GraphicsDevice);
 
                     // display player
                     player.Draw(_spriteBatch);
@@ -495,6 +554,42 @@ namespace LiveWire
         public void SelectLevel()
         {
             currentState = GameState.LevelSelect;
+        }
+
+        public void Level1()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level1;
+        }
+        public void Level2()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level2;
+        }
+        public void Level3()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level3;
+        }
+        public void Level4()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level4;
+        }
+        public void Level5()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level5;
+        }
+        public void Level6()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level6;
+        }
+        public void LastLevel()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.EndLevel;
         }
     }
 }

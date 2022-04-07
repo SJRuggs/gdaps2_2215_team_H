@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace LiveWire.Content
+namespace LiveWire
 {
     /// <summary>
     /// A Machine that the Player can plug a Wire into
@@ -12,6 +12,12 @@ namespace LiveWire.Content
     /// </summary>
     public class MchnPlugDoorController : Machine
     {
+        #region CONSTANTS --------------------------------------------------------------------------------
+
+        // DoorController can be tinted to differentiate from normal tiles
+        private Color doorControllerTint = Color.Aqua;
+
+        #endregion
 
         #region FIELDS --------------------------------------------------------------------------------
 

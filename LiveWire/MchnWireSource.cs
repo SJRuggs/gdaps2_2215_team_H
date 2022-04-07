@@ -63,7 +63,8 @@ namespace LiveWire
             // TODO: Initialize this created Wire with proper information to make one
             // endpoint follow the Player and one originate from the WireSource;
             // it won't be drawn on screen when first initialized but it should exist
-            wire = new Wire();
+            // TODO: Pass the Wire a reference to the WireSource
+            // wire = new Wire();
 
             blocksPlayer = true;
             blocksWire = false;

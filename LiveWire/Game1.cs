@@ -417,9 +417,11 @@ namespace LiveWire
                     }
                 }
 
-                // TODO: Read Machines from Machine list at the end of the level file
+                // Read Machines from Machine list at the end of the level file
 
-                /*
+                // Initialize machines to an empty List
+                machines = new List<Machine>();
+                
                 // If there are more lines after the level, try to load them as machines
                 if ((machinesNextLine = reader.ReadLine().Trim()) != null)
                 {
@@ -440,16 +442,68 @@ namespace LiveWire
                             switch (Enum.Parse<MachineType>(line[0]))
                             {
                                 case MachineType.WireSource:
+                                    // Add a new WireSource at the specified location
+                                    machines.Add(
+                                        new MchnWireSource(
+                                            int.Parse(line[1]) * tileWidth,
+                                            int.Parse(line[2]) * tileHeight,
+                                            tileWidth,
+                                            tileHeight,
+                                            tileSpriteSheet
+                                            )
+                                        );
                                     break;
                                 case MachineType.PlugDoorController:
+                                    // Initialize a new List to fill with references
+                                    // and pass in to the new DoorController
+                                    List<MchnDoorSegment> doorSegments = new List<MchnDoorSegment>();
+
+                                    // Loops through the rest of the comma-separated values in the line,
+                                    // starting at index 3, the first value that would represent the
+                                    // index of a door segment in the machines List
+                                    for (int j = 3; j < line.Length; j++)
+                                    {
+                                        // Get the machine at the specified value
+                                        Machine machineListed = machines[int.Parse(line[j])];
+
+                                        // Check to see if it's a DoorSegment
+                                        if (machineListed is MchnDoorSegment)
+                                        {
+                                            // Cast it to DoorSegment and add it to the list
+                                            doorSegments.Add((MchnDoorSegment)machineListed);
+                                        }
+                                    }
+
+                                    machines.Add(
+                                        new MchnPlugDoorController(
+                                            int.Parse(line[1]) * tileWidth,
+                                            int.Parse(line[2]) * tileHeight,
+                                            tileWidth,
+                                            tileHeight,
+                                            tileSpriteSheet,
+                                            // Pass the doorSegments list into the controller's constructor
+                                            doorSegments
+                                            )
+                                        );
                                     break;
                                 case MachineType.DoorSegment:
+                                    machines.Add(
+                                        new MchnDoorSegment(
+                                            int.Parse(line[1]) * tileWidth,
+                                            int.Parse(line[2]) * tileHeight,
+                                            tileWidth,
+                                            tileHeight,
+                                            tileSpriteSheet,
+                                            // Pass in this boolean representing whether the door is open
+                                            // 0 == Closed, 1 == Open
+                                            int.Parse(line[3]) == 1
+                                            )
+                                        );
                                     break;
                             }
                         }
                     }
                 }
-                */
 
                 // --- ANIM STATES ---
 

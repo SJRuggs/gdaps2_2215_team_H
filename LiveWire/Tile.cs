@@ -34,6 +34,11 @@ namespace LiveWire
         }
 
         // --- METHODS ---
+
+        /// <summary>
+        /// Tiles cannot be interacted with; this method does nothing
+        /// </summary>
+        /// <param name="player">Reference to the Player object initiating the interaction</param>
         public override void PlayerInteract(Player player)
         {
             // do nothing

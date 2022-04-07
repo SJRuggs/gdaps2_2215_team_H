@@ -72,6 +72,11 @@ namespace LiveWire
                 rads = wires[i].Radians();
                 rads2 = wires[i + 1].Radians();
                 // wire on Q1
+                // TODO: This is Owen, I just wanted to let you know these values
+                // probably shouldn't be hard-coded. If we have pixel dimensions
+                // for tiles stored in our level files, that implies that we
+                // might want to change them from 40 for some levels, in which
+                // case these values wouldn't work.
                 if (wires[i].Node2.X % 40 > 20 && wires[i].Node2.Y % 40 < 21)
                 {
                     // pulling to Q4

@@ -75,8 +75,6 @@ namespace LiveWire
         // detects a collision on the segment with tiles that block the wire
         public void DetectCollision(TileParent[,] board, Wire wire)
         {
-            Vector2 loc = new Vector2();
-            bool found = false;
 
             float y;
             float yChange;
@@ -96,12 +94,7 @@ namespace LiveWire
                     y += yChange * (Math.Abs(node1.Y - node2.Y) / Math.Abs(node1.X - node2.X));
                     if (board[(int)(y / 40), x / 40].BlocksWire)
                     {
-                        found = true;
-                        loc = new Vector2(x, y);
-                    }
-                    else if (!board[(int)(y / 40), x / 40].BlocksWire && found)
-                    {
-                        newSegment((Tile)board[(int)(y / 40), x / 40], wire, loc);
+                        newSegment((Tile)board[(int)(y / 40), x / 40], wire, new Vector2(x, y));
                         return;
                     }
                 }
@@ -114,12 +107,7 @@ namespace LiveWire
                     y += yChange * (Math.Abs(node1.Y - node2.Y) / Math.Abs(node1.X - node2.X));
                     if (board[(int)(y / 40), x / 40].BlocksWire)
                     {
-                        found = true;
-                        loc = new Vector2(x, y);
-                    }
-                    else if (!board[(int)(y / 40), x / 40].BlocksWire && found) 
-                    {
-                        newSegment((Tile)board[(int)(y / 40), x / 40], wire, loc);
+                        newSegment((Tile)board[(int)(y / 40), x / 40], wire, new Vector2(x, y));
                         return;
                     }
                 }

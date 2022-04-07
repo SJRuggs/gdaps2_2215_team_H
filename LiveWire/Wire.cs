@@ -159,6 +159,7 @@ namespace LiveWire
         public void Update(TileParent[,] board)
         {
             wires[wires.Count - 1].Update(board, this, player);
+            DetectTrim();
         }
 
         // trims the last segment and updates the new end to find the player

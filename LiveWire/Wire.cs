@@ -39,9 +39,10 @@ namespace LiveWire
 
 
         // --- CONSTRUCTOR ---
-        public Wire()
+        public Wire(Player player)
         {
             wires = new List<Segment>();
+            this.player = player;
         }
 
 
@@ -160,12 +161,10 @@ namespace LiveWire
         }
 
         // detects collision for each segment
-        public void DetectCollision(TileParent[][] board)
+        public void Update(TileParent[,] board)
         {
-            foreach (Segment seg in wires)
-            {
-                seg.DetectCollision(board, this);
-            }
+            wires[wires.Count - 1].Update(board, this, player);
+            DetectTrim();
         }
 
         // trims the last segment and updates the new end to find the player

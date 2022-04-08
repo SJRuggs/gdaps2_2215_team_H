@@ -128,6 +128,7 @@ namespace LiveWire
             basicFont = Content.Load<SpriteFont>("BaseText");
             tileSpriteSheet = Content.Load<Texture2D>("LiveWireTiles");
             playerSprite = Content.Load<Texture2D>("Robot");
+            player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
             NewLevel(Level.MainMenu);
 
             menuButtons.Add(new Button(
@@ -203,7 +204,7 @@ namespace LiveWire
             levelButtons[4].OnButtonClick += this.Level5;
             levelButtons[5].OnButtonClick += this.Level6;
             levelButtons[6].OnButtonClick += this.LastLevel;
-            player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
+            
 
             // TEST WIRE
             wire = new Wire(player);
@@ -394,6 +395,7 @@ namespace LiveWire
 
         private void NewLevel(Level level)
         {
+            player.Position = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
             // read info
             string[] line;
             string newLine;

@@ -249,7 +249,11 @@ namespace LiveWire
                     }
                     foreach (TileParent tile in board)
                     {
-                        if (tile.IsSpike && tile.Position.Intersects(new Rectangle(
+                        if (tile.IsSpike && new Rectangle(
+                            tile.Position.X,
+                            tile.Position.Y + tile.Position.Height / 2,
+                            tile.Position.Width,
+                            tile.Position.Height / 2).Intersects(new Rectangle(
                             (int)player.Position.X,
                             (int)player.Position.Y,
                             (int)player.Dimensions.X,
@@ -396,6 +400,7 @@ namespace LiveWire
         private void NewLevel(Level level)
         {
             player.Position = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
+            player.Velocity = new Vector2(0, 0);
             // read info
             string[] line;
             string newLine;

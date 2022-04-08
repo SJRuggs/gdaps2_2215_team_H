@@ -69,7 +69,7 @@ namespace LiveWire
         {
             if (wires.Count > 1)
             {
-                if (Math.Abs(wires[wires.Count - 1].Radians() - wires[wires.Count - 2].Radians()) < 0.1)
+                if (Math.Abs(wires[wires.Count - 1].Radians() - wires[wires.Count - 2].Radians()) < 0.08)
                 {
                     TrimLastSegment();
                 }

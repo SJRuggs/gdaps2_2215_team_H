@@ -423,8 +423,15 @@ namespace LiveWire
                     switch (newLine[c])
                     {
                         case 'X':
+                            board[r, c].IsActive = false;
                             board[r, c].IsSpike = true;
                             board[r, c].BlocksPLayer = false;
+                            board[r, c].BlocksWire = false;
+                            board[r, c].AnimState[15] = true;
+                            for (int i = 0; i < 15; i++)
+                            {
+                                board[r, c].AnimState[i] = false;
+                            }
                             break;
                     }
                 }
@@ -605,7 +612,7 @@ namespace LiveWire
                     if (tile.IsSpike)
                     {
                         tile.AnimState[15] = true;
-                        for (int i = 0; i < tile.AnimState.Length; i++)
+                        for (int i = 0; i < 15; i++)
                         {
                             tile.AnimState[i] = false;
                         }

@@ -43,6 +43,7 @@ namespace LiveWire
         protected bool interactsWire;
 
         // --- PROPERTIES ---
+        public bool IsActive { get; set; }
         public Rectangle Position
         {
             get { return position; }

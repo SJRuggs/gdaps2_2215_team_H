@@ -20,7 +20,6 @@ namespace LiveWire
 
             // All necessary properties are inherited from TileParent to reduce redundancy
             
-        public bool IsActive { get; set; }
 
         // --- CONSTRUCTOR ---
         public Tile(int x, int y, int w, int h, Texture2D spriteSheet, bool isActive)

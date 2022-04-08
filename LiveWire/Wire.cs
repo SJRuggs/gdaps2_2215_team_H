@@ -13,7 +13,7 @@ namespace LiveWire
     public class Wire
     {
         // --- VARIABLE DELCARATIONS ---
-        private float maxLength = 400;
+        private float maxLength = 200;
         private List<Segment> wires;
         private Player player;
 
@@ -66,91 +66,11 @@ namespace LiveWire
         // detects and trims irrelevant nodes
         public void DetectTrim()
         {
-            float rads;
-            float rads2;
-            for (int i = 0; i < wires.Count - 1; i++)
+            if (wires.Count > 1)
             {
-                rads = wires[i].Radians();
-                rads2 = wires[i + 1].Radians();
-                // wire on Q1
-                if (wires[i].Node2.X % 40 > 20 && wires[i].Node2.Y % 40 < 21)
+                if (Math.Abs(wires[wires.Count - 1].Radians() - wires[wires.Count - 2].Radians()) < 0.1)
                 {
-                    // pulling to Q4
-                    if (rads > Math.PI)
-                    {
-                        if (rads > rads2)
-                        {
-                            TrimLastSegment();
-                        }
-                    }
-                    // pulling to Q2
-                    else
-                    {
-                        if (rads < rads2)
-                        {
-                            TrimLastSegment();
-                        }
-                    }
-                }
-                // wire on Q2
-                else if (wires[i].Node2.X % 40 > 20 && wires[i].Node2.Y % 40 > 20)
-                {
-                    // pulling to Q3
-                    if (rads > Math.PI)
-                    {
-                        if (rads < rads2)
-                        {
-                            TrimLastSegment();
-                        }
-                    }
-                    // pulling to Q1
-                    else
-                    {
-                        if (rads > rads2)
-                        {
-                            TrimLastSegment();
-                        }
-                    }
-                }
-                // wire on Q3
-                else if (wires[i].Node2.X % 40 < 21 && wires[i].Node2.Y % 40 > 20)
-                {
-                    // pulling to Q4
-                    if (rads > Math.PI)
-                    {
-                        if (rads < rads2)
-                        {
-                            TrimLastSegment();
-                        }
-                    }
-                    // pulling to Q2
-                    else
-                    {
-                        if (rads > rads2)
-                        {
-                            TrimLastSegment();
-                        }
-                    }
-                }
-                // wire on Q4
-                else
-                {
-                    // pulling to Q3
-                    if (rads > Math.PI)
-                    {
-                        if (rads > rads2)
-                        {
-                            TrimLastSegment();
-                        }
-                    }
-                    // pulling to Q1
-                    else
-                    {
-                        if (rads < rads2)
-                        {
-                            TrimLastSegment();
-                        }
-                    }
+                    TrimLastSegment();
                 }
             }
         }
@@ -160,6 +80,7 @@ namespace LiveWire
         {
             wires[wires.Count - 1].Update(board, this, player);
             DetectTrim();
+            //wires[wires.Count - 1].LimitSegment(this, player);
         }
 
         // trims the last segment and updates the new end to find the player

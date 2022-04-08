@@ -238,8 +238,27 @@ namespace LiveWire
 
                 case GameState.PlayLevel:
                     player.PlayerMovement(kbState, prevKbState, board);
-                    wire.Wires[wire.Wires.Count - 1].Node2 = player.Position;
+                    wire.Wires[wire.Wires.Count - 1].Node2 = player.Center();
                     wire.Update(board);
+
+                    // detect reset
+                    if (kbState.IsKeyDown(Keys.R))
+                    {
+                        NewLevel(currentLevel);
+                    }
+                    foreach (TileParent tile in board)
+                    {
+                        if (tile.IsSpike && tile.Position.Intersects(new Rectangle(
+                            (int)player.Position.X,
+                            (int)player.Position.Y,
+                            (int)player.Dimensions.X,
+                            (int)player.Dimensions.Y)))
+                        {
+                            NewLevel(currentLevel);
+                        }
+                    }
+
+
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
@@ -403,6 +422,13 @@ namespace LiveWire
                         // the files.
                         temporaryBool = newLine[c] != '-';
                         board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
+                        switch (newLine[c])
+                        {
+                            case 'X':
+                                board[r, c].IsSpike = true;
+                                board[r, c].BlocksPLayer = false;
+                                break;
+                        }
                     }
                 }
 

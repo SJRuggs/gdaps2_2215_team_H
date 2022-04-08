@@ -66,7 +66,7 @@ namespace LiveWire
         // detects and trims irrelevant nodes
         public void DetectTrim()
         {
-            
+            // TODO: finish DetectTrim()
         }
 
         // detects collision for each segment

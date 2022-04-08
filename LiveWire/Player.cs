@@ -64,6 +64,11 @@ namespace LiveWire
             get { return position; }
             set { position = value; }
         }
+        public Vector2 Dimensions
+        {
+            get { return dimensions; }
+            set { dimensions = value; }
+        }
 
         public Vector2 PrevPosition
         {
@@ -281,9 +286,10 @@ namespace LiveWire
             }
         }
 
+        // NOT TRUE CENTER, center of player's head
         public Vector2 Center()
         {
-            return new Vector2(position.X + dimensions.X / 2, position.Y + dimensions.Y);
+            return new Vector2(position.X + dimensions.X / 2, position.Y + dimensions.Y / 3);
         }
     }
 }

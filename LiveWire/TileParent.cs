@@ -41,9 +41,16 @@ namespace LiveWire
         protected bool blocksWire;
         // Whether the object does anything when the Wire creates a node around it
         protected bool interactsWire;
+        // Whether the object is a spike
+        protected bool isSpike;
 
         // --- PROPERTIES ---
         public bool IsActive { get; set; }
+        public bool IsSpike
+        {
+            get { return isSpike; }
+            set { isSpike = value; }
+        }
         public Rectangle Position
         {
             get { return position; }
@@ -59,7 +66,7 @@ namespace LiveWire
         public bool BlocksPLayer
         {
             get { return blocksPlayer; }
-            set { blocksWire = value; }
+            set { blocksPlayer = value; }
         }
 
         public bool BlocksWire

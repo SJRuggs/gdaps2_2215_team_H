@@ -113,7 +113,7 @@ namespace LiveWire
         public void newSegment(TileParent[,] board, Wire wire, Vector2 enter)
         {
             node2 = enter;
-            wire.Wires.Add(new Segment(enter, wire.Player.Position));
+            wire.Wires.Add(new Segment(enter, wire.Player.Center()));
         }
 
         // draws the segment between the two nodes

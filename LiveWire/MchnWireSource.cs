@@ -69,6 +69,7 @@ namespace LiveWire
             blocksPlayer = true;
             blocksWire = false;
             interactsWire = false;
+            animState = new bool[15];
         }
 
         #endregion

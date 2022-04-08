@@ -253,17 +253,6 @@ namespace LiveWire
                         {
                             NewLevel(currentLevel++);
                         }
-                        
-                        if (currentLevel == Level.EndLevel) 
-                        { 
-                            currentState = GameState.MainMenu;  
-                            currentLevel = Level.Level1; 
-                        }
-
-                        else 
-                        { 
-                            NewLevel(currentLevel++); 
-                        }
                     }
 
                     break;
@@ -504,86 +493,85 @@ namespace LiveWire
                         }
                     }
                 }
-
-                // --- ANIM STATES ---
-
-                // corner tiles
-                board[rows - 1, cols - 1].AnimState[5] = board[rows - 2, cols - 2].AnimState[0];
-                board[rows - 1, cols - 1].AnimState[6] = true;
-                board[rows - 1, cols - 1].AnimState[7] = true;
-                board[rows - 1, cols - 1].AnimState[8] = true;
-                board[rows - 1, 0].AnimState[5] = true;
-                board[rows - 1, 0].AnimState[6] = board[rows - 2, 1].AnimState[0];
-                board[rows - 1, 0].AnimState[7] = true;
-                board[rows - 1, 0].AnimState[8] = true;
-                board[0, 0].AnimState[5] = true;
-                board[0, 0].AnimState[6] = true;
-                board[0, 0].AnimState[7] = board[1, cols - 2].AnimState[0];
-                board[0, 0].AnimState[8] = true;
-                board[0, cols - 1].AnimState[5] = true;
-                board[0, cols - 1].AnimState[6] = true;
-                board[0, cols - 1].AnimState[7] = true;
-                board[0, cols - 1].AnimState[8] = board[1, 1].AnimState[0];
-
-                // edge tiles
-                for (int r = 1; r < rows - 1; r++)
-                {
-                    board[r, 0].AnimState[2] = !board[r, 1].AnimState[0];
-                    board[r, 0].AnimState[5] = true;
-                    board[r, 0].AnimState[6] = board[r - 1, 1].AnimState[0] && board[r, 1].AnimState[0] || board[r, 0].AnimState[6];
-                    board[r, 0].AnimState[7] = board[r + 1, 1].AnimState[0] && board[r, 1].AnimState[0] || board[r, 0].AnimState[7];
-                    board[r, 0].AnimState[8] = true;
-                    board[r, cols - 1].AnimState[4] = !board[r, cols - 2].AnimState[0];
-                    board[r, cols - 1].AnimState[5] = board[r - 1, cols - 2].AnimState[0] && board[r, cols - 2].AnimState[0];
-                    board[r, cols - 1].AnimState[6] = true;
-                    board[r, cols - 1].AnimState[7] = true;
-                    board[r, cols - 1].AnimState[8] = board[r + 1, cols - 2].AnimState[0] && board[r, cols - 2].AnimState[0];
-
-                }
-                for (int c = 1; c < cols - 1; c++)
-                {
-                    board[0, c].AnimState[3] = !board[1, c].AnimState[0];
-                    board[0, c].AnimState[5] = true;
-                    board[0, c].AnimState[6] = true;
-                    board[0, c].AnimState[7] = board[1, c + 1].AnimState[0] && board[1, c].AnimState[0] || board[0, c].AnimState[7];
-                    board[0, c].AnimState[8] = board[1, c - 1].AnimState[0] && board[1, c].AnimState[0] || board[0, c].AnimState[8];
-                    board[rows - 1, c].AnimState[1] = !board[rows - 2, c].AnimState[0];
-                    board[rows - 1, c].AnimState[5] = board[rows - 2, c - 1].AnimState[0] && board[rows - 2, c].AnimState[0] || board[rows - 1, c].AnimState[5];
-                    board[rows - 1, c].AnimState[6] = board[rows - 2, c + 1].AnimState[0] && board[rows - 2, c].AnimState[0] || board[rows - 1, c].AnimState[6];
-                    board[rows - 1, c].AnimState[7] = true;
-                    board[rows - 1, c].AnimState[8] = true;
-                }
-
-                // inside tiles
-                for (int r = 1; r < rows - 1; r++)
-                {
-                    for (int c = 1; c < cols - 1; c++)
-                    {
-                        if (board[r, c].AnimState[0])
-                        {
-                            board[r, c].AnimState[1] = !board[r - 1, c].AnimState[0];
-                            board[r, c].AnimState[2] = !board[r, c + 1].AnimState[0]; 
-                            board[r, c].AnimState[3] = !board[r + 1, c].AnimState[0]; 
-                            board[r, c].AnimState[4] = !board[r, c - 1].AnimState[0];
-                            board[r, c].AnimState[5] = board[r - 1, c - 1].AnimState[0] && board[r, c - 1].AnimState[0] && board[r - 1, c].AnimState[0];
-                            board[r, c].AnimState[6] = board[r - 1, c + 1].AnimState[0] && board[r, c + 1].AnimState[0] && board[r - 1, c].AnimState[0];
-                            board[r, c].AnimState[7] = board[r + 1, c + 1].AnimState[0] && board[r, c + 1].AnimState[0] && board[r + 1, c].AnimState[0];
-                            board[r, c].AnimState[8] = board[r + 1, c - 1].AnimState[0] && board[r, c - 1].AnimState[0] && board[r + 1, c].AnimState[0];
-                        }
-                    }
-                }
-
-                // all tile bridges
-                foreach (TileParent tile in board)
-                {
-                    tile.AnimState[9]  = tile.AnimState[5] && tile.AnimState[8];
-                    tile.AnimState[10] = tile.AnimState[6] && tile.AnimState[7];
-                    tile.AnimState[11] = tile.AnimState[5] && tile.AnimState[6];
-                    tile.AnimState[12] = tile.AnimState[7] && tile.AnimState[8];
-                    tile.AnimState[13] = tile.AnimState[9] && tile.AnimState[10] && tile.AnimState[11] && tile.AnimState[12];
-                }
             }
             catch (Exception e) { Console.WriteLine(e.Message); }
+            // --- ANIM STATES ---
+
+            // corner tiles
+            board[rows - 1, cols - 1].AnimState[5] = board[rows - 2, cols - 2].AnimState[0];
+            board[rows - 1, cols - 1].AnimState[6] = true;
+            board[rows - 1, cols - 1].AnimState[7] = true;
+            board[rows - 1, cols - 1].AnimState[8] = true;
+            board[rows - 1, 0].AnimState[5] = true;
+            board[rows - 1, 0].AnimState[6] = board[rows - 2, 1].AnimState[0];
+            board[rows - 1, 0].AnimState[7] = true;
+            board[rows - 1, 0].AnimState[8] = true;
+            board[0, 0].AnimState[5] = true;
+            board[0, 0].AnimState[6] = true;
+            board[0, 0].AnimState[7] = board[1, cols - 2].AnimState[0];
+            board[0, 0].AnimState[8] = true;
+            board[0, cols - 1].AnimState[5] = true;
+            board[0, cols - 1].AnimState[6] = true;
+            board[0, cols - 1].AnimState[7] = true;
+            board[0, cols - 1].AnimState[8] = board[1, 1].AnimState[0];
+
+            // edge tiles
+            for (int r = 1; r < rows - 1; r++)
+            {
+                board[r, 0].AnimState[2] = !board[r, 1].AnimState[0];
+                board[r, 0].AnimState[5] = true;
+                board[r, 0].AnimState[6] = board[r - 1, 1].AnimState[0] && board[r, 1].AnimState[0] || board[r, 0].AnimState[6];
+                board[r, 0].AnimState[7] = board[r + 1, 1].AnimState[0] && board[r, 1].AnimState[0] || board[r, 0].AnimState[7];
+                board[r, 0].AnimState[8] = true;
+                board[r, cols - 1].AnimState[4] = !board[r, cols - 2].AnimState[0];
+                board[r, cols - 1].AnimState[5] = board[r - 1, cols - 2].AnimState[0] && board[r, cols - 2].AnimState[0];
+                board[r, cols - 1].AnimState[6] = true;
+                board[r, cols - 1].AnimState[7] = true;
+                board[r, cols - 1].AnimState[8] = board[r + 1, cols - 2].AnimState[0] && board[r, cols - 2].AnimState[0];
+
+            }
+            for (int c = 1; c < cols - 1; c++)
+            {
+                board[0, c].AnimState[3] = !board[1, c].AnimState[0];
+                board[0, c].AnimState[5] = true;
+                board[0, c].AnimState[6] = true;
+                board[0, c].AnimState[7] = board[1, c + 1].AnimState[0] && board[1, c].AnimState[0] || board[0, c].AnimState[7];
+                board[0, c].AnimState[8] = board[1, c - 1].AnimState[0] && board[1, c].AnimState[0] || board[0, c].AnimState[8];
+                board[rows - 1, c].AnimState[1] = !board[rows - 2, c].AnimState[0];
+                board[rows - 1, c].AnimState[5] = board[rows - 2, c - 1].AnimState[0] && board[rows - 2, c].AnimState[0] || board[rows - 1, c].AnimState[5];
+                board[rows - 1, c].AnimState[6] = board[rows - 2, c + 1].AnimState[0] && board[rows - 2, c].AnimState[0] || board[rows - 1, c].AnimState[6];
+                board[rows - 1, c].AnimState[7] = true;
+                board[rows - 1, c].AnimState[8] = true;
+            }
+
+            // inside tiles
+            for (int r = 1; r < rows - 1; r++)
+            {
+                for (int c = 1; c < cols - 1; c++)
+                {
+                    if (board[r, c].AnimState[0])
+                    {
+                        board[r, c].AnimState[1] = !board[r - 1, c].AnimState[0];
+                        board[r, c].AnimState[2] = !board[r, c + 1].AnimState[0];
+                        board[r, c].AnimState[3] = !board[r + 1, c].AnimState[0];
+                        board[r, c].AnimState[4] = !board[r, c - 1].AnimState[0];
+                        board[r, c].AnimState[5] = board[r - 1, c - 1].AnimState[0] && board[r, c - 1].AnimState[0] && board[r - 1, c].AnimState[0];
+                        board[r, c].AnimState[6] = board[r - 1, c + 1].AnimState[0] && board[r, c + 1].AnimState[0] && board[r - 1, c].AnimState[0];
+                        board[r, c].AnimState[7] = board[r + 1, c + 1].AnimState[0] && board[r, c + 1].AnimState[0] && board[r + 1, c].AnimState[0];
+                        board[r, c].AnimState[8] = board[r + 1, c - 1].AnimState[0] && board[r, c - 1].AnimState[0] && board[r + 1, c].AnimState[0];
+                    }
+                }
+            }
+
+            // all tile bridges
+            foreach (TileParent tile in board)
+            {
+                tile.AnimState[9] = tile.AnimState[5] && tile.AnimState[8];
+                tile.AnimState[10] = tile.AnimState[6] && tile.AnimState[7];
+                tile.AnimState[11] = tile.AnimState[5] && tile.AnimState[6];
+                tile.AnimState[12] = tile.AnimState[7] && tile.AnimState[8];
+                tile.AnimState[13] = tile.AnimState[9] && tile.AnimState[10] && tile.AnimState[11] && tile.AnimState[12];
+            }
             if (reader != null) { reader.Close(); }
         }
 
@@ -602,6 +590,7 @@ namespace LiveWire
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level1;
+            NewLevel(currentLevel);
         }
 
         public void SelectLevel()

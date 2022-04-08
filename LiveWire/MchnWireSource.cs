@@ -9,15 +9,28 @@ namespace LiveWire
     /// </summary>
     public class MchnWireSource : Machine
     {
+        #region CONSTANTS --------------------------------------------------------------------------------
+
+        // WireSource can be tinted to differentiate from normal tiles
+        private Color wireSourceTint = Color.Yellow;
+
+        #endregion
+
         #region FIELDS --------------------------------------------------------------------------------
 
         // The Wire held in this Wire Source Machine
         private Wire wire;
+        // Whether the Wire has been taken out of the WireSource,
+        // and is either in the Player's hand or connected to another Machine
+        private bool isWireDrawn;
 
         #endregion
 
         #region PROPERTIES --------------------------------------------------------------------------------
 
+        /// <summary>
+        /// The Wire stored in the WireSource
+        /// </summary>
         public Wire ConnectedWire
         {
             get { return wire; }
@@ -25,11 +38,11 @@ namespace LiveWire
 
         /// <summary>
         /// Returns whether the WireSource has a Wire inside it;
-        /// if the Wire is on the map, this returns false.
+        /// if the Wire is on the map, this returns true.
         /// </summary>
-        public bool ContainsWire
+        public bool IsWireDrawn
         {
-            get { return wire == null; }
+            get { return isWireDrawn; }
         }
 
         #endregion
@@ -47,13 +60,27 @@ namespace LiveWire
         public MchnWireSource(int x, int y, int width, int height, Texture2D spriteSheet)
             : base(x, y, width, height, spriteSheet)
         {
+            // TODO: Initialize this created Wire with proper information to make one
+            // endpoint follow the Player and one originate from the WireSource;
+            // it won't be drawn on screen when first initialized but it should exist
+            // TODO: Pass the Wire a reference to the WireSource
+            // wire = new Wire();
+
+            blocksPlayer = true;
+            blocksWire = false;
+            interactsWire = false;
         }
 
         #endregion
 
+        #region METHODS --------------------------------------------------------------------------------
+
+        /// <summary>
+        /// Draws the Wire Source to the screen
+        /// </summary>
+        /// <param name="spriteBatch">The currently open sprite batch</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            // TODO: add animations for each machine (switch statement using enum)
             for (int i = 0; i < animState.Length; i++)
             {
                 if (animState[i])
@@ -68,23 +95,49 @@ namespace LiveWire
                             0,
                             40,
                             40),
-                        Color.White);
+                        wireSourceTint);
                 }
             }
         }
 
+        /// <summary>
+        /// Logic for when the Player tries to interact with the WireSource
+        /// </summary>
+        /// <param name="player">Reference to the Player object initiating the interaction</param>
         public override void PlayerInteract(Player player)
         {
-            // TODO: add interactions for when the Source is in different states
-
-            if (player.HoldingWire != null)
+            // If the Wire is currently on the map, remove it from the map
+            if (IsWireDrawn)
             {
-                if (ContainsWire)
-                {
+                // Stop it from being drawn, and properly remove references to the
+                // Player or Machine its endpoint is at
+                isWireDrawn = false;
 
-                }
+                // TODO: Remove the Wire's reference to the Machine or Player
+                // TODO: If the Wire is plugged into a Machine,
+                // get a reference to the Machine and call its DisconnectWire() method
+                // TODO: Otherwise, if the Wire is held by the Player,
+                // remove the Player's reference to the Wire
             }
+            // If the Wire is not on the map, put it on the map and give it to the Player
+            else
+            {
+                // If the Player already has a Wire, replace it with this one
+                if (player.HoldingWire != null)
+                {
+                    // TODO: Find the WireSource the Player's Wire is originating from
+                    // and set its isWireDrawn to false
+                    // TODO: Remove that Wire's reference to the Player holding it
+                    // TODO: Remove the Player's reference to that old Wire
+                }
 
+                // Give the Player the Wire from this machine to hold
+                // TODO: Just wanted to make sure, is this the
+                // correct way to give a Wire to the Player?
+                player.HoldingWire = wire;
+            }
         }
+
+        #endregion
     }
 }

@@ -13,7 +13,7 @@ namespace LiveWire
     {
         WireSource,
         PlugDoorController,
-        Door
+        DoorSegment
     }
 
     public abstract class Machine : TileParent

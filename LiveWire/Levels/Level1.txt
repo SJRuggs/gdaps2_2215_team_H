@@ -28,7 +28,7 @@
 111111111111111111111111111111111111111111111111
 5
 WireSource,25,34
-DoorSegment,25,43,1
-DoorSegment,24,43,1
-DoorSegment,23,43,1
+DoorSegment,25,43,0
+DoorSegment,24,43,0
+DoorSegment,23,43,0
 PlugDoorController,25,40,2,3,4

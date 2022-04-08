@@ -394,133 +394,130 @@ namespace LiveWire
 
         private void NewLevel(Level level)
         {
-            try 
-            {
-                // read info
-                string[] line;
-                string newLine;
-                reader = new StreamReader("../../../Levels/" + currentLevel + ".txt");
-                line = reader.ReadLine().Split(',');
-                rows = int.Parse(line[0]);
-                cols = int.Parse(line[1]);
-                tileWidth = int.Parse(line[2]);
-                tileHeight = int.Parse(line[3]);
-                bool temporaryBool;
-                // Variables for loading Machines
-                string machinesNextLine;
-                int machineCount;
+            // read info
+            string[] line;
+            string newLine;
+            reader = new StreamReader("../../../Levels/" + currentLevel + ".txt");
+            line = reader.ReadLine().Split(',');
+            rows = int.Parse(line[0]);
+            cols = int.Parse(line[1]);
+            tileWidth = int.Parse(line[2]);
+            tileHeight = int.Parse(line[3]);
+            bool temporaryBool;
+            // Variables for loading Machines
+            string machinesNextLine;
+            int machineCount;
 
-                // create board
-                board = new TileParent[rows, cols];
-                for (int r = 0; r < rows; r++)
+            // create board
+            board = new TileParent[rows, cols];
+            for (int r = 0; r < rows; r++)
+            {
+                newLine = reader.ReadLine();
+                for (int c = 0; c < cols; c++)
                 {
-                    newLine = reader.ReadLine();
-                    for (int c = 0; c < cols; c++)
+                    // Note from Owen: I deleted the if block here that checked for whether a tile
+                    // is a machine, since I'll be storing machines outside the level grid in
+                    // the files.
+                    temporaryBool = newLine[c] != '-';
+                    board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
+                    switch (newLine[c])
                     {
-                        // Note from Owen: I deleted the if block here that checked for whether a tile
-                        // is a machine, since I'll be storing machines outside the level grid in
-                        // the files.
-                        temporaryBool = newLine[c] != '-';
-                        board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
-                        switch (newLine[c])
+                        case 'X':
+                            board[r, c].IsSpike = true;
+                            board[r, c].BlocksPLayer = false;
+                            break;
+                    }
+                }
+            }
+
+            // Read Machines from Machine list at the end of the level file
+
+            // Initialize machines to an empty List
+            machines = new List<Machine>();
+
+            // If there are more lines after the level, try to load them as machines
+            if ((machinesNextLine = reader.ReadLine().Trim()) != null)
+            {
+                // Treat the first line as the number of machines in the level
+                if (int.TryParse(machinesNextLine, out machineCount))
+                {
+                    // Loop through each expected line 
+                    for (int i = 0; i < machineCount; i++)
+                    {
+                        // Splits the Machine info into an array
+                        line = reader.ReadLine().Trim().Split(',');
+
+                        // Parses the first value of each line as the type of Machine it is,
+                        // and constructs the Machine accordingly
+                        // The second and third values on each split line will always be
+                        // the Machine's position, and values after that represent special
+                        // data unique for each Machine Type.
+                        switch (Enum.Parse<MachineType>(line[0]))
                         {
-                            case 'X':
-                                board[r, c].IsSpike = true;
-                                board[r, c].BlocksPLayer = false;
+                            case MachineType.WireSource:
+                                // Add a new WireSource at the specified location
+                                machines.Add(
+                                    new MchnWireSource(
+                                        int.Parse(line[1]) * tileWidth,
+                                        int.Parse(line[2]) * tileHeight,
+                                        tileWidth,
+                                        tileHeight,
+                                        tileSpriteSheet
+                                        )
+                                    );
+                                break;
+                            case MachineType.PlugDoorController:
+                                // Initialize a new List to fill with references
+                                // and pass in to the new DoorController
+                                List<MchnDoorSegment> doorSegments = new List<MchnDoorSegment>();
+
+                                // Loops through the rest of the comma-separated values in the line,
+                                // starting at index 3, the first value that would represent the
+                                // index of a door segment in the machines List
+                                for (int j = 3; j < line.Length; j++)
+                                {
+                                    // Get the machine at the specified value
+                                    Machine machineListed = machines[int.Parse(line[j])];
+
+                                    // Check to see if it's a DoorSegment
+                                    if (machineListed is MchnDoorSegment)
+                                    {
+                                        // Cast it to DoorSegment and add it to the list
+                                        doorSegments.Add((MchnDoorSegment)machineListed);
+                                    }
+                                }
+
+                                machines.Add(
+                                    new MchnPlugDoorController(
+                                        int.Parse(line[1]) * tileWidth,
+                                        int.Parse(line[2]) * tileHeight,
+                                        tileWidth,
+                                        tileHeight,
+                                        tileSpriteSheet,
+                                        // Pass the doorSegments list into the controller's constructor
+                                        doorSegments
+                                        )
+                                    );
+                                break;
+                            case MachineType.DoorSegment:
+                                machines.Add(
+                                    new MchnDoorSegment(
+                                        int.Parse(line[1]) * tileWidth,
+                                        int.Parse(line[2]) * tileHeight,
+                                        tileWidth,
+                                        tileHeight,
+                                        tileSpriteSheet,
+                                        // Pass in this boolean representing whether the door is open
+                                        // 0 == Closed, 1 == Open
+                                        int.Parse(line[3]) == 1
+                                        )
+                                    );
                                 break;
                         }
                     }
                 }
-
-                // Read Machines from Machine list at the end of the level file
-
-                // Initialize machines to an empty List
-                machines = new List<Machine>();
-                
-                // If there are more lines after the level, try to load them as machines
-                if ((machinesNextLine = reader.ReadLine().Trim()) != null)
-                {
-                    // Treat the first line as the number of machines in the level
-                    if (int.TryParse(machinesNextLine, out machineCount))
-                    {
-                        // Loop through each expected line 
-                        for (int i = 0; i < machineCount; i++)
-                        {
-                            // Splits the Machine info into an array
-                            line = reader.ReadLine().Trim().Split(',');
-
-                            // Parses the first value of each line as the type of Machine it is,
-                            // and constructs the Machine accordingly
-                            // The second and third values on each split line will always be
-                            // the Machine's position, and values after that represent special
-                            // data unique for each Machine Type.
-                            switch (Enum.Parse<MachineType>(line[0]))
-                            {
-                                case MachineType.WireSource:
-                                    // Add a new WireSource at the specified location
-                                    machines.Add(
-                                        new MchnWireSource(
-                                            int.Parse(line[1]) * tileWidth,
-                                            int.Parse(line[2]) * tileHeight,
-                                            tileWidth,
-                                            tileHeight,
-                                            tileSpriteSheet
-                                            )
-                                        );
-                                    break;
-                                case MachineType.PlugDoorController:
-                                    // Initialize a new List to fill with references
-                                    // and pass in to the new DoorController
-                                    List<MchnDoorSegment> doorSegments = new List<MchnDoorSegment>();
-
-                                    // Loops through the rest of the comma-separated values in the line,
-                                    // starting at index 3, the first value that would represent the
-                                    // index of a door segment in the machines List
-                                    for (int j = 3; j < line.Length; j++)
-                                    {
-                                        // Get the machine at the specified value
-                                        Machine machineListed = machines[int.Parse(line[j])];
-
-                                        // Check to see if it's a DoorSegment
-                                        if (machineListed is MchnDoorSegment)
-                                        {
-                                            // Cast it to DoorSegment and add it to the list
-                                            doorSegments.Add((MchnDoorSegment)machineListed);
-                                        }
-                                    }
-
-                                    machines.Add(
-                                        new MchnPlugDoorController(
-                                            int.Parse(line[1]) * tileWidth,
-                                            int.Parse(line[2]) * tileHeight,
-                                            tileWidth,
-                                            tileHeight,
-                                            tileSpriteSheet,
-                                            // Pass the doorSegments list into the controller's constructor
-                                            doorSegments
-                                            )
-                                        );
-                                    break;
-                                case MachineType.DoorSegment:
-                                    machines.Add(
-                                        new MchnDoorSegment(
-                                            int.Parse(line[1]) * tileWidth,
-                                            int.Parse(line[2]) * tileHeight,
-                                            tileWidth,
-                                            tileHeight,
-                                            tileSpriteSheet,
-                                            // Pass in this boolean representing whether the door is open
-                                            // 0 == Closed, 1 == Open
-                                            int.Parse(line[3]) == 1
-                                            )
-                                        );
-                                    break;
-                            }
-                        }
-                    }
-                }
             }
-            catch (Exception e) { Console.WriteLine(e.Message); }
+
             // --- ANIM STATES ---
 
             // corner tiles
@@ -570,34 +567,52 @@ namespace LiveWire
                 board[rows - 1, c].AnimState[8] = true;
             }
 
+
+
             // inside tiles
             for (int r = 1; r < rows - 1; r++)
             {
                 for (int c = 1; c < cols - 1; c++)
                 {
-                    if (board[r, c].AnimState[0])
+                    if (board[r, c] is Tile)
                     {
-                        board[r, c].AnimState[1] = !board[r - 1, c].AnimState[0];
-                        board[r, c].AnimState[2] = !board[r, c + 1].AnimState[0];
-                        board[r, c].AnimState[3] = !board[r + 1, c].AnimState[0];
-                        board[r, c].AnimState[4] = !board[r, c - 1].AnimState[0];
-                        board[r, c].AnimState[5] = board[r - 1, c - 1].AnimState[0] && board[r, c - 1].AnimState[0] && board[r - 1, c].AnimState[0];
-                        board[r, c].AnimState[6] = board[r - 1, c + 1].AnimState[0] && board[r, c + 1].AnimState[0] && board[r - 1, c].AnimState[0];
-                        board[r, c].AnimState[7] = board[r + 1, c + 1].AnimState[0] && board[r, c + 1].AnimState[0] && board[r + 1, c].AnimState[0];
-                        board[r, c].AnimState[8] = board[r + 1, c - 1].AnimState[0] && board[r, c - 1].AnimState[0] && board[r + 1, c].AnimState[0];
+                        if (board[r, c].AnimState[0])
+                        {
+                            board[r, c].AnimState[1] = !board[r - 1, c].AnimState[0];
+                            board[r, c].AnimState[2] = !board[r, c + 1].AnimState[0];
+                            board[r, c].AnimState[3] = !board[r + 1, c].AnimState[0];
+                            board[r, c].AnimState[4] = !board[r, c - 1].AnimState[0];
+                            board[r, c].AnimState[5] = board[r - 1, c - 1].AnimState[0] && board[r, c - 1].AnimState[0] && board[r - 1, c].AnimState[0];
+                            board[r, c].AnimState[6] = board[r - 1, c + 1].AnimState[0] && board[r, c + 1].AnimState[0] && board[r - 1, c].AnimState[0];
+                            board[r, c].AnimState[7] = board[r + 1, c + 1].AnimState[0] && board[r, c + 1].AnimState[0] && board[r + 1, c].AnimState[0];
+                            board[r, c].AnimState[8] = board[r + 1, c - 1].AnimState[0] && board[r, c - 1].AnimState[0] && board[r + 1, c].AnimState[0];
+                        }
                     }
+                    
                 }
             }
 
             // all tile bridges
             foreach (TileParent tile in board)
             {
-                tile.AnimState[9] = tile.AnimState[5] && tile.AnimState[8];
-                tile.AnimState[10] = tile.AnimState[6] && tile.AnimState[7];
-                tile.AnimState[11] = tile.AnimState[5] && tile.AnimState[6];
-                tile.AnimState[12] = tile.AnimState[7] && tile.AnimState[8];
-                tile.AnimState[13] = tile.AnimState[9] && tile.AnimState[10] && tile.AnimState[11] && tile.AnimState[12];
+                if (tile is Tile)
+                {
+                    tile.AnimState[9] = tile.AnimState[5] && tile.AnimState[8];
+                    tile.AnimState[10] = tile.AnimState[6] && tile.AnimState[7];
+                    tile.AnimState[11] = tile.AnimState[5] && tile.AnimState[6];
+                    tile.AnimState[12] = tile.AnimState[7] && tile.AnimState[8];
+                    tile.AnimState[13] = tile.AnimState[9] && tile.AnimState[10] && tile.AnimState[11] && tile.AnimState[12];
+                    if (tile.IsSpike)
+                    {
+                        tile.AnimState[15] = true;
+                        for (int i = 0; i < tile.AnimState.Length; i++)
+                        {
+                            tile.AnimState[i] = false;
+                        }
+                    }
+                }
             }
+
             if (reader != null) { reader.Close(); }
         }
 

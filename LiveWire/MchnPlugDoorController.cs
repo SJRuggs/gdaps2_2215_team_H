@@ -60,6 +60,7 @@ namespace LiveWire
             blocksWire = false;
             interactsWire = false;
             this.doorTiles = doorTiles;
+            animState = new bool[16];
         }
 
         /// <summary>

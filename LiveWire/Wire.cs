@@ -34,6 +34,7 @@ namespace LiveWire
         public Player Player
         {
             get { return player; }
+            set { player = value; }
         }
 
 
@@ -66,7 +67,13 @@ namespace LiveWire
         // detects and trims irrelevant nodes
         public void DetectTrim()
         {
-            // TODO: finish DetectTrim()
+            if (wires.Count > 1)
+            {
+                if (Math.Abs(wires[wires.Count - 1].Radians() - wires[wires.Count - 2].Radians()) < 0.03)
+                {
+                    TrimLastSegment();
+                }
+            }
         }
 
         // detects collision for each segment

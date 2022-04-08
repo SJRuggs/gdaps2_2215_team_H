@@ -109,7 +109,7 @@ namespace LiveWire
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
             // Make sure the line below is commented out before committing
-            //_graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
 
             // objects and states
@@ -118,6 +118,9 @@ namespace LiveWire
 
             menuButtons = new List<Button>();
             levelButtons = new List<Button>();
+
+            // TEST WIRE
+            wire = new Wire(player);
 
             base.Initialize();
         }
@@ -187,13 +190,6 @@ namespace LiveWire
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
-            levelButtons.Add(new Button(
-                _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 80, screenHeight / 3 + 180, 160, 80),
-                "Final Level",
-                basicFont,
-                Color.FromNonPremultiplied(86, 91, 143, 255)));
-
 
             menuButtons[0].OnButtonClick += this.StartGame;
             menuButtons[1].OnButtonClick += this.SelectLevel;
@@ -204,12 +200,6 @@ namespace LiveWire
             levelButtons[3].OnButtonClick += this.Level4;
             levelButtons[4].OnButtonClick += this.Level5;
             levelButtons[5].OnButtonClick += this.Level6;
-            levelButtons[6].OnButtonClick += this.LastLevel;
-            player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
-
-            // TEST WIRE
-            wire = new Wire(player);
-            wire.AddSegment(new Segment(new Vector2(750, 1000), new Vector2(700, 800)));
         }
 
         protected override void Update(GameTime gameTime)
@@ -262,24 +252,43 @@ namespace LiveWire
                         {
                             NewLevel(currentLevel);
                         }
+                        if (tile.IsFlag && tile.Position.Contains(new Rectangle((int)player.Position.X,
+                            (int)player.Position.Y,
+                            (int)player.Dimensions.X,
+                            (int)player.Dimensions.Y)))
+                        {
+                            currentLevel++;
+                            if (currentLevel == Level.EndLevel)
+                            {
+                                currentState = GameState.MainMenu;
+                                currentLevel = Level.MainMenu;
+                                NewLevel(currentLevel);
+                                IsMouseVisible = true;
+                            }
+                            else
+                            {
+                                NewLevel(currentLevel);
+                            }
+                        }
                     }
 
-
+                    /*
                     // TEMPORARY transition
                     if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
                     {
+                        currentLevel++;
                         if (currentLevel == Level.EndLevel)
                         {
                             currentState = GameState.MainMenu;
-                            currentLevel = Level.Level1;
+                            currentLevel = Level.MainMenu;
+                            NewLevel(currentLevel);
                         }
-
                         else
                         {
-                            NewLevel(currentLevel++);
+                            NewLevel(currentLevel);
                         }
                     }
-
+                    */
                     break;
             }
 
@@ -298,25 +307,8 @@ namespace LiveWire
             switch (currentState)
             {
                 case GameState.MainMenu:
-                    // TEMPORARY display
-                    /*_spriteBatch.DrawString(
-                        basicFont,
-                        "Main Menu Template",
-                        new Vector2(
-                                screenWidth / 2 - (int)basicFont.MeasureString("Main Menu Template").X / 2,
-                                screenHeight / 2 - (int)basicFont.MeasureString("Main Menu Template").Y),
-                        Color.Black);
-
-                    _spriteBatch.DrawString(
-                        basicFont,
-                        "Press Enter To Advance",
-                        new Vector2(
-                                screenWidth / 2 - (int)basicFont.MeasureString("Press Enter To Advance").X / 2,
-                                screenHeight / 2),
-                        Color.Black);*/
                     DrawLevel(currentLevel);
-
-                    foreach(Button b in menuButtons)
+                    foreach (Button b in menuButtons)
                     {
                         b.Draw(_spriteBatch);
                     }
@@ -359,28 +351,11 @@ namespace LiveWire
                     // display player
                     player.Draw(_spriteBatch);
 
-                    // TEMPORARY display
-                    _spriteBatch.DrawString(
-                        basicFont,
-                        "Play Level Template",
-                        new Vector2(
-                                screenWidth / 2 - (int)basicFont.MeasureString("Play Level Template").X / 2,
-                                screenHeight / 2 - (int)basicFont.MeasureString("Play Level Template").Y),
-                        Color.White);
-
                     // Draw all Machines on the map
                     foreach (Machine machine in machines)
                     {
                         machine.Draw(_spriteBatch);
                     }
-
-                    _spriteBatch.DrawString(
-                        basicFont,
-                        "Press Enter To Advance",
-                        new Vector2(
-                                screenWidth / 2 - (int)basicFont.MeasureString("Press enter To Advance").X / 2,
-                                screenHeight / 2),
-                        Color.White);
                     break;
             }
 
@@ -400,12 +375,11 @@ namespace LiveWire
 
         private void NewLevel(Level level)
         {
-            player.Position = new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2);
-            player.Velocity = new Vector2(0, 0);
+
             // read info
             string[] line;
             string newLine;
-            reader = new StreamReader("../../../Levels/" + currentLevel + ".txt");
+            reader = new StreamReader("../../../Levels/" + level + ".txt");
             line = reader.ReadLine().Split(',');
             rows = int.Parse(line[0]);
             cols = int.Parse(line[1]);
@@ -426,7 +400,7 @@ namespace LiveWire
                     // Note from Owen: I deleted the if block here that checked for whether a tile
                     // is a machine, since I'll be storing machines outside the level grid in
                     // the files.
-                    temporaryBool = newLine[c] != '-';
+                    temporaryBool = newLine[c] != '-' && newLine[c] != 'P';
                     board[r, c] = new Tile(c * tileWidth, r * tileHeight, tileWidth, tileHeight, tileSpriteSheet, temporaryBool);
                     switch (newLine[c])
                     {
@@ -441,6 +415,22 @@ namespace LiveWire
                                 board[r, c].AnimState[i] = false;
                             }
                             break;
+
+                        case 'F':
+                            board[r, c].IsActive = false;
+                            board[r, c].IsFlag = true;
+                            board[r, c].BlocksPLayer = false;
+                            board[r, c].BlocksWire = false;
+                            board[r, c].AnimState[16] = true;
+                            break;
+                        case 'P':
+                            player.Position = new Vector2(c * 40, r * 40);
+                            player.Velocity = new Vector2(0, 0);
+                            wire.Wires.Clear();
+                            wire.AddSegment(new Segment(new Vector2(c * 40, r * 40 + 39), new Vector2(c * 40, r * 40)));
+                            wire.Player = player;
+                            break;
+
                     }
                 }
             }
@@ -625,6 +615,14 @@ namespace LiveWire
                             tile.AnimState[i] = false;
                         }
                     }
+                    if (tile.IsFlag)
+                    {
+                        tile.AnimState[16] = true;
+                        for (int i = 0; i < 16; i++)
+                        {
+                            tile.AnimState[i] = false;
+                        }
+                    }
                 }
             }
 
@@ -647,6 +645,7 @@ namespace LiveWire
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level1;
             NewLevel(currentLevel);
+            IsMouseVisible = false;
         }
 
         public void SelectLevel()
@@ -658,36 +657,37 @@ namespace LiveWire
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level1;
+            IsMouseVisible = false;
         }
         public void Level2()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level2;
+            IsMouseVisible = false;
         }
         public void Level3()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level3;
+            IsMouseVisible = false;
         }
         public void Level4()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level4;
+            IsMouseVisible = false;
         }
         public void Level5()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level5;
+            IsMouseVisible = false;
         }
         public void Level6()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level6;
-        }
-        public void LastLevel()
-        {
-            currentState = GameState.PlayLevel;
-            currentLevel = Level.EndLevel;
+            IsMouseVisible = false;
         }
     }
 }

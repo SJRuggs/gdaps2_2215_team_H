@@ -42,15 +42,11 @@ namespace LiveWire
         // Whether the object does anything when the Wire creates a node around it
         protected bool interactsWire;
         // Whether the object is a spike
-        protected bool isSpike;
 
         // --- PROPERTIES ---
         public bool IsActive { get; set; }
-        public bool IsSpike
-        {
-            get { return isSpike; }
-            set { isSpike = value; }
-        }
+        public bool IsSpike { get; set; }
+        public bool IsFlag { get; set; }
         public Rectangle Position
         {
             get { return position; }

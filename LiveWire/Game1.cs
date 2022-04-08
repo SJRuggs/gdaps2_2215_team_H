@@ -137,6 +137,7 @@ namespace LiveWire
                 "Start Game",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
+
             menuButtons.Add(new Button(
                 _graphics.GraphicsDevice,
                 new Rectangle(screenWidth / 2 - 80, screenHeight / 2 + 80, 160, 80),
@@ -204,7 +205,7 @@ namespace LiveWire
             levelButtons[4].OnButtonClick += this.Level5;
             levelButtons[5].OnButtonClick += this.Level6;
             levelButtons[6].OnButtonClick += this.LastLevel;
-            
+            player = new Player(new Vector2(_graphics.PreferredBackBufferWidth / 2, _graphics.PreferredBackBufferHeight / 2), playerSprite);
 
             // TEST WIRE
             wire = new Wire(player);

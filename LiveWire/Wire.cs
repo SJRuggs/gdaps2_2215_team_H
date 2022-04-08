@@ -69,7 +69,7 @@ namespace LiveWire
         {
             if (wires.Count > 1)
             {
-                if (Math.Abs(wires[wires.Count - 1].Radians() - wires[wires.Count - 2].Radians()) < 0.03)
+                if (Math.Abs(wires[wires.Count - 1].Radians() - wires[wires.Count - 2].Radians()) < 0.1)
                 {
                     TrimLastSegment();
                 }
@@ -88,7 +88,7 @@ namespace LiveWire
         public void TrimLastSegment()
         {
             wires.RemoveAt(wires.Count - 1);
-            wires[wires.Count - 1].Node2 = player.Position;
+            wires[wires.Count - 1].Node2 = player.Center();
         }
 
 

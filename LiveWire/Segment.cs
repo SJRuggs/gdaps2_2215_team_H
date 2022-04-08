@@ -120,7 +120,7 @@ namespace LiveWire
         public void Draw(SpriteBatch spriteBatch, GraphicsDevice graphics, Wire wire)
         {
             segment = new Texture2D(graphics, 1, 1);
-            segment.SetData(new[] { new Color(255 - (wire.GetTotalLength() / wire.MaxLength * 255), wire.GetTotalLength() / wire.MaxLength * 255, 0) });
+            segment.SetData(new[] { Color.Green });
             spriteBatch.Draw(
                 segment,
                 new Rectangle((int)node1.X, (int)node1.Y, 1, (int)this.Distance()),

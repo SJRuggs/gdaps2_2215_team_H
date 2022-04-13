@@ -315,29 +315,11 @@ namespace LiveWire
                     break;
 
                 case GameState.LevelSelect:
-                    // TEMPORARY display
-                    _spriteBatch.DrawString(
-                        basicFont,
-                        "Level Select Template",
-                        new Vector2(
-                                screenWidth / 2 - (int)basicFont.MeasureString("Level Select Template").X / 2,
-                                screenHeight / 2 - (int)basicFont.MeasureString("Level Select Template").Y),
-                        Color.Black);
-
-                    _spriteBatch.DrawString(
-                        basicFont,
-                        "Press LMB To Advance",
-                        new Vector2(
-                                screenWidth / 2 - (int)basicFont.MeasureString("Press LMB To Advance").X / 2,
-                                screenHeight / 2),
-                        Color.Black);
-
-                    foreach(Button b in levelButtons)
+                    DrawLevel(currentLevel);
+                    foreach (Button b in levelButtons)
                     {
                         b.Draw(_spriteBatch);
                     }
-
-                    DrawLevel(currentLevel);
                     break;
 
 

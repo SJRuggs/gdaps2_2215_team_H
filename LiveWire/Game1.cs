@@ -109,7 +109,7 @@ namespace LiveWire
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
             // Make sure the line below is commented out before committing
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
 
             // objects and states
@@ -150,42 +150,42 @@ namespace LiveWire
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 - 80, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 3 - 180, screenHeight / 3 - 140, 160, 80),
                 "Level 1",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3, screenHeight / 3 - 40, 160, 80),
+                new Rectangle(screenWidth / 3, screenHeight / 3 - 140, 160, 80),
                 "Level 2",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 80, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 3 + 180, screenHeight / 3 - 140, 160, 80),
                 "Level 3",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 -80, screenHeight / 3 + 90, 160, 80),
+                new Rectangle(screenWidth / 3 - 180, screenHeight / 3 + 190, 160, 80),
                 "Level 4",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3, screenHeight / 3 + 90, 160, 80),
+                new Rectangle(screenWidth / 3, screenHeight / 3 + 190, 160, 80),
                 "Level 5",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 80, screenHeight / 3 + 90, 160, 80),
+                new Rectangle(screenWidth / 3 + 180, screenHeight / 3 + 190, 160, 80),
                 "Level 6",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));

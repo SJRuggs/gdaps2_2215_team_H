@@ -230,7 +230,7 @@ namespace LiveWire
 
                 case GameState.PlayLevel:
                     player.PlayerMovement(kbState, prevKbState, board);
-                    wire.Wires[wire.Wires.Count - 1].Node2 = player.Center();
+                    wire.Wires[wire.Wires.Count - 1].Node2 = player.Center(); // causes crash when you select a level
                     wire.Update(board);
 
                     // detect reset
@@ -639,36 +639,42 @@ namespace LiveWire
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level1;
+            NewLevel(Level.Level1);
             IsMouseVisible = false;
         }
         public void Level2()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level2;
+            NewLevel(Level.Level2);
             IsMouseVisible = false;
         }
         public void Level3()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level3;
+            NewLevel(Level.Level3);
             IsMouseVisible = false;
         }
         public void Level4()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level4;
+            NewLevel(Level.Level4);
             IsMouseVisible = false;
         }
         public void Level5()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level5;
+            NewLevel(Level.Level5);
             IsMouseVisible = false;
         }
         public void Level6()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level6;
+            NewLevel(Level.Level6);
             IsMouseVisible = false;
         }
     }

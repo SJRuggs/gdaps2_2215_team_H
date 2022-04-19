@@ -44,6 +44,8 @@ namespace LiveWire
         {
             position = new Rectangle(x, y, width, height);
             this.spriteSheet = spriteSheet;
+            animState = new bool[16];
+            animState[0] = true;
         }
 
         #endregion

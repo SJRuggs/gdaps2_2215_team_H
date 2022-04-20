@@ -17,6 +17,7 @@ namespace LiveWire
         private Vector2 node1;
         private Vector2 node2;
         private Texture2D segment;
+        private Ray ray;
 
 
 
@@ -24,12 +25,22 @@ namespace LiveWire
         public Vector2 Node1
         {
             get { return node1; }
-            set { node1 = value; }
+            set 
+            {
+                node1 = value; 
+                ray.Position.X = value.X; 
+                ray.Position.Y = value.Y;
+            }
         }
         public Vector2 Node2
         {
             get { return node2; }
-            set { node2 = value; }
+            set
+            {
+                node1 = value;
+                ray.Direction.X = value.X - node1.X;
+                ray.Direction.Y = value.Y - node1.Y;
+            }
         }
 
 
@@ -39,6 +50,7 @@ namespace LiveWire
         {
             this.node1 = node1;
             this.node2 = node2;
+            ray = new Ray(new Vector3(node1.X, node1.Y, 0), new Vector3(node2.X, node2.Y, 0));
         }
 
 
@@ -73,37 +85,19 @@ namespace LiveWire
         // detects a collision on the segment with tiles that block the wire
         public void DetectCollision(TileParent[,] board, Wire wire)
         {
-            float x = node2.X;
-            float y = node2.Y;
-
-            for (int i = 0; i < Math.Max(Math.Abs(node2.X - node1.X), Math.Abs(node2.Y - node1.Y)); i++)
+            for (int i = 0; i < ray.Direction.X * ray.Direction.Y; i++)
             {
-                // tall slope
-                if (Math.Abs(node2.Y - node1.Y) > Math.Abs(node2.X - node1.X))
+                if (ray.Intersects(new BoundingBox(
+                    new Vector3(
+                        board[(int)(i % ray.Direction.X / 40), (int)(i / ray.Direction.Y / 40)].Position.X,
+                        board[(int)(i % ray.Direction.X / 40), (int)(i / ray.Direction.Y / 40)].Position.Y,
+                        0),
+                    new Vector3(
+                        board[(int)(i % ray.Direction.X / 40), (int)(i / ray.Direction.Y / 40)].Position.Width,
+                        board[(int)(i % ray.Direction.X / 40), (int)(i / ray.Direction.Y / 40)].Position.Height,
+                        0))) != null)
                 {
-                    if (node2.Y > node1.Y)  { y--; }
-                    else                    { y++; }
-                    if (node2.X > node1.X)  { x -= Math.Abs((node2.X - node1.X) / (node2.Y - node1.Y)); }
-                    else                    { x += Math.Abs((node2.X - node1.X) / (node2.Y - node1.Y)); }
-                }
-
-                // long slope
-                else
-                {
-                    if (node2.Y > node1.Y)  { y -= Math.Abs((node2.Y - node1.Y) / (node2.X - node1.X)); }
-                    else                    { y += Math.Abs((node2.Y - node1.Y) / (node2.X - node1.X)); }
-                    if (node2.X > node1.X)  { x--; }
-                    else                    { x++; }
-                }
-
-                if (board[(int)(y / 40), (int)(x / 40)].BlocksWire)
-                {
-                    if (x % 40 < 21) { x -=      (x % 40) + 3; }
-                    else             { x += 40 - (x % 40) + 3; }
-                    if (y % 40 < 21) { y -=      (y % 40) + 3; }
-                    else             { y += 40 - (y % 40) + 3; }
-
-                    newSegment(board, wire, new Vector2(x, y));
+                    newSegment(board, wire, new Vector2(i % ray.Direction.X, (int)(i / ray.Direction.Y)));
                     return;
                 }
             }

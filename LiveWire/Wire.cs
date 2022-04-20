@@ -70,7 +70,7 @@ namespace LiveWire
         {
             if (wires.Count > 1)
             {
-                if (Math.Abs(wires[wires.Count - 1].Radians() - wires[wires.Count - 2].Radians()) < 1 / Vector2.Distance(wires[wires.Count - 1].Node1, player.Position))
+                if (Math.Abs(wires[wires.Count - 1].Radians() - wires[wires.Count - 2].Radians()) < 3 / Vector2.Distance(wires[wires.Count - 1].Node1, player.Position))
                 {
                     TrimLastSegment();
                 }

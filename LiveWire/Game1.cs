@@ -416,7 +416,7 @@ namespace LiveWire
                             player.Position = new Vector2(c * 40, r * 40);
                             player.Velocity = new Vector2(0, 0);
                             wire.Wires.Clear();
-                            wire.AddSegment(new Segment(new Vector2(c * 40, r * 40 + 39), new Vector2(c * 40, r * 40)));
+                            wire.AddSegment(new Segment(new Vector2(c * 40, r * 40 + 37), new Vector2(c * 40, r * 40)));
                             wire.Player = player;
                             break;
 

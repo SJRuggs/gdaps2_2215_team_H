@@ -38,6 +38,7 @@ namespace LiveWire
         Level4,
         Level5,
         Level6,
+        Level6X,
         EndLevel
     }
 
@@ -190,6 +191,12 @@ namespace LiveWire
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
+            levelButtons.Add(new Button(
+            _graphics.GraphicsDevice,
+            new Rectangle(screenWidth / 3 + 160, screenHeight / 3 + 190, 160, 80),
+            "Level 6X",
+            basicFont,
+            Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             menuButtons[0].OnButtonClick += this.StartGame;
             menuButtons[1].OnButtonClick += this.SelectLevel;
@@ -671,6 +678,14 @@ namespace LiveWire
             IsMouseVisible = false;
         }
         public void Level6()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level6;
+            NewLevel(Level.Level6);
+            IsMouseVisible = false;
+        }
+
+        public void Level6X()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level6;

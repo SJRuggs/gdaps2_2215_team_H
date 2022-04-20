@@ -39,6 +39,7 @@ namespace LiveWire
         private float gravity; // how strong gravity is
         private Rectangle box;
         private Vector2 dimensions;
+        private SortedList<float,Tile> closestTiles;
         //private bool onGround;
 
         private int coyoteFrame; 
@@ -132,6 +133,7 @@ namespace LiveWire
             gravity = 0.1f;
             maxCoyoteFrames = 6;
             coyoteFrame = 0;
+            closestTiles = new SortedList<float, Tile>();
         }
         // --- METHODS ---
 
@@ -187,7 +189,10 @@ namespace LiveWire
 
             //onGround = false;
             coyoteFrame++;
-            for (int i = 0; i < board.GetLength(0); i++) //Do collision from closest block outwards
+
+            //Do collision from closest block outwards
+            closestTiles.Clear();
+            for (int i = 0; i < board.GetLength(0); i++) 
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
@@ -196,13 +201,19 @@ namespace LiveWire
                     {
                         tile = (Tile)board[i,j];
                     }
-
-                    if (new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && tile.BlocksPLayer && (tile != null))
-                    { // Phillip: I need to change this rectangle 
-                        CollideBump(tile);
-                    }
+                    if(tile.BlocksPLayer && (tile != null) && Vector2.Distance(tile.Position.Center.ToVector2(), Center()) < 80)
+                    {
+                        closestTiles.Add(Vector2.Distance(tile.Position.Center.ToVector2(), Center()), tile);
+                    }                    
+                }
+            }           
+            foreach(float dist in closestTiles.Keys) { 
+                if (new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(closestTiles[dist].Position))
+                {
+                    CollideBump(closestTiles[dist]);
                 }
             }
+
             //saving last frame position of player
             prevPosition = position;
         }

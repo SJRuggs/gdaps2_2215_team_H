@@ -38,8 +38,8 @@ namespace LiveWire
         Level4,
         Level5,
         Level6,
-        Level6X,
-        EndLevel
+        EndLevel,
+        Level6X
     }
 
     public class Game1 : Game
@@ -151,21 +151,21 @@ namespace LiveWire
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 - 40, screenHeight / 3, 160, 80),
+                new Rectangle(screenWidth / 3 - 40, screenHeight / 3 + 80, 160, 80),
                 "Level 1",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 160, screenHeight / 3, 160, 80),
+                new Rectangle(screenWidth / 3 + 160, screenHeight / 3 + 80, 160, 80),
                 "Level 2",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 360, screenHeight / 3, 160, 80),
+                new Rectangle(screenWidth / 3 + 360, screenHeight / 3 + 80, 160, 80),
                 "Level 3",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
@@ -193,7 +193,7 @@ namespace LiveWire
 
             levelButtons.Add(new Button(
             _graphics.GraphicsDevice,
-            new Rectangle(screenWidth / 3 + 160, screenHeight / 3 + 190, 160, 80),
+            new Rectangle(screenWidth / 3 + 160, screenHeight / 3 + 300, 160, 80),
             "Level 6X",
             basicFont,
             Color.FromNonPremultiplied(86, 91, 143, 255)));
@@ -207,6 +207,7 @@ namespace LiveWire
             levelButtons[3].OnButtonClick += this.Level4;
             levelButtons[4].OnButtonClick += this.Level5;
             levelButtons[5].OnButtonClick += this.Level6;
+            levelButtons[6].OnButtonClick += this.Level6X;
         }
 
         protected override void Update(GameTime gameTime)
@@ -278,24 +279,6 @@ namespace LiveWire
                             }
                         }
                     }
-
-                    /*
-                    // TEMPORARY transition
-                    if (SingleKeyPress(Keys.Enter, kbState, prevKbState))
-                    {
-                        currentLevel++;
-                        if (currentLevel == Level.EndLevel)
-                        {
-                            currentState = GameState.MainMenu;
-                            currentLevel = Level.MainMenu;
-                            NewLevel(currentLevel);
-                        }
-                        else
-                        {
-                            NewLevel(currentLevel);
-                        }
-                    }
-                    */
                     break;
             }
 
@@ -688,8 +671,8 @@ namespace LiveWire
         public void Level6X()
         {
             currentState = GameState.PlayLevel;
-            currentLevel = Level.Level6;
-            NewLevel(Level.Level6);
+            currentLevel = Level.Level6X;
+            NewLevel(Level.Level6X);
             IsMouseVisible = false;
         }
     }

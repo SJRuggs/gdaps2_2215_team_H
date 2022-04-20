@@ -187,7 +187,7 @@ namespace LiveWire
 
             //onGround = false;
             coyoteFrame++;
-            for (int i = 0; i < board.GetLength(0); i++)
+            for (int i = 0; i < board.GetLength(0); i++) //Do collision from closest block outwards
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
@@ -196,6 +196,7 @@ namespace LiveWire
                     {
                         tile = (Tile)board[i,j];
                     }
+
                     if (new Rectangle(position.ToPoint(), dimensions.ToPoint()).Intersects(tile.Position) && tile.BlocksPLayer && (tile != null))
                     { // Phillip: I need to change this rectangle 
                         CollideBump(tile);
@@ -252,6 +253,7 @@ namespace LiveWire
                 position.X = tile.Position.X + tile.Position.Width;
                 velocity.X = 0;
             }
+
         }
 
         /// <summary>

@@ -203,7 +203,16 @@ namespace LiveWire
                     }
                     if(tile.BlocksPLayer && (tile != null) && Vector2.Distance(tile.Position.Center.ToVector2(), Center()) < 80)
                     {
-                        closestTiles.Add(Vector2.Distance(tile.Position.Center.ToVector2(), Center()), tile);
+                        if (!closestTiles.ContainsKey(Vector2.Distance(tile.Position.Center.ToVector2(), Center())))
+                        {
+                            closestTiles.Add(Vector2.Distance(tile.Position.Center.ToVector2(), Center()), tile);
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine("same key generated");
+                        }
+                        // ^will break if two close blocks are the same dist away since that creates the same key
+                        // insert tiles into an array based on what the distance away is
                     }                    
                 }
             }           

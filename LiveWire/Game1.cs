@@ -150,42 +150,42 @@ namespace LiveWire
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 - 180, screenHeight / 3 - 140, 160, 80),
+                new Rectangle(screenWidth / 3 - 40, screenHeight / 3, 160, 80),
                 "Level 1",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3, screenHeight / 3 - 140, 160, 80),
+                new Rectangle(screenWidth / 3 + 160, screenHeight / 3, 160, 80),
                 "Level 2",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 180, screenHeight / 3 - 140, 160, 80),
+                new Rectangle(screenWidth / 3 + 360, screenHeight / 3, 160, 80),
                 "Level 3",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 - 180, screenHeight / 3 + 190, 160, 80),
+                new Rectangle(screenWidth / 3 - 40, screenHeight / 3 + 190, 160, 80),
                 "Level 4",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3, screenHeight / 3 + 190, 160, 80),
+                new Rectangle(screenWidth / 3 + 160, screenHeight / 3 + 190, 160, 80),
                 "Level 5",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 180, screenHeight / 3 + 190, 160, 80),
+                new Rectangle(screenWidth / 3 + 360, screenHeight / 3 + 190, 160, 80),
                 "Level 6",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));

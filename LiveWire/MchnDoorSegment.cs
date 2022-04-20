@@ -50,7 +50,6 @@ namespace LiveWire
             interactsWire = false;
             // Whether this Machine blocks the Player is determined by the constructor
             blocksPlayer = !isOpen;
-            animState = new bool[16];
         }
 
         #endregion

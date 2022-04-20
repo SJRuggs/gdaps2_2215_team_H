@@ -38,6 +38,7 @@ namespace LiveWire
         Level4,
         Level5,
         Level6,
+        Level6X,
         EndLevel
     }
 
@@ -109,7 +110,7 @@ namespace LiveWire
             _graphics.PreferredBackBufferWidth = screenWidth;
             _graphics.PreferredBackBufferHeight = screenHeight;
             // Make sure the line below is commented out before committing
-            //_graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
 
             // objects and states
@@ -150,46 +151,52 @@ namespace LiveWire
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 - 80, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 3 - 40, screenHeight / 3, 160, 80),
                 "Level 1",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3, screenHeight / 3 - 40, 160, 80),
+                new Rectangle(screenWidth / 3 + 160, screenHeight / 3, 160, 80),
                 "Level 2",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 80, screenHeight / 3 -40, 160, 80),
+                new Rectangle(screenWidth / 3 + 360, screenHeight / 3, 160, 80),
                 "Level 3",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 -80, screenHeight / 3 + 90, 160, 80),
+                new Rectangle(screenWidth / 3 - 40, screenHeight / 3 + 190, 160, 80),
                 "Level 4",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3, screenHeight / 3 + 90, 160, 80),
+                new Rectangle(screenWidth / 3 + 160, screenHeight / 3 + 190, 160, 80),
                 "Level 5",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             levelButtons.Add(new Button(
                 _graphics.GraphicsDevice,
-                new Rectangle(screenWidth / 3 + 80, screenHeight / 3 + 90, 160, 80),
+                new Rectangle(screenWidth / 3 + 360, screenHeight / 3 + 190, 160, 80),
                 "Level 6",
                 basicFont,
                 Color.FromNonPremultiplied(86, 91, 143, 255)));
 
+            levelButtons.Add(new Button(
+            _graphics.GraphicsDevice,
+            new Rectangle(screenWidth / 3 + 160, screenHeight / 3 + 190, 160, 80),
+            "Level 6X",
+            basicFont,
+            Color.FromNonPremultiplied(86, 91, 143, 255)));
 
             menuButtons[0].OnButtonClick += this.StartGame;
             menuButtons[1].OnButtonClick += this.SelectLevel;
@@ -230,7 +237,7 @@ namespace LiveWire
 
                 case GameState.PlayLevel:
                     player.PlayerMovement(kbState, prevKbState, board);
-                    wire.Wires[wire.Wires.Count - 1].Node2 = player.Center();
+                    wire.Wires[wire.Wires.Count - 1].Node2 = player.Center(); // causes crash when you select a level
                     wire.Update(board);
 
                     // detect reset
@@ -315,29 +322,11 @@ namespace LiveWire
                     break;
 
                 case GameState.LevelSelect:
-                    // TEMPORARY display
-                    _spriteBatch.DrawString(
-                        basicFont,
-                        "Level Select Template",
-                        new Vector2(
-                                screenWidth / 2 - (int)basicFont.MeasureString("Level Select Template").X / 2,
-                                screenHeight / 2 - (int)basicFont.MeasureString("Level Select Template").Y),
-                        Color.Black);
-
-                    _spriteBatch.DrawString(
-                        basicFont,
-                        "Press LMB To Advance",
-                        new Vector2(
-                                screenWidth / 2 - (int)basicFont.MeasureString("Press LMB To Advance").X / 2,
-                                screenHeight / 2),
-                        Color.Black);
-
-                    foreach(Button b in levelButtons)
+                    DrawLevel(currentLevel);
+                    foreach (Button b in levelButtons)
                     {
                         b.Draw(_spriteBatch);
                     }
-
-                    DrawLevel(currentLevel);
                     break;
 
 
@@ -657,36 +646,50 @@ namespace LiveWire
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level1;
+            NewLevel(Level.Level1);
             IsMouseVisible = false;
         }
         public void Level2()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level2;
+            NewLevel(Level.Level2);
             IsMouseVisible = false;
         }
         public void Level3()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level3;
+            NewLevel(Level.Level3);
             IsMouseVisible = false;
         }
         public void Level4()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level4;
+            NewLevel(Level.Level4);
             IsMouseVisible = false;
         }
         public void Level5()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level5;
+            NewLevel(Level.Level5);
             IsMouseVisible = false;
         }
         public void Level6()
         {
             currentState = GameState.PlayLevel;
             currentLevel = Level.Level6;
+            NewLevel(Level.Level6);
+            IsMouseVisible = false;
+        }
+
+        public void Level6X()
+        {
+            currentState = GameState.PlayLevel;
+            currentLevel = Level.Level6;
+            NewLevel(Level.Level6);
             IsMouseVisible = false;
         }
     }

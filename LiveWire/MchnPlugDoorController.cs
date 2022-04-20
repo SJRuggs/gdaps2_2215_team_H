@@ -60,9 +60,11 @@ namespace LiveWire
             blocksWire = false;
             interactsWire = false;
             this.doorTiles = doorTiles;
-            animState = new bool[16];
         }
 
+        #endregion
+
+        #region METHODS --------------------------------------------------------------------------------
         /// <summary>
         /// Logic for when the Player tries to interact with the DoorController
         /// </summary>

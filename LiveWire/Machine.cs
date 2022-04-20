@@ -31,7 +31,7 @@ namespace LiveWire
 
             // All necessary properties are inherited from TileParent to reduce redundancy
 
-        protected MachineType Type
+        public MachineType Type
         {
             get { return machineType; }
         }
@@ -44,6 +44,8 @@ namespace LiveWire
         {
             position = new Rectangle(x, y, width, height);
             this.spriteSheet = spriteSheet;
+            animState = new bool[1];
+            animState[0] = true;
         }
 
         #endregion

@@ -53,6 +53,11 @@ namespace LiveWire
             set { position = value; }
         }
 
+        public Vector2 Center
+        {
+            get { return position.Center.ToVector2(); }
+        }
+
         public bool[] AnimState
         {
             get { return animState; }

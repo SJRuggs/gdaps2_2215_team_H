@@ -39,7 +39,8 @@ namespace LiveWire
         Level5,
         Level6,
         EndLevel,
-        Level6X
+        Level6X,
+        EndLevelEX
     }
 
     public class Game1 : Game
@@ -266,7 +267,7 @@ namespace LiveWire
                             (int)player.Dimensions.Y)))
                         {
                             currentLevel++;
-                            if (currentLevel == Level.EndLevel)
+                            if (currentLevel == Level.EndLevel || currentLevel == Level.EndLevelEX)
                             {
                                 currentState = GameState.MainMenu;
                                 currentLevel = Level.MainMenu;

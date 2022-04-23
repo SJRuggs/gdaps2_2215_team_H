@@ -46,8 +46,8 @@ namespace LiveWire
         /// <summary>
         /// DoorController constructor calls the base TileParent constructor
         /// </summary>
-        /// <param name="x">X position of the machine</param>
-        /// <param name="y">Y position of the machine</param>
+        /// <param name="x">X position of the machine on the screen</param>
+        /// <param name="y">Y position of the machine on the screen</param>
         /// <param name="width">How large horizontally the machine should be drawn</param>
         /// <param name="height">How large vertically the machine should be drawn</param>
         /// <param name="spriteSheet">The spritesheet used to render the machine</param>
@@ -60,6 +60,7 @@ namespace LiveWire
             blocksWire = false;
             interactsWire = false;
             this.doorTiles = doorTiles;
+            IsActive = true;
         }
 
         #endregion

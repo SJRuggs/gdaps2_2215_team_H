@@ -436,8 +436,8 @@ namespace LiveWire
                                 // Add a new WireSource at the specified location
                                 machines.Add(
                                     new MchnWireSource(
-                                        int.Parse(line[1]) * tileWidth,
                                         int.Parse(line[2]) * tileHeight,
+                                        int.Parse(line[1]) * tileWidth,
                                         tileWidth,
                                         tileHeight,
                                         tileSpriteSheet
@@ -467,8 +467,8 @@ namespace LiveWire
 
                                 machines.Add(
                                     new MchnPlugDoorController(
-                                        int.Parse(line[1]) * tileWidth,
                                         int.Parse(line[2]) * tileHeight,
+                                        int.Parse(line[1]) * tileWidth,
                                         tileWidth,
                                         tileHeight,
                                         tileSpriteSheet,
@@ -480,8 +480,8 @@ namespace LiveWire
                             case MachineType.DoorSegment:
                                 machines.Add(
                                     new MchnDoorSegment(
-                                        int.Parse(line[1]) * tileWidth,
                                         int.Parse(line[2]) * tileHeight,
+                                        int.Parse(line[1]) * tileWidth,
                                         tileWidth,
                                         tileHeight,
                                         tileSpriteSheet,
@@ -599,10 +599,12 @@ namespace LiveWire
                 }
             }
 
-            // Loop through the list of machines 
+            // Replace tiles occupied by machines with machines in the board
+
             foreach (Machine machine in machines)
             {
                 // Change the AnimState to display the texture of the specified Machine
+                // All values in the array initialize to false at first
                 machine.AnimState[17] = machine is MchnWireSource;
                 machine.AnimState[18] = machine is MchnPlugDoorController;
                 // Door Segments can display one of two textures
@@ -614,7 +616,7 @@ namespace LiveWire
                 }
 
                 // Replace the tile on the board at that location with the machine
-                board[machine.BoardX, machine.BoardY] = machine;
+                board[machine.BoardRow, machine.BoardColumn] = machine;
             }
 
             if (reader != null) { reader.Close(); }

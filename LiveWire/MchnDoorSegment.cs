@@ -27,7 +27,7 @@ namespace LiveWire
         /// </summary>
         public bool IsOpen
         {
-            get { return !blocksPlayer; }
+            get { return !IsActive; }
         }
 
         #endregion
@@ -37,8 +37,8 @@ namespace LiveWire
         /// <summary>
         /// DoorSegment constructor calls the base TileParent constructor
         /// </summary>
-        /// <param name="x">X position of the machine</param>
-        /// <param name="y">Y position of the machine</param>
+        /// <param name="x">X position of the machine on the screen</param>
+        /// <param name="y">Y position of the machine on the screen</param>
         /// <param name="width">How large horizontally the machine should be drawn</param>
         /// <param name="height">How large vertically the machine should be drawn</param>
         /// <param name="spriteSheet">The spritesheet used to render the machine</param>
@@ -50,6 +50,7 @@ namespace LiveWire
             interactsWire = false;
             // Whether this Machine blocks the Player is determined by the constructor
             blocksPlayer = !isOpen;
+            IsActive = !isOpen;
         }
 
         #endregion

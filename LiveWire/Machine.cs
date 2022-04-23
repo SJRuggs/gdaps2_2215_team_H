@@ -36,6 +36,16 @@ namespace LiveWire
             get { return machineType; }
         }
 
+        public int BoardX
+        {
+            get { return position.X / 40; }
+        }
+
+        public int BoardY
+        {
+            get { return position.Y / 40; }
+        }
+
         #endregion
 
         #region CONSTRUCTORS --------------------------------------------------------------------------------
@@ -44,8 +54,7 @@ namespace LiveWire
         {
             position = new Rectangle(x, y, width, height);
             this.spriteSheet = spriteSheet;
-            animState = new bool[1];
-            animState[0] = true;
+            animState = new bool[21];
         }
 
         #endregion

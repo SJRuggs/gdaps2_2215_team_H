@@ -26,7 +26,7 @@ namespace LiveWire
         {
             position = new Rectangle(x, y, w, h);
             this.spriteSheet = spriteSheet;
-            animState = new bool[17];
+            animState = new bool[21];
             animState[0] = isActive;
             animState[14] = !isActive;
             IsActive = isActive;

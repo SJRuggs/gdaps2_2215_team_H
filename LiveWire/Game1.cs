@@ -599,6 +599,24 @@ namespace LiveWire
                 }
             }
 
+            // Loop through the list of machines 
+            foreach (Machine machine in machines)
+            {
+                // Change the AnimState to display the texture of the specified Machine
+                machine.AnimState[17] = machine is MchnWireSource;
+                machine.AnimState[18] = machine is MchnPlugDoorController;
+                // Door Segments can display one of two textures
+                // based on which one is open or not
+                if (machine is MchnDoorSegment)
+                {
+                    machine.AnimState[19] = ((MchnDoorSegment)machine).IsOpen;
+                    machine.AnimState[20] = !((MchnDoorSegment)machine).IsOpen;
+                }
+
+                // Replace the tile on the board at that location with the machine
+                board[machine.BoardX, machine.BoardY] = machine;
+            }
+
             if (reader != null) { reader.Close(); }
         }
 

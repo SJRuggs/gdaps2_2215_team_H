@@ -39,7 +39,7 @@ namespace LiveWire
         private float gravity; // how strong gravity is
         private Rectangle box;
         private Vector2 dimensions;
-        private SortedList<float,Tile> closestTiles;
+        private SortedList<float,TileParent> closestTiles;
         //private bool onGround;
 
         private int coyoteFrame; 
@@ -133,7 +133,7 @@ namespace LiveWire
             gravity = 0.1f;
             maxCoyoteFrames = 6;
             coyoteFrame = 0;
-            closestTiles = new SortedList<float, Tile>();
+            closestTiles = new SortedList<float, TileParent>();
         }
         // --- METHODS ---
 
@@ -196,10 +196,10 @@ namespace LiveWire
             {
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
-                    Tile tile = null;
-                    if (board[i,j] is Tile)
+                    TileParent tile = null;
+                    if (board[i,j] is TileParent)
                     {
-                        tile = (Tile)board[i,j];
+                        tile = (TileParent)board[i,j];
                     }
                     if(tile.BlocksPLayer && (tile != null) && Vector2.Distance(tile.Position.Center.ToVector2(), Center()) < 80)
                     {
@@ -227,7 +227,7 @@ namespace LiveWire
             prevPosition = position;
         }
         
-        public void CollideBump(Tile tile) {
+        public void CollideBump(TileParent tile) {
             // get angle between tile and player centers
             float centerAngle = MathF.Atan2((position.Y + dimensions.Y/2) - (tile.Position.Y + tile.Position.Height/2),
                                       (position.X + dimensions.X/2) - (tile.Position.X + tile.Position.Width/2));

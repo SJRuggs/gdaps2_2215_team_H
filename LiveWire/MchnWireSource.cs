@@ -75,6 +75,9 @@ namespace LiveWire
 
         #region METHODS --------------------------------------------------------------------------------
 
+
+        // Scrapped code for rendering Machines with a tint
+        /*
         /// <summary>
         /// Draws the Wire Source to the screen
         /// </summary>
@@ -99,6 +102,7 @@ namespace LiveWire
                 }
             }
         }
+        */
 
         /// <summary>
         /// Logic for when the Player tries to interact with the WireSource

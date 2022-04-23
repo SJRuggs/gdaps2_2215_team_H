@@ -27,8 +27,8 @@
 11111111------------------------------------P--1
 111111111111111111111111111111111111111111111111
 5
-WireSource,25,34
-DoorSegment,25,43,0
-DoorSegment,24,43,0
-DoorSegment,23,43,0
-PlugDoorController,25,40,2,3
+WireSource,5,46
+DoorSegment,1,30,0
+DoorSegment,2,30,0
+DoorSegment,6,30,0
+PlugDoorController,8,29,2,3

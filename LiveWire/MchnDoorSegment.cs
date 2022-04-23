@@ -64,6 +64,8 @@ namespace LiveWire
             blocksPlayer = !blocksPlayer;
         }
 
+        // Scrapped code for rendering Machines with a tint
+        /*
         /// <summary>
         /// Draws the Wire Source to the screen
         /// </summary>
@@ -105,6 +107,7 @@ namespace LiveWire
                 }
             }
         }
+        */
 
         /// <summary>
         /// DoorSegments cannot be interacted with; this method does nothing

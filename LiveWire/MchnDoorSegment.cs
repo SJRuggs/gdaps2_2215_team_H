@@ -72,7 +72,7 @@ namespace LiveWire
             {
                 if (Game1.wire.Update(Game1.board))
                 {
-
+                    Game1.NewLevel(Game1.currentLevel);
                 }
             }
         }

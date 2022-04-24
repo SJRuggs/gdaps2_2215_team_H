@@ -57,9 +57,9 @@ namespace LiveWire
         }
 
         // calls all relevant methods
-        public void Update(TileParent[,] board, Wire wire, Player player)
+        public bool Update(TileParent[,] board, Wire wire, Player player)
         {
-            DetectCollision(board, wire);
+            return DetectCollision(board, wire);
         }
 
         // limits wire based on total length and max length
@@ -71,7 +71,7 @@ namespace LiveWire
         }
 
         // detects a collision on the segment with tiles that block the wire
-        public void DetectCollision(TileParent[,] board, Wire wire)
+        public bool DetectCollision(TileParent[,] board, Wire wire)
         {
             float x = node2.X;
             float y = node2.Y;
@@ -104,9 +104,10 @@ namespace LiveWire
                     else { y += 40 - (y % 40) + 3; }
 
                     newSegment(board, wire, new Vector2(x, y));
-                    return;
+                    return true;
                 }
             }
+            return false;
         }
 
         // handles the creation of a new segment within the wire

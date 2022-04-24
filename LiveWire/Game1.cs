@@ -77,7 +77,7 @@ namespace LiveWire
         private Level currentLevel;
 
         // board handlers
-        private TileParent[,] board;
+        public static TileParent[,] board;
         private int rows;
         private int cols;
         private int tileWidth;
@@ -88,7 +88,7 @@ namespace LiveWire
         private List<Machine> interactiveMachines;
 
         // TEST WIRE
-        private Wire wire;
+        public static Wire wire;
 
         // MAIN MENU
         private List<Button> menuButtons;

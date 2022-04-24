@@ -29,6 +29,6 @@
 5
 WireSource,5,46
 DoorSegment,1,30,0
-DoorSegment,2,30,0
+DoorSegment,2,30,1
 DoorSegment,6,30,0
 PlugDoorController,8,29,2,3

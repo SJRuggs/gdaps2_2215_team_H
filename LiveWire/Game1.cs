@@ -318,17 +318,17 @@ namespace LiveWire
                     // display level
                     DrawLevel(currentLevel);
 
-                    // TEST WIRE
-                    wire.Draw(_spriteBatch, GraphicsDevice);
-
-                    // display player
-                    player.Draw(_spriteBatch);
-
                     // Draw all Machines on the map
                     foreach (Machine machine in machines)
                     {
                         machine.Draw(_spriteBatch);
                     }
+
+                    // TEST WIRE
+                    wire.Draw(_spriteBatch, GraphicsDevice);
+
+                    // display player
+                    player.Draw(_spriteBatch);
                     break;
             }
 
@@ -611,8 +611,8 @@ namespace LiveWire
                 // based on which one is open or not
                 if (machine is MchnDoorSegment)
                 {
-                    machine.AnimState[19] = ((MchnDoorSegment)machine).IsOpen;
-                    machine.AnimState[20] = !((MchnDoorSegment)machine).IsOpen;
+                    machine.AnimState[19] = !((MchnDoorSegment)machine).IsOpen;
+                    machine.AnimState[20] = ((MchnDoorSegment)machine).IsOpen;
                 }
 
                 // Replace the tile on the board at that location with the machine

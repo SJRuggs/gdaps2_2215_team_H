@@ -49,8 +49,8 @@ namespace LiveWire
             blocksWire = false;
             interactsWire = false;
             // Whether this Machine blocks the Player is determined by the constructor
-            blocksPlayer = !isOpen;
             IsActive = !isOpen;
+            blocksPlayer = IsActive;
         }
 
         #endregion
@@ -62,7 +62,10 @@ namespace LiveWire
         /// </summary>
         public void Toggle()
         {
-            blocksPlayer = !blocksPlayer;
+            IsActive = !IsActive;
+            blocksPlayer = IsActive;
+            animState[19] = !IsOpen;
+            animState[20] = IsOpen;
         }
 
         // Scrapped code for rendering Machines with a tint

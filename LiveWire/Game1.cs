@@ -84,6 +84,8 @@ namespace LiveWire
         private int tileHeight;
         // Machines are stored in a list separate from tiles
         private List<Machine> machines;
+        // Another separate list for only machines that can be interacted with
+        private List<Machine> interactiveMachines;
 
         // TEST WIRE
         private Wire wire;
@@ -412,6 +414,7 @@ namespace LiveWire
 
             // Initialize machines to an empty List
             machines = new List<Machine>();
+            interactiveMachines = new List<Machine>();
 
             // If there are more lines after the level, try to load them as machines
             if ((machinesNextLine = reader.ReadLine().Trim()) != null)
@@ -424,6 +427,9 @@ namespace LiveWire
                     {
                         // Splits the Machine info into an array
                         line = reader.ReadLine().Trim().Split(',');
+                        // The Machine to be added; initialized as a
+                        // different child class in each specific case
+                        Machine addedMachine;
 
                         // Parses the first value of each line as the type of Machine it is,
                         // and constructs the Machine accordingly
@@ -433,16 +439,17 @@ namespace LiveWire
                         switch (Enum.Parse<MachineType>(line[0]))
                         {
                             case MachineType.WireSource:
-                                // Add a new WireSource at the specified location
-                                machines.Add(
-                                    new MchnWireSource(
-                                        int.Parse(line[2]) * tileHeight,
-                                        int.Parse(line[1]) * tileWidth,
-                                        tileWidth,
-                                        tileHeight,
-                                        tileSpriteSheet
-                                        )
+                                // Initialize the object
+                                addedMachine = new MchnWireSource(
+                                    int.Parse(line[2]) * tileHeight,
+                                    int.Parse(line[1]) * tileWidth,
+                                    tileWidth,
+                                    tileHeight,
+                                    tileSpriteSheet
                                     );
+                                // Add a new WireSource at the specified location
+                                machines.Add(addedMachine);
+                                interactiveMachines.Add(addedMachine);
                                 break;
                             case MachineType.PlugDoorController:
                                 // Initialize a new List to fill with references
@@ -464,20 +471,23 @@ namespace LiveWire
                                         doorSegments.Add((MchnDoorSegment)machineListed);
                                     }
                                 }
-
-                                machines.Add(
-                                    new MchnPlugDoorController(
-                                        int.Parse(line[2]) * tileHeight,
-                                        int.Parse(line[1]) * tileWidth,
-                                        tileWidth,
-                                        tileHeight,
-                                        tileSpriteSheet,
-                                        // Pass the doorSegments list into the controller's constructor
-                                        doorSegments
-                                        )
+                                // Create the object
+                                addedMachine = new MchnPlugDoorController(
+                                    int.Parse(line[2]) * tileHeight,
+                                    int.Parse(line[1]) * tileWidth,
+                                    tileWidth,
+                                    tileHeight,
+                                    tileSpriteSheet,
+                                    // Pass the doorSegments list into the controller's constructor
+                                    doorSegments
                                     );
+                                // Add it to both the complete list and interactive list
+                                machines.Add(addedMachine);
+                                interactiveMachines.Add(addedMachine);
                                 break;
                             case MachineType.DoorSegment:
+                                // Door Segments can't be interacted with directly
+                                // and only need to be added to the main list
                                 machines.Add(
                                     new MchnDoorSegment(
                                         int.Parse(line[2]) * tileHeight,

@@ -5,7 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 namespace LiveWire
 {
     /// <summary>
-    /// A Machine that the Player can retrieve a Wire from
+    /// A Machine that the Player can retrieve a Wire from;
+    /// unused in this version of the game
     /// </summary>
     public class MchnWireSource : Machine
     {

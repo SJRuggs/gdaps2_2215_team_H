@@ -72,6 +72,12 @@ namespace LiveWire
         /// <param name="player">Reference to the Player object initiating the interaction</param>
         public override void PlayerInteract(Player player)
         {
+            /*
+
+            // Unused code scaffolding for checking if the player has a wire first,
+            // written back when we had planned to have the wires be retrieved from
+            // various stations instead of being with you at all times in the level
+
             // If the Player is holding a Wire,
             if (player.HoldingWire != null)
             {
@@ -86,11 +92,21 @@ namespace LiveWire
                 player.HoldingWire = DisconnectWire();
             }
             // If nobody has a Wire, do nothing
+
+            */
+
+            // If the Player is within about two player widths of the door controller,
+            // toggle the doors the machine is connected to
+            if (Vector2.Distance(player.Center(), Center) < (player.Dimensions.X * 2))
+            {
+                ToggleDoors();
+            }
         }
 
         /// <summary>
         /// Connects a new Wire and toggles all Doors,
         /// disconnecting an old Wire if there is one
+        /// Unused in current build
         /// </summary>
         /// <param name="newWire">The Wire to be connected to the DoorController</param>
         /// <returns>The Wire that used to be connected to the DoorController,
@@ -115,6 +131,7 @@ namespace LiveWire
 
         /// <summary>
         /// Disconnects the Wire currently plugged in and toggles all Doors
+        /// Unused in current build
         /// </summary>
         /// <returns>The old Wire that was just disconnected</returns>
         private Wire DisconnectWire()

@@ -278,8 +278,8 @@ namespace LiveWire
 
         /// <summary>
         /// player <-> wire
-        /// Takes in input from user (interact) Grabs the end of a wire if close enough, releases the wire, or connectes it to a power node if close enough
-        /// moves the end of the wire with player if holding wire
+        /// Takes in input from user (interact) and connectes a wire to a power node if close enough
+        /// Unused: grabs the end of a wire if close enough, releases the wire
         /// </summary>
         public void InteractWire()
         {
@@ -294,6 +294,11 @@ namespace LiveWire
                 }
             }
             */
+
+            /*
+
+            // Unused; the Player is unable to drop and pick up the wire in the current build
+
             if (isHoldingWire)
             {
                 //holding wire
@@ -306,6 +311,7 @@ namespace LiveWire
                 //not holding wire
                 //if near the end of wire pick it up
             }
+            */
         }
 
         // NOT TRUE CENTER, center of player's head

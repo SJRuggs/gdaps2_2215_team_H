@@ -35,6 +35,11 @@ namespace LiveWire
             get; set;
         }
 
+        public Color DoorColor
+        {
+            get; set;
+        }
+
         #endregion
 
         #region CONSTRUCTOR --------------------------------------------------------------------------------
@@ -165,11 +170,21 @@ namespace LiveWire
                                 0,
                                 40,
                                 40),
-                            Color.White, Rotation, Vector2.Zero, 1, SpriteEffects.None, 1); ;
+                            DoorColor, Rotation, Vector2.Zero, 1, SpriteEffects.None, 1); ;
                     }
                     else
                     {
-                        base.Draw(spriteBatch);
+                        spriteBatch.Draw(
+                            spriteSheet,
+                            new Vector2(
+                                position.X,
+                                position.Y),
+                            new Rectangle(
+                                i * position.Width,
+                                0,
+                                40,
+                                40),
+                            DoorColor, 0, Vector2.Zero, 1, SpriteEffects.None, 1); ;
                     }
                 }
             }

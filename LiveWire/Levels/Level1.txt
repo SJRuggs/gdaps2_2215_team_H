@@ -26,8 +26,12 @@
 11111111---------------------------------------1
 11111111----------------------------------P----1
 111111111111111111111111111111111111111111111111
-4
+8
 DoorSegment,1,30,0,0
 DoorSegment,2,30,0,0
-DoorSegment,6,30,0,0
-PlugDoorController,8,29,0,1,2
+DoorSegment,17,12,0,0
+DoorSegment,18,12,0,0
+DoorSegment,19,12,0,0
+DoorSegment,20,12,0,0
+PlugDoorController,8,29,1,0,1
+PlugDoorController,23,7,2,2,3,4,5

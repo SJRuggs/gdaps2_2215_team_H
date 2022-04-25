@@ -26,6 +26,8 @@ namespace LiveWire
         ///<summary>The Wire plugged into this Door Controller Machine</summary>
         private Wire wire;
 
+        
+
         #endregion
 
         #region PROPERTIES -------------------------------------------------------------------------
@@ -39,6 +41,10 @@ namespace LiveWire
             get { return wire; }
         }
 
+        public Color DoorColor
+        {
+            get; set;
+        }
         #endregion
 
         #region CONSTRUCTORS --------------------------------------------------------------------------------
@@ -53,13 +59,33 @@ namespace LiveWire
         /// <param name="spriteSheet">The spritesheet used to render the machine</param>
         /// <param name="doors">The list of MchnDoorSegments this machine controls</param>
         public MchnPlugDoorController
-            (int x, int y, int width, int height, Texture2D spriteSheet, List<MchnDoorSegment> doorTiles)
+            (int x, int y, int width, int height, Texture2D spriteSheet, List<MchnDoorSegment> doorTiles, int color)
             : base(x, y, width, height, spriteSheet)
         {
             blocksPlayer = false;
             blocksWire = false;
             interactsWire = false;
             this.doorTiles = doorTiles;
+            switch (color)
+            {
+                case 1:
+                    this.DoorColor = Color.Red;
+                    break;
+                case 2:
+                    this.DoorColor = Color.Green;
+                    break;
+                case 3:
+                    this.DoorColor = Color.Blue;
+                    break;
+                case 4:
+                    this.DoorColor = Color.Yellow;
+                    break;
+                default:
+                    this.DoorColor = Color.White;
+                    break;
+
+            }
+            
             IsActive = true;
         }
 
@@ -160,6 +186,27 @@ namespace LiveWire
             foreach (MchnDoorSegment door in doorTiles)
             {
                 door.Toggle();
+            }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < animState.Length; i++)
+            {
+                if (animState[i])
+                {
+                    spriteBatch.Draw(
+                        spriteSheet,
+                        new Vector2(
+                            position.X,
+                            position.Y),
+                        new Rectangle(
+                            i * position.Width,
+                            0,
+                            40,
+                            40),
+                         DoorColor);
+                }
             }
         }
 

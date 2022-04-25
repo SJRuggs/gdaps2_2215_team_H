@@ -458,15 +458,15 @@ namespace LiveWire
                                 List<MchnDoorSegment> doorSegments = new List<MchnDoorSegment>();
 
                                 // Loops through the rest of the comma-separated values in the line,
-                                // starting at index 3, the first value that would represent the
+                                // starting at index 4, the first value that would represent the
                                 // index of a door segment in the machines List
                                 // phill version
-                                //for (int j = int.Parse(line[3]); j <= int.Parse(line[4]); j++)
+                                //for (int j = int.Parse(line[4]); j <= int.Parse(line[5]); j++)
                                 //{
                                 //    // Get the machine at the specified value
                                 //    Machine machineListed = machines[j];
                                 // owen version
-                                for (int j = 3; j < line.Length; j++)
+                                for (int j = 4; j < line.Length; j++)
                                 {
                                    // Get the machine at the specified value
                                     Machine machineListed = machines[int.Parse(line[j])];
@@ -486,8 +486,33 @@ namespace LiveWire
                                     tileHeight,
                                     tileSpriteSheet,
                                     // Pass the doorSegments list into the controller's constructor
-                                    doorSegments
+                                    doorSegments,
+                                    // Pass in this int representing Color of DoorController and connected DoorSegments
+                                    int.Parse(line[3])
                                     );
+
+                                for (int x = 0; x < doorSegments.Count; x++)
+                                {
+                                    switch (int.Parse(line[3]))
+                                    {
+                                        case 1:
+                                            doorSegments[x].DoorColor = Color.Red;
+                                            break;
+                                        case 2:
+                                            doorSegments[x].DoorColor = Color.Green;
+                                            break;
+                                        case 3:
+                                            doorSegments[x].DoorColor = Color.Blue;
+                                            break;
+                                        case 4:
+                                            doorSegments[x].DoorColor = Color.Yellow;
+                                            break;
+                                        default:
+                                            doorSegments[x].DoorColor = Color.White;
+                                            break;
+
+                                    }                                    
+                                }
                                 // Add it to both the complete list and interactive list
                                 machines.Add(addedMachine);
                                 interactiveMachines.Add(addedMachine);

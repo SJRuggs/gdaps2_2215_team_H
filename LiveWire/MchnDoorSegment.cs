@@ -30,6 +30,11 @@ namespace LiveWire
             get { return !IsActive; }
         }
 
+        public float Rotation
+        {
+            get; set;
+        }
+
         #endregion
 
         #region CONSTRUCTOR --------------------------------------------------------------------------------
@@ -43,13 +48,22 @@ namespace LiveWire
         /// <param name="height">How large vertically the machine should be drawn</param>
         /// <param name="spriteSheet">The spritesheet used to render the machine</param>
         /// <param name="isOpen">Whether this door is open by default; false is closed, true is open</param>
-        public MchnDoorSegment(int x, int y, int width, int height, Texture2D spriteSheet, bool isOpen)
+        public MchnDoorSegment(int x, int y, int width, int height, Texture2D spriteSheet, bool isOpen, int rotation)
             : base(x, y, width, height, spriteSheet)
         {
             blocksWire = false;
             interactsWire = false;
             // Whether this Machine blocks the Player is determined by the constructor
             IsActive = !isOpen;
+            // Whether this Machine is Horizontal or not
+            if(rotation == 0)
+            {
+                Rotation = 0;
+            }
+            else
+            {
+                Rotation = MathF.PI / 2;
+            }
             blocksPlayer = IsActive;
         }
 
@@ -119,9 +133,38 @@ namespace LiveWire
         /// <param name="player">Reference to the Player object initiating the interaction</param>
         public override void PlayerInteract(Player player)
         {
+            System.Diagnostics.Debug.WriteLine("I MchnDoorSegement was interacted with");
+
             // Do nothing
         }
 
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            for (int i = 0; i < animState.Length; i++)
+            {
+                if (animState[i])
+                {
+                    if (Rotation != 0)
+                    {
+                        spriteBatch.Draw(
+                            spriteSheet,
+                            new Vector2(
+                                position.X + 40,
+                                position.Y),
+                            new Rectangle(
+                                i * position.Width,
+                                0,
+                                40,
+                                40),
+                            Color.White, Rotation, Vector2.Zero, 1, SpriteEffects.None, 1); ;
+                    }
+                    else
+                    {
+                        base.Draw(spriteBatch);
+                    }
+                }
+            }
+        }
         #endregion
     }
 }

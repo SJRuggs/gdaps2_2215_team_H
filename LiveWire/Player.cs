@@ -251,7 +251,7 @@ namespace LiveWire
             {
                 //System.Diagnostics.Debug.WriteLine("ran into bottom of block");
                 //System.Diagnostics.Debug.WriteLine(centerAngle * 180f / MathHelper.Pi);
-                System.Diagnostics.Debug.WriteLine(velocity.Y);
+                //System.Diagnostics.Debug.WriteLine(velocity.Y);
                 position.Y = tile.Position.Y + tile.Position.Height;
                 if (velocity.Y < 0) { velocity.Y = 0; }
                 //velocity.Y = 0;
@@ -281,19 +281,24 @@ namespace LiveWire
         /// Takes in input from user (interact) and connectes a wire to a power node if close enough
         /// Unused: grabs the end of a wire if close enough, releases the wire
         /// </summary>
-        public void InteractWire()
+        public void InteractWire(KeyboardState kbState, KeyboardState prevKbState, List<Machine> machines)
         {
+            
             // find the closest machine
             float distToMachine = float.MaxValue;
             Machine closestMachine = null;
-            /*
+            
             foreach(Machine machine in machines){
-                if(Vector2.dist(Center(),  machine.Center) < distToMachine){
-                    distToMachine = Vector2.dist(Center(),  machine.Center);
+                if(Vector2.Distance(Center(),  machine.Center) < distToMachine){
+                    distToMachine = Vector2.Distance(Center(),  machine.Center);
                     closestMachine = machine;
                 }
             }
-            */
+
+            if (kbState.IsKeyDown(interact) && !prevKbState.IsKeyDown(interact))
+            {               
+                closestMachine.PlayerInteract(this);
+            }
 
             /*
 

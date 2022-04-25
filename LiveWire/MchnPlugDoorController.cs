@@ -56,7 +56,7 @@ namespace LiveWire
             (int x, int y, int width, int height, Texture2D spriteSheet, List<MchnDoorSegment> doorTiles)
             : base(x, y, width, height, spriteSheet)
         {
-            blocksPlayer = true;
+            blocksPlayer = false;
             blocksWire = false;
             interactsWire = false;
             this.doorTiles = doorTiles;
@@ -72,6 +72,8 @@ namespace LiveWire
         /// <param name="player">Reference to the Player object initiating the interaction</param>
         public override void PlayerInteract(Player player)
         {
+            System.Diagnostics.Debug.WriteLine("I MchnPlugDoorController was interacted with");
+
             /*
 
             // Unused code scaffolding for checking if the player has a wire first,

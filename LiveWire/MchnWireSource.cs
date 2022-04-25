@@ -112,6 +112,7 @@ namespace LiveWire
         /// <param name="player">Reference to the Player object initiating the interaction</param>
         public override void PlayerInteract(Player player)
         {
+            System.Diagnostics.Debug.WriteLine("I MchnWireSource was interacted with");
             // If the Wire is currently on the map, remove it from the map
             if (IsWireDrawn)
             {

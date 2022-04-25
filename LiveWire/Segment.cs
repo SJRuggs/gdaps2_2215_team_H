@@ -96,7 +96,7 @@ namespace LiveWire
                     else { x++; }
                 }
 
-                if (board[(int)(y / 40), (int)(x / 40)].BlocksWire)
+                  if (board[(int)(y / 40), (int)(x / 40)].BlocksWire)
                 {
                     if (x % 40 < 21) { x -= (x % 40) + 3; }
                     else { x += 40 - (x % 40) + 3; }

@@ -241,6 +241,7 @@ namespace LiveWire
 
                 case GameState.PlayLevel:
                     player.PlayerMovement(kbState, prevKbState, board);
+                    player.InteractWire(kbState, prevKbState, machines);
                     wire.Wires[wire.Wires.Count - 1].Node2 = player.Center(); // causes crash when you select a level
                     wire.Update(board);
 
@@ -459,12 +460,18 @@ namespace LiveWire
                                 // Loops through the rest of the comma-separated values in the line,
                                 // starting at index 3, the first value that would represent the
                                 // index of a door segment in the machines List
+                                // phill version
+                                //for (int j = int.Parse(line[3]); j <= int.Parse(line[4]); j++)
+                                //{
+                                //    // Get the machine at the specified value
+                                //    Machine machineListed = machines[j];
+                                // owen version
                                 for (int j = 3; j < line.Length; j++)
                                 {
-                                    // Get the machine at the specified value
+                                   // Get the machine at the specified value
                                     Machine machineListed = machines[int.Parse(line[j])];
 
-                                    // Check to see if it's a DoorSegment
+                                // Check to see if it's a DoorSegment
                                     if (machineListed is MchnDoorSegment)
                                     {
                                         // Cast it to DoorSegment and add it to the list
@@ -497,7 +504,10 @@ namespace LiveWire
                                         tileSpriteSheet,
                                         // Pass in this boolean representing whether the door is open
                                         // 0 == Closed, 1 == Open
-                                        int.Parse(line[3]) == 1
+                                        int.Parse(line[3]) == 1,
+                                        // Pass in this int representing whether the door is horizontal or not
+                                        // 0 == Vertical, 1 == Horizontal
+                                        int.Parse(line[4])
                                         )
                                     );
                                 break;

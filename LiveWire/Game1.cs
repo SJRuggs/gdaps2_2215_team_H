@@ -29,7 +29,7 @@ namespace LiveWire
 
     // --- FINITE STATE MACHINE: LEVEL ---
     // one state for each level, used only to progress through the levels
-    enum Level
+    public enum Level
     {
         MainMenu,
         Level1,
@@ -54,11 +54,11 @@ namespace LiveWire
         private int screenWidth;
         private int screenHeight;
         private SpriteFont basicFont;
-        private Texture2D tileSpriteSheet;
+        private static Texture2D tileSpriteSheet;
         private Texture2D playerSprite;
 
         // stream handlers
-        private StreamReader reader;
+        private static StreamReader reader;
         private StreamWriter writer;
 
         // input handlers
@@ -68,27 +68,27 @@ namespace LiveWire
         private MouseState prevMState;
 
         // player handlers
-        private Player player;
+        private static Player player;
         private int playerWidth;
         private int playerHeight;
 
         // FSM handlers
         private GameState currentState;
-        private Level currentLevel;
+        public static Level currentLevel;
 
         // board handlers
-        private TileParent[,] board;
-        private int rows;
-        private int cols;
-        private int tileWidth;
-        private int tileHeight;
+        public static TileParent[,] board;
+        private static int rows;
+        private static int cols;
+        private static int tileWidth;
+        private static int tileHeight;
         // Machines are stored in a list separate from tiles
-        private List<Machine> machines;
+        private static List<Machine> machines;
         // Another separate list for only machines that can be interacted with
-        private List<Machine> interactiveMachines;
+        private static List<Machine> interactiveMachines;
 
         // TEST WIRE
-        private Wire wire;
+        public static Wire wire;
 
         // MAIN MENU
         private List<Button> menuButtons;
@@ -349,7 +349,7 @@ namespace LiveWire
             return true;
         }
 
-        private void NewLevel(Level level)
+        public static void NewLevel(Level level)
         {
 
             // read info

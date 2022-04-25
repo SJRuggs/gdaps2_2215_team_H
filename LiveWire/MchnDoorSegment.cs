@@ -80,6 +80,15 @@ namespace LiveWire
             blocksPlayer = IsActive;
             animState[19] = !IsOpen;
             animState[20] = IsOpen;
+
+            // check for wire snap
+            if (!IsOpen)
+            {
+                if (Game1.wire.Update(Game1.board))
+                {
+                    Game1.NewLevel(Game1.currentLevel);
+                }
+            }
         }
 
         // Scrapped code for rendering Machines with a tint

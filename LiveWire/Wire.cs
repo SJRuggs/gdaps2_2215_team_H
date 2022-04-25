@@ -79,10 +79,10 @@ namespace LiveWire
         }
 
         // detects collision for each segment
-        public void Update(TileParent[,] board)
+        public bool Update(TileParent[,] board)
         {
-            wires[wires.Count - 1].Update(board, this, player);
             DetectTrim();
+            return wires[wires.Count - 1].Update(board, this, player);
             //wires[wires.Count - 1].LimitSegment(this, player);
         }
 

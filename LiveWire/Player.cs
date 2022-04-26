@@ -138,13 +138,13 @@ namespace LiveWire
         // --- METHODS ---
 
         // updates the Player animation by its animstate
-        public void UpdateFSM()
+        /*public void UpdateFSM()
         {
             switch (currentState)
             {
                 // TODO: Add cases
             }
-        }
+        }*/
 
         public void Draw(SpriteBatch spriteBatch)
         {
